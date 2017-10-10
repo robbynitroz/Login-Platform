@@ -11,7 +11,6 @@
 
 </template>
 
-
 <script>
     import {windowSize} from '../mixins/windowSize';
     import appLogin from './Login.vue';

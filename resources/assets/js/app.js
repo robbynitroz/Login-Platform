@@ -1,4 +1,3 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -8,7 +7,6 @@
 require('./bootstrap');
 
 import Vue from 'vue';
-import Vuex from 'vuex';
 
 
 /**
@@ -17,9 +15,8 @@ import Vuex from 'vuex';
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', require('./components/Example.vue'));
+Vue.component('home', require('./components/Home.vue'));
 
 new Vue({
     el: '#app',
-    Vuex
 });

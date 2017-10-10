@@ -14,3 +14,11 @@
 Route::get('/', function () {
     return view('example');
 });
+
+
+Route::domain('login.com')->group(function () {
+    Route::get('/', function () {
+        //Login View - Vue
+        return view('login.login');
+    });
+});

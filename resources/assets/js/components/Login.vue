@@ -46,17 +46,16 @@
 </template>
 
 <script>
-    let hotelLogo_external = require('../assets/hotel_logo.png');
-    import {windowSize} from './windowSize';
+    import {windowSize} from '../mixins/windowSize';
 
     export default {
 
-        name: 'login',
+        name: 'appLogin',
         data() {
             return {
 
                 backgroundColor: 'background: rgba(19, 17, 17, 0.72);',
-                hotelLogo: hotelLogo_external,
+                hotelLogo: 'storage/images/hotel_logo.png',
                 policy: {
                     text: 'Terms & conditions',
                     color: 'grey',
@@ -80,7 +79,7 @@
                     colorHover: "#ffffff",
                     borderColor: '#d3e0ff',
                     borderColorHover: "#ffffff",
-                    hoverState:false
+                    hoverState: false
                 },
                 buttonIcon: {
                     class: 'fa-globe',
@@ -130,7 +129,6 @@
                 };
             },
         },
-
 
 
         methods: {
@@ -192,8 +190,6 @@
         height: 50px;
         margin: 15%;
     }
-
-
 
     .fa {
         padding-left: 5%;

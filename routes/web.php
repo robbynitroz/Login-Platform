@@ -21,6 +21,4 @@ Route::group(array('domain' => 'login.com'), function () {
 });
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', 'http://guestcompass.nl/', 307);

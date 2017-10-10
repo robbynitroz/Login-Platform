@@ -11,14 +11,18 @@
 |
 */
 
-Route::get('/', function () {
-    return view('example');
-});
 
 
-Route::domain('login.com')->group(function () {
+Route::group(array('domain' => 'login.com'), function()
+{
     Route::get('/', function () {
         //Login View - Vue
         return view('login.login');
     });
+});
+
+
+Route::get('/', function ()
+{
+    return view('welcome');
 });

@@ -25,6 +25,7 @@
                             :style="buttonStyleObject"
                             @mouseenter='updateHoverState(true)'
                             @mouseleave="updateHoverState(false)"
+                            @click='goToMikrotikAuth'
                             class="btn btn-outline-info large-button text-center"> {{ button.text }}   <i
                             :style="{color:buttonIcon.color}" :class="['fa',buttonIcon.class]" aria-hidden="true"></i>
                     </button>
@@ -47,6 +48,7 @@
 
 <script>
     import {windowSize} from '../mixins/windowSize';
+    import {auth} from '../mixins/auth';
 
     export default {
 
@@ -161,7 +163,7 @@
 
         },
 
-        mixins: [windowSize],
+        mixins: [windowSize, auth],
 
 
     }

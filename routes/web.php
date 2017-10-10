@@ -1,5 +1,6 @@
 <?php
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,17 +13,14 @@
 */
 
 
-
-Route::group(array('domain' => 'login.com'), function()
-{
+Route::group(array('domain' => 'login.com'), function () {
     Route::get('/', function () {
         //Login View - Vue
-        return view('login.login');
+        return view('login.login', ['ip_address' => $_SERVER['REMOTE_ADDR']]);
     });
 });
 
 
-Route::get('/', function ()
-{
+Route::get('/', function () {
     return view('welcome');
 });

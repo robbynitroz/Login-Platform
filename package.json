@@ -23,11 +23,11 @@
     "vuex": "^2.4.1"
   },
   "dependencies": {
-    "font-awesome": "^4.7.0",
     "axios": "^0.16.2",
-    "jquery": "^3.2.1",
     "bootstrap": "4.0.0-beta",
     "cross-env": "^5.0.5",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.2.1",
     "laravel-mix": "^1.4",
     "lodash": "^4.17.4",
     "popper.js": "^1.12.5",

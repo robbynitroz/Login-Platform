@@ -7,6 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="ip" content="{{ $ip_address }}" >
     <title>Welcome</title>
 
 </head>

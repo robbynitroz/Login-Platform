@@ -7,6 +7,7 @@
 require('./bootstrap');
 
 import Vue from 'vue';
+import VueRouter from 'vue-router';
 
 
 /**
@@ -15,8 +16,17 @@ import Vue from 'vue';
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.use(VueRouter);
+
+const router = new VueRouter({
+    mode:'history',
+
+});
+
+
 Vue.component('home', require('./components/Home.vue'));
 
 new Vue({
     el: '#app',
+    router,
 });

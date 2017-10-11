@@ -24,7 +24,6 @@ const router = new VueRouter({
 
 });
 
-
 const home =  resolve=>{
     require.ensure(['./components/Home.vue'], ()=>{
         resolve(require('./components/Home.vue'));

@@ -13,7 +13,7 @@
 </head>
 <body>
 <div id="app">
-    <home></home>
+    <login-home></login-home>
 </div>
 </div>
 <link rel="stylesheet" href="css/app.css" type="text/css">

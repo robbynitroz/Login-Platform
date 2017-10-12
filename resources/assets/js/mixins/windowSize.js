@@ -9,7 +9,6 @@ export const windowSize = {
     mounted() {
         this.$nextTick(function () {
             window.addEventListener('resize', this.getWindowWidth);
-            window.addEventListener('resize', this.getWindowHeight);
             //Init
             this.getWindowWidth()
         })
@@ -17,7 +16,6 @@ export const windowSize = {
 
     beforeDestroy() {
         window.removeEventListener('resize', this.getWindowWidth);
-        window.removeEventListener('resize', this.getWindowHeight);
     },
 
     methods: {

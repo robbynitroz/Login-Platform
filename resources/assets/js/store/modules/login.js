@@ -1,5 +1,14 @@
 const state = {
 
+
+    texts: {
+        en: {
+            policyText: 'Terms & conditions',
+            greetingText: "You're one step away from going online",
+            buttonText: 'GO ONLINE HERE',
+        }
+    },
+
     backgroundColor: 'background: rgba(19, 17, 17, 0.72);',
     hotelLogo: 'storage/images/hotel_logo.png',
     policy: {
@@ -12,7 +21,7 @@ const state = {
         color: 'white',
         size: 2.4 + 'rem'
     },
-    greetingText: {
+    greeting: {
         color: 'white',
         text: "You're one step away from going online",
         size: 2 + 'rem'
@@ -32,7 +41,7 @@ const state = {
         color: '#d3e0ff',
         colorHover: "#ffffff"
     },
-    littleText: {
+    littleTextColor: {
         color: 'white',
         text: 'connect and proceed to our webapp'
     }
@@ -55,8 +64,8 @@ const getters = {
         return state.greetingsTime;
     },
 
-    greetingText: state => {
-        return state.greetingText;
+    greeting: state => {
+        return state.greeting;
     },
 
     button: state => {
@@ -67,8 +76,12 @@ const getters = {
         return state.buttonIcon;
     },
 
-    littleText: state => {
-        return state.littleText;
+    littleTextColor: state => {
+        return state.littleTextColor;
+    },
+
+    texts: state => {
+        return state.texts;
     },
 
 };

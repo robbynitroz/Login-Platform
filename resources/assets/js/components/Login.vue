@@ -16,8 +16,8 @@
 
 
                 <h2 class="text-center message"
-                    :style="{ color:greetingText.color, fontSize:greetingText.size, wordWrap:'break-word'}">
-                    {{ greetingText.text }} </h2>
+                    :style="{ color:greeting.color, fontSize:greeting.size, wordWrap:'break-word'}">
+                    {{ greeting.text }} </h2>
 
                 <!--Here-->
                 <div class="col-xs-12 text-center button align-items-center justify-content-center">
@@ -31,7 +31,7 @@
                     </button>
                 </div>
                 <!--Here-->
-                <p :style="{ color:littleText.color }" class="text-center"><i> {{ littleText.text }} </i></p>
+                <p :style="{ color:littleTextColor.color }" class="text-center"><i> {{ littleTextColor.text }} </i></p>
 
 
                 <div class="col-xs-12 text-center">
@@ -84,14 +84,18 @@
 
             ...mapGetters([
                 'hotelLogo',
+                'texts',
                 'policy',
                 'greetingsTime',
-                'greetingText',
+                'greeting',
                 'button',
                 'buttonIcon',
-                'littleText'
+                'littleTextColor'
 
             ]),
+
+
+
 
             buttonStyleObject() {
                 var modifier = '';
@@ -104,6 +108,9 @@
                     borderColor: this.button['borderColor' + modifier]
                 };
             },
+
+
+
         },
 
 
@@ -130,6 +137,18 @@
                 this.button.hoverState = isHover;
             },
 
+            checkUserLang(userLang){
+                console.log(userLang);
+            }
+
+
+        },
+
+        mounted() {
+            this.$nextTick(function () {
+                let userLang = navigator.language || navigator.userLanguage;
+                this.checkUserLang(userLang);
+            })
         },
 
         mixins: [windowSize, auth],

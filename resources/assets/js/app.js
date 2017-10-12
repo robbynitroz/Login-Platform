@@ -30,14 +30,12 @@ const home = resolve => {
     });
 };
 
-//Vue.component('home', require('./components/Home.vue'));
 
 
 new Vue({
     el: '#app',
     store,
     router,
-
     components: {
         loginHome: home,
     }

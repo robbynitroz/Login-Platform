@@ -14,17 +14,14 @@
 <script>
     import {windowSize} from '../mixins/windowSize';
     import appLogin from './Login.vue';
+    import {mapGetters} from 'vuex';
 
     export default {
         name: 'app',
         data() {
             return {
 
-                video: {
-                    src: 'storage/images/videoplayback.mp4',
-                    type: 'video/mp4',
-                    cover: '/storage/images/conser.jpg'
-                },
+
 
 
             }
@@ -51,6 +48,12 @@
 
 
             },
+
+            ...mapGetters([
+                'video'
+
+            ]),
+
 
 
         },

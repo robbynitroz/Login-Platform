@@ -36,5 +36,44 @@ const state = {
         color: 'white',
         text: 'connect and proceed to our webapp'
     }
+};
 
+
+const getters = {
+
+    backgroundColor: state => {
+        return state.backgroundColor;
+    },
+    hotelLogo: state => {
+        return state.hotelLogo;
+    },
+    policy: state => {
+        return state.policy;
+    },
+
+    greetingsTime: state => {
+        return state.greetingsTime;
+    },
+
+    greetingText: state => {
+        return state.greetingText;
+    },
+
+    button: state => {
+        return state.button;
+    },
+
+    buttonIcon: state => {
+        return state.buttonIcon;
+    },
+
+    littleText: state => {
+        return state.littleText;
+    },
+
+};
+
+export default {
+    state,
+    getters
 }

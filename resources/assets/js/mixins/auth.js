@@ -8,8 +8,7 @@ export const auth = {
 
     methods: {
         goToMikrotikAuth() {
-            //console.log('http://'+this.ip + ':64873/login?username=' + this.mac + '&password=' + this.mac)
-             window.location.href ='http://'+this.ip + ':64873/login?username=' + this.mac + '&password=' + this.mac;
+            window.location.href = 'http://' + this.ip + ':64873/login?username=' + this.mac + '&password=' + this.mac;
         }
     }
 }

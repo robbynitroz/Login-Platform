@@ -8,7 +8,7 @@ require('./bootstrap');
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import { store } from './store/store';
+import {store} from './store/store';
 
 
 /**
@@ -20,24 +20,25 @@ import { store } from './store/store';
 Vue.use(VueRouter);
 
 const router = new VueRouter({
-    mode:'history',
+    mode: 'history',
 
 });
 
-const home =  resolve=>{
-    require.ensure(['./components/Home.vue'], ()=>{
+const home = resolve => {
+    require.ensure(['./components/Home.vue'], () => {
         resolve(require('./components/Home.vue'));
     });
 };
 
 //Vue.component('home', require('./components/Home.vue'));
 
+
 new Vue({
     el: '#app',
     store,
     router,
 
-    components:{
-        loginHome:home,
+    components: {
+        loginHome: home,
     }
 });

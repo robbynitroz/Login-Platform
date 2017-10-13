@@ -18,21 +18,23 @@
     "font-awesome": "^4.7.0",
     "laravel-mix": "^1.4",
     "popper.js": "^1.12.5",
-    "vue": "^2.4.4",
+    "vue": "^2.5.0",
     "vue-router": "^3.0.0",
+    "vue-template-compiler": "^2.5.0",
     "vuex": "^3.0.0"
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "babel-preset-es2017": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-es2017": "^6.24.1",
     "bootstrap": "4.0.0-beta",
     "cross-env": "^5.0.5",
     "font-awesome": "^4.7.0",
     "laravel-mix": "^1.4",
     "popper.js": "^1.12.5",
-    "vue": "^2.4.4",
+    "vue": "^2.5.0",
     "vue-router": "^3.0.0",
+    "vue-template-compiler": "^2.5.0",
     "vuex": "^3.0.0"
   }
 }

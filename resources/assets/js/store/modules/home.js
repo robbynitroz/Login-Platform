@@ -1,7 +1,7 @@
 const state = {
 
-    activeComponent: 'app-login',
-    defaultComponent:'app-login',
+    activeComponent: 'app-email',
+    defaultComponent: 'app-email',
     video: {
         src: 'storage/images/videoplayback.mp4',
         type: 'video/mp4',
@@ -23,17 +23,17 @@ const getters = {
 
 };
 
-const mutations= {
-    changeActiveComponent:(state, payload)=>{
+const mutations = {
+    changeActiveComponent: (state, payload) => {
         state.activeComponent = payload;
     },
 
 
 };
 
-const actions ={
+const actions = {
 
-    updateActiveComponent:({commit}, payload)=>{
+    updateActiveComponent: ({commit}, payload) => {
         commit('changeActiveComponent', payload);
     },
 

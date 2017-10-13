@@ -7,7 +7,7 @@
             <div :style="background(true)" class="login col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
 
                 <a :style="{ float:'right', fontSize:policy.size, margin:'3% 0 0 0', color:policy.color }" href="#"
-                @click="changeToPolicy"
+                   @click="changeToPolicy"
                 >
                     {{ texts[defaultLanguage].policyLinkText | capitalize }} </a>
 
@@ -23,17 +23,26 @@
 
                 <!--Here-->
                 <div class="col-xs-12 text-center button align-items-center justify-content-center">
-                    <button type="button"
+
+
+                    <div class="form-group middle dimensions">
+                        <input type="email" required class="form-control form-control-lg" id="formGroupExampleInput"
+                               :placeholder="texts[defaultLanguage].emailText">
+                    </div>
+
+
+                    <button type="submit"
                             :style="buttonStyleObject"
                             @mouseenter='updateHoverState(true)'
                             @mouseleave="updateHoverState(false)"
-                            @click='goToMikrotikAuth'
-                            class="btn btn-outline-info large-button text-center"> {{ texts[defaultLanguage].buttonText }}   <i
-                            :style="{color:buttonIcon.color}" :class="['fa',buttonIcon.class]" aria-hidden="true"></i>
+                            @click='sendEmailToServer'
+                            class="btn btn-outline-info large-button text-center"> {{ texts[defaultLanguage].buttonText
+                        }}   <i
+                                :style="{color:buttonIcon.color}" :class="['fa',buttonIcon.class]"
+                                aria-hidden="true"></i>
                     </button>
                 </div>
                 <!--Here-->
-                <p :style="{ color:littleTextColor.color }" class="text-center"><i> {{ littleTextColor.text }} </i></p>
 
 
                 <div class="col-xs-12 text-center">
@@ -58,11 +67,9 @@
 
     export default {
 
-        name: 'appLogin',
+        name: 'appEmail',
         data() {
-            return {
-
-            }
+            return {}
         },
 
         filters: {
@@ -96,7 +103,6 @@
                 'greeting',
                 'button',
                 'buttonIcon',
-                'littleTextColor'
 
             ]),
 
@@ -112,7 +118,6 @@
                     borderColor: this.button['borderColor' + modifier]
                 };
             },
-
 
 
         },
@@ -146,7 +151,7 @@
                 this.button.hoverState = isHover;
             },
 
-            changeToPolicy(){
+            changeToPolicy() {
                 this.$store.dispatch('updateActiveComponent', 'app-policy');
             }
 
@@ -180,7 +185,31 @@
 
         width: 70%;
         height: 50px;
-        margin: 15%;
+        margin-bottom: 10%;
+        margin-top: 5%;
+
+    }
+
+    .dimensions {
+        width: 85%;
+        margin-left: 8%;
+
+    }
+
+    ::-webkit-input-placeholder {
+        text-align: center;
+    }
+
+    :-moz-placeholder { /* Firefox 18- */
+        text-align: center;
+    }
+
+    ::-moz-placeholder { /* Firefox 19+ */
+        text-align: center;
+    }
+
+    :-ms-input-placeholder {
+        text-align: center;
     }
 
     .fa {
@@ -214,6 +243,12 @@
 
         .row {
             margin: 0;
+        }
+
+        .dimensions {
+            width: 100%;
+            margin-left: 0%;
+
         }
 
     }

@@ -5,12 +5,11 @@ import home from './modules/home'
 
 Vue.use(Vuex);
 
-
 export const store = new Vuex.Store({
 
-modules:{
-    login,
-    home
-}
+    modules: {
+        login,
+        home
+    }
 
 });

@@ -30,8 +30,6 @@ const home = resolve => {
 };
 
 
-
-
 new Vue({
     el: '#app',
     store,

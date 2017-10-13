@@ -16,6 +16,7 @@
     import {windowSize} from '../mixins/windowSize';
     import appLogin from './Login.vue';
     import appPolicy from './Policy.vue';
+    import appEmail from './Email.vue';
 
 
 
@@ -29,7 +30,8 @@
 
         components: {
             appLogin,
-            appPolicy
+            appPolicy,
+            appEmail
         },
 
         mixins: [windowSize],
@@ -78,9 +80,6 @@
         background-size: cover;
     }
 
-    html, body {
-        height: 100%;
-    }
 
     .vertical-center {
         min-height: 100%; /* Fallback for vh unit */
@@ -136,13 +135,13 @@
     }
 
     .entry-leave {
+        opacity: 1;
 
     }
 
     .entry-leave-active {
         transition: opacity 0.6s;
         opacity: 0;
-        position: absolute;
 
     }
 

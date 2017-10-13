@@ -6,8 +6,8 @@
 
             <div :style="background(true)" class="login col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
 
-                <a :style="{ float:'right', fontSize:policy.size, margin:'3% 0 0 0', color:policy.color }"  href="#"
-                @click="changeBackToDefault"
+                <a :style="{ float:'right', fontSize:policy.size, margin:'3% 0 0 0', color:policy.color }" href="#"
+                   @click="changeBackToDefault"
                 >
                     {{ texts[defaultLanguage].policyBackLinkText | capitalize }} </a>
 
@@ -15,10 +15,10 @@
 
                 <div class="text-center middle" v-html="texts[defaultLanguage].policyText"></div>
 
-
-                <a :style="{ float:'right', fontSize:policy.size, margin:'3% 0 0 0', color:policy.color }" href="#">
+                <a :style="{ float:'right', fontSize:policy.size, margin:'3% 0 0 0', color:policy.color }" href="#"
+                   @click="changeBackToDefault"
+                >
                     {{ texts[defaultLanguage].policyBackLinkText | capitalize }} </a>
-
 
 
                 <div class="col-xs-12 text-center">
@@ -84,7 +84,7 @@
                 }
             },
 
-            changeBackToDefault(){
+            changeBackToDefault() {
                 this.$store.dispatch('updateActiveComponent', this.defaultComponent);
             },
 
@@ -100,7 +100,6 @@
 
 <style scoped>
 
-
     .vertical-center {
         margin-bottom: 0; /* Remove the default bottom margin of .jumbotron */
     }
@@ -109,10 +108,6 @@
         margin-top: 15%;
         margin-bottom: 25px;
     }
-
-
-
-
 
     @media screen and (max-width: 576px) {
         .container {
@@ -136,6 +131,5 @@
             border-radius: 5px;
         }
     }
-
 
 </style>

@@ -1,6 +1,5 @@
 const state = {
 
-
     texts: {
         en: {
 
@@ -9,6 +8,7 @@ const state = {
             policyLinkText: 'Terms & conditions',
             policyBackLinkText: '<<< Back ',
             policyText: '<p style="color: white">Here you will find terms and condition text<p/>',
+            emailText:'Your email address here'
 
         }
     },

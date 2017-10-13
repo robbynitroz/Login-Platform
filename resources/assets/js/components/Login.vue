@@ -6,7 +6,9 @@
 
             <div :style="background(true)" class="login col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
 
-                <a :style="{ float:'right', fontSize:policy.size, margin:'3% 0 0 0', color:policy.color }" href="#">
+                <a :style="{ float:'right', fontSize:policy.size, margin:'3% 0 0 0', color:policy.color }" href="#"
+                @click="changeToPolicy"
+                >
                     {{ texts[defaultLanguage].policyLinkText | capitalize }} </a>
 
                 <div class="clearfix"></div>
@@ -47,10 +49,11 @@
 </template>
 
 <script>
+    import {mapGetters} from 'vuex';
+    import {mapActions} from 'vuex';
+    import {languageDetection} from '../mixins/languageDetection';
     import {windowSize} from '../mixins/windowSize';
     import {auth} from '../mixins/auth';
-    import {mapGetters} from 'vuex';
-    import {languageDetection} from '../mixins/languageDetection';
 
 
     export default {
@@ -115,6 +118,12 @@
         },
 
         methods: {
+
+            ...mapActions([
+                'updateActiveComponent'
+
+            ]),
+
             // whenever the document is resized, re-set the 'fullHeight' variable
             background(param) {
                 if (param == false) {
@@ -136,6 +145,10 @@
             updateHoverState(isHover) {
                 this.button.hoverState = isHover;
             },
+
+            changeToPolicy(){
+                this.$store.dispatch('updateActiveComponent', 'app-policy');
+            }
 
 
         },

@@ -11,22 +11,17 @@ export const languageDetection = {
             let userLang = navigator.language || navigator.userLanguage;
             if (typeof userLang !== "undefined") {
                 userLang = userLang.substring(0, 2);
-
                 this.checkUserLang(userLang);
             }
         })
     },
 
-
     methods: {
 
         checkUserLang(userLang) {
-
             if (typeof this.texts[userLang] !== "undefined") {
                 this.defaultLanguage = userLang;
             }
         }
-
     }
-
 }

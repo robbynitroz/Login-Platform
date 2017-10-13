@@ -3,8 +3,8 @@
         <video v-if="videoShowOrHide" autoplay preload loop muted :poster="video.cover" id="background">
             <source :src="video.src" :type="video.type">
         </video>
-        <transition name="entry" appear>
-            <app-login></app-login>
+        <transition name="entry" appear mode="out-in">
+            <component :is="activeComponent"></component>
         </transition>
 
     </div>
@@ -12,23 +12,24 @@
 </template>
 
 <script>
+    import {mapGetters} from 'vuex';
     import {windowSize} from '../mixins/windowSize';
     import appLogin from './Login.vue';
-    import {mapGetters} from 'vuex';
+    import appPolicy from './Policy.vue';
+
+
 
     export default {
         name: 'app',
         data() {
             return {
 
-
-
-
             }
         },
 
         components: {
             appLogin,
+            appPolicy
         },
 
         mixins: [windowSize],
@@ -50,13 +51,14 @@
             },
 
             ...mapGetters([
-                'video'
-
+                'activeComponent',
+                'video',
             ]),
 
 
 
         },
+
     }
 </script>
 
@@ -129,7 +131,7 @@
     }
 
     .entry-enter-active {
-        transition: opacity 1.5s;
+        transition: opacity 0.6s;
 
     }
 
@@ -138,7 +140,7 @@
     }
 
     .entry-leave-active {
-        transition: opacity 1.5s;
+        transition: opacity 0.6s;
         opacity: 0;
         position: absolute;
 

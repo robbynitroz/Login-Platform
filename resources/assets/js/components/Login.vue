@@ -7,7 +7,7 @@
             <div :style="background(true)" class="login col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
 
                 <a :style="{ float:'right', fontSize:policy.size, margin:'3% 0 0 0', color:policy.color }" href="#">
-                    {{ policy.text | capitalize }} </a>
+                    {{ texts[defaultLanguage].policyLinkText | capitalize }} </a>
 
                 <div class="clearfix"></div>
 
@@ -17,7 +17,7 @@
 
                 <h2 class="text-center message"
                     :style="{ color:greeting.color, fontSize:greeting.size, wordWrap:'break-word'}">
-                    {{ greeting.text }} </h2>
+                    {{ texts[defaultLanguage].greetingText }} </h2>
 
                 <!--Here-->
                 <div class="col-xs-12 text-center button align-items-center justify-content-center">
@@ -26,7 +26,7 @@
                             @mouseenter='updateHoverState(true)'
                             @mouseleave="updateHoverState(false)"
                             @click='goToMikrotikAuth'
-                            class="btn btn-outline-info large-button text-center"> {{ button.text }}   <i
+                            class="btn btn-outline-info large-button text-center"> {{ texts[defaultLanguage].buttonText }}   <i
                             :style="{color:buttonIcon.color}" :class="['fa',buttonIcon.class]" aria-hidden="true"></i>
                     </button>
                 </div>
@@ -50,13 +50,16 @@
     import {windowSize} from '../mixins/windowSize';
     import {auth} from '../mixins/auth';
     import {mapGetters} from 'vuex';
+    import {languageDetection} from '../mixins/languageDetection';
 
 
     export default {
 
         name: 'appLogin',
         data() {
-            return {}
+            return {
+
+            }
         },
 
         filters: {
@@ -95,8 +98,6 @@
             ]),
 
 
-
-
             buttonStyleObject() {
                 var modifier = '';
                 if (this.button.hoverState)
@@ -112,7 +113,6 @@
 
 
         },
-
 
         methods: {
             // whenever the document is resized, re-set the 'fullHeight' variable
@@ -137,21 +137,14 @@
                 this.button.hoverState = isHover;
             },
 
-            checkUserLang(userLang){
-                console.log(userLang);
-            }
-
 
         },
 
-        mounted() {
-            this.$nextTick(function () {
-                let userLang = navigator.language || navigator.userLanguage;
-                this.checkUserLang(userLang);
-            })
-        },
-
-        mixins: [windowSize, auth],
+        mixins: [
+            windowSize,
+            auth,
+            languageDetection
+        ],
 
 
     }

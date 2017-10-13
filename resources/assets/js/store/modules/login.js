@@ -3,9 +3,13 @@ const state = {
 
     texts: {
         en: {
-            policyText: 'Terms & conditions',
+
             greetingText: "You're one step away from going online",
             buttonText: 'GO ONLINE HERE',
+            policyLinkText: 'Terms & conditions',
+            policyBackLinkText: 'Terms & conditions',
+            policyText: 'Here you will find terms and condition text',
+
         }
     },
 

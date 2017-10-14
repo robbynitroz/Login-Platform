@@ -22,16 +22,16 @@ class TemplateSeeder extends Seeder
                 'activated' => 'yes',
                 'data' => json_encode(
                     [
-                        'mainSettings' => [
-                            'activeComponent' => 'app-login',
-                            'defaultComponent' => 'app-login',
-                            'video' => [
-                                'src' => 'storage/images/videoplayback.mp4',
-                                'type' => 'video/mp4',
-                                'cover' => '/storage/images/conser.jpg',
-                            ],
 
+                        'activeComponent' => 'app-login',
+                        'defaultComponent' => 'app-login',
+                        'video' => [
+                            'src' => 'storage/images/videoplayback.mp4',
+                            'type' => 'video/mp4',
+                            'cover' => '/storage/images/conser.jpg',
                         ],
+
+
                         'texts' => [
                             'en' => [
                                 'greetingText' => 'You\'re one step away from going online',

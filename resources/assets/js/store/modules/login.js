@@ -1,4 +1,7 @@
-const state = {
+const state = JSON.parse((document.head.querySelector('script[id="mainData"]')).innerHTML.replace(/^\s+|\s+$/g, ''));
+
+/*
+    {
 
     texts: {
         en: {
@@ -49,7 +52,7 @@ const state = {
         color: 'white',
         text: 'connect and proceed to our webapp'
     }
-};
+};*/
 
 
 const getters = {
@@ -92,5 +95,5 @@ const getters = {
 
 export default {
     state,
-    getters
+    getters,
 }

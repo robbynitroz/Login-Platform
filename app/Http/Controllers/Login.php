@@ -12,6 +12,12 @@ class Login extends Controller
     {
         //testing a solution
 
+       $data = new Template();
+
+      $result= $data->find(1);
+
+       return view('login.login', ['data'=>$result, 'ip_address'=>$request->ip()]);
+
 
 
     }

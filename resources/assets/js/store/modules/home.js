@@ -1,13 +1,5 @@
-const state = {
+const state = JSON.parse((document.head.querySelector('script[id="mainData"]')).innerHTML.replace(/^\s+|\s+$/g, ''));
 
-    activeComponent: 'app-email',
-    defaultComponent: 'app-email',
-    video: {
-        src: 'storage/images/videoplayback.mp4',
-        type: 'video/mp4',
-        cover: '/storage/images/conser.jpg'
-    },
-};
 
 const getters = {
     video: state => {
@@ -37,12 +29,11 @@ const actions = {
         commit('changeActiveComponent', payload);
     },
 
-
 };
 
 export default {
-    state,
     getters,
+    state,
     mutations,
     actions
 }

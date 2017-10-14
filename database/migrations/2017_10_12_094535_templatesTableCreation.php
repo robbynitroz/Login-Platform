@@ -15,10 +15,10 @@ class TemplatesTableCreation extends Migration
     {
         Schema::create('templates', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('hotel');
-            $table->enum('activated', [0, 1])->default(0);
+            $table->integer('hotel')->unsigned();
+            $table->char('activated', 4)->default('no');
             $table->json('data');
-            $table->enum('scheduled', [0, 1])->default(0);
+            $table->char('scheduled', 4)->default('no');
             $table->timestamp('schedule_start_time')->nullable();
             $table->timestamp('schedule_end_time')->nullable();
             $table->softDeletes();

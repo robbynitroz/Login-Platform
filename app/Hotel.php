@@ -30,4 +30,13 @@ class Hotel extends Model
      */
     protected $dates = ['deleted_at'];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function templates()
+    {
+        return $this->hasMany('App\Template');
+    }
+
+
 }

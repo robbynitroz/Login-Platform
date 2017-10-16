@@ -12,7 +12,9 @@ class Login extends Controller
     {
         //testing a solution
 
-       $data = new Template();
+
+
+      $data = new Template();
 
       $result= $data->find(1);
 

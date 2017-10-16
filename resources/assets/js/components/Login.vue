@@ -80,11 +80,11 @@
                 let curHr = today.getHours()
 
                 if (curHr < 12) {
-                    return this.texts[defaultLanguage].sayTimeMorning;
+                    return this.texts[this.defaultLanguage].sayTimeMorning;
                 } else if (curHr < 18) {
-                    return this.texts[defaultLanguage].sayTimeAfternoon;
+                    return this.texts[this.defaultLanguage].sayTimeAfternoon;
                 } else {
-                    return this.texts[defaultLanguage].sayTimeEvening;
+                    return this.texts[this.defaultLanguage].sayTimeEvening;
                 }
             },
 

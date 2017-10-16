@@ -1,0 +1,6 @@
+{
+  "name": "GuestCompass Login Platform",
+  "short_name": "Login-Platform",
+  "start_url": ".",
+  "display": "standalone"
+}

@@ -14,10 +14,7 @@
 
 
 Route::group(array('domain' => 'login.com'), function () {
-    Route::get('/', function () {
-        //Login View - Vue
-        return view('login.login', ['ip_address' => $_SERVER['REMOTE_ADDR']]);
-    });
+    Route::get('/', ['name'=>'Login', 'uses'=>'Login@getData']);
 });
 
 

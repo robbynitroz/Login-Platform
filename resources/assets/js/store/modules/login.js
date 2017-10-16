@@ -12,6 +12,10 @@ const state = JSON.parse((document.head.querySelector('script[id="mainData"]')).
             policyBackLinkText: '<<< Back ',
             policyText: '<p style="color: white">Here you will find terms and condition text<p/>',
             emailText:'Your email address here'
+            sayTimeMorning:'Good morning!',
+            sayTimeAfternoon:'Good afternoon!',
+            sayTimeEvening:'Good evening!',
+
 
         }
     },

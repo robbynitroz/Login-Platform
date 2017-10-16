@@ -1,6 +1,7 @@
 const state = JSON.parse((document.head.querySelector('script[id="mainData"]')).innerHTML.replace(/^\s+|\s+$/g, ''));
 
 
+
 const getters = {
     video: state => {
         return state.video;

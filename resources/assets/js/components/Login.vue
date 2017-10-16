@@ -28,8 +28,7 @@
                             @mouseenter='updateHoverState(true)'
                             @mouseleave="updateHoverState(false)"
                             @click='goToMikrotikAuth'
-                            class="btn btn-outline-info large-button text-center"> {{ texts[defaultLanguage].buttonText }}   <i
-                            :style="{color:buttonIcon.color}" :class="['fa',buttonIcon.class]" aria-hidden="true"></i>
+                            class="btn btn-outline-info large-button text-center"> {{ texts[defaultLanguage].buttonText }}
                     </button>
                 </div>
                 <!--Here-->
@@ -183,9 +182,7 @@
         margin: 15%;
     }
 
-    .fa {
-        padding-left: 5%;
-    }
+
 
     @media screen and (max-width: 576px) {
         .container {

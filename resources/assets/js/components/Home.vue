@@ -1,8 +1,13 @@
 <template>
     <div class="container-fluid">
-        <video v-if="videoShowOrHide" autoplay preload loop muted :poster="video.cover" id="background">
-            <source :src="video.src" :type="video.type">
-        </video>
+        <div class="background">
+            <video v-if="false" autoplay preload loop muted :poster="video.cover" >
+                <source :src="video.src" :type="video.type">
+            </video>
+            <img  v-if="backgroundShowOrHide" alt="image" src="storage/images/image.jpg"/>
+        </div>
+
+
         <transition name="entry" appear mode="out-in">
             <component :is="activeComponent"></component>
         </transition>
@@ -40,7 +45,7 @@
         computed: {
             // whenever the document is resized, re-set the 'fullHeight' variable
 
-            videoShowOrHide() {
+            backgroundShowOrHide() {
 
 
                 if (this.windowWidth > 576) {
@@ -66,7 +71,7 @@
 
 <style scoped>
 
-    #background {
+    .background {
         position: fixed;
         top: 50%;
         left: 50%;
@@ -79,6 +84,8 @@
         transform: translateX(-50%) translateY(-50%);
         background-size: cover;
     }
+
+
 
 
     .vertical-center {

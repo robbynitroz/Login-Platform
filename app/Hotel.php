@@ -38,5 +38,13 @@ class Hotel extends Model
         return $this->hasMany('App\Template');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function nas()
+    {
+        return $this->hasMany('App\Nas');
+    }
+
 
 }

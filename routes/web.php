@@ -20,5 +20,10 @@ Route::group(array('domain' => 'login.com'), function () {
 
 Route::redirect('/', 'http://guestcompass.nl/', 307);
 
+Route::get('/up', function (){
+
+ 
+
+});
 
 Route::get('/test', ['name'=>'test', 'uses'=>'Login@getData']);

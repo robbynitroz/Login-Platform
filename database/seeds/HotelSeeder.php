@@ -15,8 +15,10 @@ class HotelSeeder extends Seeder
         //
         Hotel::create(
             [
+                'id' => 1,
                 'name' => 'GuestCompass',
-                'session_timeout' => '1d'
+                'session_timeout' => '1d',
+                'timezone'=>'Europe/Amsterdam'
             ]
         );
     }

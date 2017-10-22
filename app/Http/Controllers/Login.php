@@ -3,38 +3,54 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Template;
-use App\Http\Controllers\NasController;
+use Illuminate\Support\Facades\Cache;
 
 class Login extends Controller
 {
     //
     public function getData(Request $request)
     {
-        //testing a solution
 
-        if($request->clientmac !== null){
+        if ($request->clientmac !== null) {
 
+            RadcheckController::newClient($request->clientmac);
 
-            $nas_result= (new NasController())->getHotel('192.168.253.12');
+            if (!Cache::has('data')) {
 
+                $user_template = (new TemplateController())->getTemplate('192.168.253.5');
 
+                if (empty($user_template)) {
+                    return redirect("http://" . $request->ip() . ":64873/login?username=" . $request->clientmac . "&password=" . $request->clientmac);
+                }
 
-            //$nas_result->templates();
+                return $this->processData($user_template, $request);
 
-            dd($nas_result->id);
+            } else {
+                return redirect('http://192.168.88.1/login?dst=http://login.com');
+            }
+        } else {
+            return view('login.login', ['data' => Cache::get('data'), 'ip_address' => $request->ip()]);
 
-            $data = new Template();
-
-
-
-            return view('login.login', ['data'=>$result, 'ip_address'=>$request->ip()]);
-        }else{
-            return redirect('http://192.168.88.1/login?dst=http://login.com');
         }
 
+    }
 
 
+    public function processData(array $process_data, Request $request)
+    {
+        if (count($process_data) == 1) {
+            Cache::forever('data', $process_data[0]->data);
+            return view('login.login', ['data' => $process_data[0]->data, 'ip_address' => $request->ip()]);
+            //dd($process_data[0]->data);
+        }
+    }
+
+    public function serveLoginTemplate()
+    {
+        //testing a solution
+        //$noonTodayLondonTime= Carbon::now('Europe/London');
+
+        //dd($noonTodayLondonTime);
     }
 
 }

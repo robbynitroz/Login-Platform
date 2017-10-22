@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="ip" content="{{ $ip_address }}">
-    <script id="mainData" type="application/json">{!! $data->data !!}</script>
+    <script id="mainData" type="application/json">{!! $data !!}</script>
     <link rel="manifest" type="text/plain" href="/manifest.json">
 
     <title>Welcome</title>

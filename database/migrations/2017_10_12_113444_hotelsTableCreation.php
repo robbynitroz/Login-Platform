@@ -16,7 +16,8 @@ class HotelsTableCreation extends Migration
         Schema::create('hotels', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 250);
-            $table->string('session_timeout', 50)->default('3d');
+            $table->string('session_timeout', 10)->default('3d');
+            $table->string('timezone', 70);
             $table->softDeletes();
             $table->timestamps();
         });

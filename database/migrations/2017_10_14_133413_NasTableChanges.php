@@ -17,7 +17,13 @@ class NasTableChanges extends Migration
             //
             $table->integer('hotel_id')->unsigned()->change();
             $table->foreign('hotel_id')->references('id')->on('hotels');
+            $table->string('mikrotik_username', 128);
+            $table->string('mikrotik_password', 128);
+            $table->timestamps();
+            $table->softDeletes();
+
         });
+
     }
 
     /**

@@ -26,11 +26,11 @@ class Login extends Controller
                 return $this->processData($user_template, $request);
 
             } else {
-                return redirect('http://192.168.88.1/login?dst=http://login.com');
+                return view('login.login', ['data' => Cache::get('data'), 'ip_address' => $request->ip()]);
+
             }
         } else {
-            return view('login.login', ['data' => Cache::get('data'), 'ip_address' => $request->ip()]);
-
+            return redirect('http://192.168.88.1/login?dst=http://login.com');
         }
 
     }

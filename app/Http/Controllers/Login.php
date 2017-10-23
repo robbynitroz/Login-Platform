@@ -38,7 +38,7 @@ class Login extends Controller
             $hotel_id = (json_decode($this->nas_info)[0])->hotel_id;
             return $this->processData($hotel_id, $request);
         } else {
-            return redirect('http://192.168.88.1/login?dst=http://login.com');
+            return redirect('http://192.168.88.1/login');
         }
 
     }

@@ -22,6 +22,7 @@ class NasController extends Controller
 
     public function getNas(string $ip):string
     {
+
         if(Redis::get("Nas".$ip)===null){
             $nas_profile = Nas::where('nasname', $ip)->get();
             Redis::set('Nas'.$ip, json_encode($nas_profile));

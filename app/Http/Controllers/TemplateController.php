@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Template;
+use Illuminate\Support\Facades\Redis;
 
 
 /**
@@ -14,19 +15,22 @@ class TemplateController extends Controller
     //
 
     /**
-     * @var array
+     * @var
      */
     public $user_templates;
 
     /**
-     * @param string $ip
-     * @return array
+     * @param $hotel_id
+     * @return mixed
      */
-    public function getTemplate(string $ip): array
+    public function getTemplates($hotel_id)
     {
-        $this->user_templates = Template::getTemplate($ip);
-        return $this->user_templates;
+        // Redis::del('templates.'.$hotel_id);
+        if (Redis::get('templates.' . $hotel_id) === null) {
+            $this->user_templates = Template::where('hotel', $hotel_id)->get();
+            Redis::set('templates.' . $hotel_id, json_encode($this->user_templates));
+        }
+        return Redis::get('templates.' . $hotel_id);
     }
-
 
 }

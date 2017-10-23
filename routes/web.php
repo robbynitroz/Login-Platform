@@ -26,4 +26,4 @@ Route::get('/up', function (){
 
 });
 
-Route::get('/test', ['name'=>'test', 'uses'=>'Login@getData']);
+Route::get('/test', ['name'=>'test', 'uses'=>'Login@getData', 'middleware'=>'web']);

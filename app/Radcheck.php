@@ -21,10 +21,12 @@ class Radcheck extends Model
      * @var array
      */
     protected $fillable = [
-        'id',
         'username',
         'attribute',
         'op',
         'value',
     ];
+
+    public $timestamps = false;
+
 }

@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //Listen to query events
-        /*DB::listen(function ($query) {
+       /* DB::listen(function ($query) {
             dump($query->sql);
 
         });*/

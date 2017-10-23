@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Nas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 
 
 /**
@@ -16,8 +17,16 @@ class NasController extends Controller
 
     /**
      * @param Request $request
-     * @return object
+     * @return string
      */
 
+    public function getNas(Request $ip):string
+    {
+        if(Redis::get("Nas".$ip)===null){
+            $nas_profile = Nas::where('nasname', $ip)->get();
+            Redis::set('Nas'.$ip, json_encode($nas_profile));
+        }
+        return Redis::get("Nas".$ip);
+    }
 
 }

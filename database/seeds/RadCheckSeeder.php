@@ -18,5 +18,10 @@ class RadCheckSeeder extends Seeder
         $set_radcheck->router ='yes';
         $set_radcheck->save();
 
+        $set_radcheck2 = Radcheck::find(2);
+        $set_radcheck2->hotel_id =1;
+        $set_radcheck2->router ='yes';
+        $set_radcheck2->save();
+
     }
 }

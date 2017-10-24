@@ -25,7 +25,7 @@ class TemplateController extends Controller
      */
     public function getTemplates($hotel_id)
     {
-         Redis::del('templates.'.$hotel_id);
+         //Redis::del('templates.'.$hotel_id);
         if (Redis::get('templates.' . $hotel_id) === null) {
             $this->user_templates = Template::where('hotel', $hotel_id)->get();
             Redis::set('templates.' . $hotel_id, json_encode($this->user_templates));

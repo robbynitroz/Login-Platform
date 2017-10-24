@@ -1,10 +1,10 @@
 <template>
     <div class="container-fluid">
-        <div class="background">
+        <div class="background-video">
             <video  v-if="backgroundShowOrHideVideo" autoplay loop muted >
                 <source :src="'storage/'+media.src" :type="media.type">
             </video>
-            <img  v-if="backgroundShowOrHidePicture" alt="image" :src="'storage/'+media.src"/>
+            <img v-if="backgroundShowOrHidePicture" alt="image" :src="'storage/'+media.src"/>
         </div>
 
 
@@ -81,7 +81,7 @@
 
 <style scoped>
 
-    .background {
+    .background-video {
         position: fixed;
         top: 50%;
         left: 50%;

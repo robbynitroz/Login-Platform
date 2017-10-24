@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\Radcheck;
 
-class RadCheckSeader extends Seeder
+class RadCheckSeeder extends Seeder
 {
     /**
      * Run the database seeds.

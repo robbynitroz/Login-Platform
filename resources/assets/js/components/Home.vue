@@ -1,11 +1,11 @@
 <template>
     <div class="container-fluid">
-        <div class="background-video">
-            <video  v-if="backgroundShowOrHideVideo" autoplay loop muted >
-                <source :src="'storage/images/'+media.src" :type="media.type">
+
+            <video class="background"  v-if="backgroundShowOrHideVideo" autoplay loop muted >
+                <source :src="'storage/'+media.src" :type="media.type">
             </video>
             <img v-if="backgroundShowOrHidePicture" alt="image" :src="'storage/'+media.src"/>
-        </div>
+
 
 
         <transition name="entry" appear mode="out-in">
@@ -81,7 +81,7 @@
 
 <style scoped>
 
-    .background-video {
+    .background {
         position: fixed;
         top: 50%;
         left: 50%;
@@ -92,7 +92,7 @@
         z-index: -100;
         -webkit-transform: translateX(-50%) translateY(-50%);
         transform: translateX(-50%) translateY(-50%);
-        background-size: cover;
+        background-size: contain;
     }
 
 

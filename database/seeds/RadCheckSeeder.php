@@ -12,7 +12,7 @@ class RadCheckSeeder extends Seeder
      */
     public function run()
     {
-        //
+
         $set_radcheck = Radcheck::find(1);
         $set_radcheck->hotel_id =1;
         $set_radcheck->router ='yes';

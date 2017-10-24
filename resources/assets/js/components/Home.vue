@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="background">
-            <video  v-if="backgroundShowOrHideVideo" autoplay loop muted :poster="media.cover" >
+            <video  v-if="backgroundShowOrHideVideo" autoplay loop muted >
                 <source :src="'storage/'+media.src" :type="media.type">
             </video>
             <img  v-if="backgroundShowOrHidePicture" alt="image" :src="'storage/'+media.src"/>
@@ -47,7 +47,7 @@
             backgroundShowOrHideVideo() {
 
 
-                if (this.windowWidth > 576 || media.type == 'video/mp4') {
+                if (this.windowWidth > 576 || this.media.type == 'video/mp4') {
                     return true
                 } else {
                     return false
@@ -59,7 +59,7 @@
             backgroundShowOrHidePicture() {
 
 
-                if (this.windowWidth > 576 || media.type == 'image/jpeg') {
+                if (this.windowWidth > 576 || this.media.type == 'image/jpeg') {
                     return true
                 } else {
                     return false

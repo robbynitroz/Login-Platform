@@ -28,7 +28,6 @@ class TemplateSeeder extends Seeder
                         'media' => [
                             'src' => 'images/image.jpg',
                             'type' => 'image/jpeg',
-                            'cover' => 'images/conser.jpg',
                         ],
 
 

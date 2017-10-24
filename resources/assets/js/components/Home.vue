@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="background-video">
             <video  v-if="backgroundShowOrHideVideo" autoplay loop muted >
-                <source :src="'storage/'+media.src" :type="media.type">
+                <source :src="'storage/images'+media.src" :type="media.type">
             </video>
             <img v-if="backgroundShowOrHidePicture" alt="image" :src="'storage/'+media.src"/>
         </div>

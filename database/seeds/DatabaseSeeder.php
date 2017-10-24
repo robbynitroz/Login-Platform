@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
          //$this->call(HotelSeeder::class);
          //$this->call(TemplateSeeder::class);
          //$this->call(NasSeeder::class);
+
          $this->call(RadCheckSeeder::class);
     }
 }

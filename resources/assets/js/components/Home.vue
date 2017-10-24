@@ -1,13 +1,9 @@
 <template>
     <div class="container-fluid">
-
             <video class="background"  v-if="backgroundShowOrHideVideo" autoplay loop muted >
                 <source :src="'storage/'+media.src" :type="media.type">
             </video>
-            <img v-if="backgroundShowOrHidePicture" alt="image" :src="'storage/'+media.src"/>
-
-
-
+            <img class="background" v-if="backgroundShowOrHidePicture" alt="image" :src="'storage/'+media.src"/>
         <transition name="entry" appear mode="out-in">
             <component :is="activeComponent"></component>
         </transition>

@@ -47,7 +47,7 @@
             backgroundShowOrHideVideo() {
 
 
-                if (this.windowWidth > 576 || this.media.type == 'video/mp4') {
+                if (this.windowWidth > 576 && this.media.type == 'video/mp4') {
                     return true
                 } else {
                     return false
@@ -59,7 +59,7 @@
             backgroundShowOrHidePicture() {
 
 
-                if (this.windowWidth > 576 || this.media.type == 'image/jpeg') {
+                if (this.windowWidth > 576 && this.media.type == 'image/jpeg') {
                     return true
                 } else {
                     return false

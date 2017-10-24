@@ -3,8 +3,8 @@ const state = JSON.parse((document.head.querySelector('script[id="mainData"]')).
 
 
 const getters = {
-    video: state => {
-        return state.video;
+    media: state => {
+        return state.media;
     },
     activeComponent: state => {
         return state.activeComponent

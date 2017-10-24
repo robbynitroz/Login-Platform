@@ -1,10 +1,10 @@
 <template>
     <div class="container-fluid">
         <div class="background">
-            <video v-if="false" autoplay preload loop muted :poster="video.cover" >
-                <source :src="video.src" :type="video.type">
+            <video  v-if="backgroundShowOrHide" v-else-if="(media.type == 'video/mp4')" autoplay loop muted :poster="media.cover" >
+                <source :src="'storage/'+media.src" :type="media.type">
             </video>
-            <img  v-if="backgroundShowOrHide" alt="image" src="storage/images/image.jpg"/>
+            <img  v-if="backgroundShowOrHide" v-else-if="(media.type == 'image/jpeg')" alt="image" :src="'storage/'+media.src"/>
         </div>
 
 
@@ -22,7 +22,6 @@
     import appLogin from './Login.vue';
     import appPolicy from './Policy.vue';
     import appEmail from './Email.vue';
-
 
 
     export default {
@@ -59,7 +58,7 @@
 
             ...mapGetters([
                 'activeComponent',
-                'video',
+                'media',
             ]),
 
 

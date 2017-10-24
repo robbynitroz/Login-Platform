@@ -8,7 +8,7 @@ class RadcheckController extends Controller
 {
     //
 
-    public static function newClient(string $clientMac)
+    public static function newClient(string $clientMac, int $hotel_id)
     {
 
         $data= array(
@@ -17,13 +17,16 @@ class RadcheckController extends Controller
                     'username' => $clientMac,
                     'attribute' => 'User-Password',
                     'op' => '==',
-                    'value' => $clientMac
+                    'value' => $clientMac,
+                    'hotel_id' => $hotel_id
+
                 ],
                 [
                     'username' => $clientMac,
                     'attribute' => 'Auth-Type',
                     'op' => ':=',
-                    'value' =>'Accept'
+                    'value' =>'Accept',
+                    'hotel_id' => $hotel_id
                 ]
 
         );

@@ -25,10 +25,10 @@ class TemplateSeeder extends Seeder
 
                         'activeComponent' => 'app-login',
                         'defaultComponent' => 'app-login',
-                        'video' => [
-                            'src' => 'storage/images/videoplayback.mp4',
-                            'type' => 'video/mp4',
-                            'cover' => '/storage/images/conser.jpg',
+                        'media' => [
+                            'src' => 'images/image.jpg',
+                            'type' => 'image/jpeg',
+                            'cover' => 'images/conser.jpg',
                         ],
 
 
@@ -77,8 +77,9 @@ class TemplateSeeder extends Seeder
                         ),
 
                     ]
-                )
+                ),
 
+                'type'=>'login'
             ]
         );
     }

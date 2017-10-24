@@ -18,7 +18,8 @@ class HotelSeeder extends Seeder
                 'id' => 1,
                 'name' => 'GuestCompass',
                 'session_timeout' => '1d',
-                'timezone'=>'Europe/Amsterdam'
+                'timezone'=>'Europe/Amsterdam',
+                'main_url'=>'https://www.google.com/'
             ]
         );
     }

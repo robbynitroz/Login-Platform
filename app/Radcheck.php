@@ -25,6 +25,8 @@ class Radcheck extends Model
         'attribute',
         'op',
         'value',
+        'hotel_id',
+        'router',
     ];
 
     public $timestamps = false;

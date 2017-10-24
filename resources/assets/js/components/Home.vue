@@ -1,10 +1,10 @@
 <template>
     <div class="container-fluid">
         <div class="background">
-            <video  v-if="backgroundShowOrHide" v-else-if="(media.type == 'video/mp4')" autoplay loop muted :poster="media.cover" >
+            <video  v-if="backgroundShowOrHideVideo" autoplay loop muted :poster="media.cover" >
                 <source :src="'storage/'+media.src" :type="media.type">
             </video>
-            <img  v-if="backgroundShowOrHide" v-else-if="(media.type == 'image/jpeg')" alt="image" :src="'storage/'+media.src"/>
+            <img  v-if="backgroundShowOrHidePicture" alt="image" :src="'storage/'+media.src"/>
         </div>
 
 
@@ -44,10 +44,10 @@
         computed: {
             // whenever the document is resized, re-set the 'fullHeight' variable
 
-            backgroundShowOrHide() {
+            backgroundShowOrHideVideo() {
 
 
-                if (this.windowWidth > 576) {
+                if (this.windowWidth > 576 || media.type == 'video/mp4') {
                     return true
                 } else {
                     return false
@@ -56,6 +56,17 @@
 
             },
 
+            backgroundShowOrHidePicture() {
+
+
+                if (this.windowWidth > 576 || media.type == 'image/jpeg') {
+                    return true
+                } else {
+                    return false
+                }
+
+
+            },
             ...mapGetters([
                 'activeComponent',
                 'media',

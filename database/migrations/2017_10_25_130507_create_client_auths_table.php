@@ -17,6 +17,7 @@ class CreateClientAuthsTable extends Migration
             $table->increments('id');
             $table->integer('hotel_id')->unsigned()->nullable();
             $table->string('method', 20);
+            $table->string('mac_address', 64);
             $table->foreign('hotel_id')->references('id')->on('hotels');
             $table->timestamps();
         });

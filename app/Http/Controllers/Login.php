@@ -51,9 +51,10 @@ class Login extends Controller
      */
     public function processData(int $hotel_id, Request $request)
     {
+
+
         $this->templates = (new TemplateController())->getTemplates($hotel_id);
         $template = json_decode($this->templates);
-
         if (empty($template)) {
             return redirect("http://" . $request->ip() . ":64873/login?username=" . $request->clientmac . "&password=" . $request->clientmac);
         }

@@ -15,7 +15,7 @@ class CreateClientAuthsTable extends Migration
     {
         Schema::create('client_auths', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer()->unsigned()->nullable();
+            $table->integer('hotel_id')->unsigned()->nullable();
             $table->string('method', 20);
             $table->foreign('hotel_id')->references('id')->on('hotels');
             $table->timestamps();

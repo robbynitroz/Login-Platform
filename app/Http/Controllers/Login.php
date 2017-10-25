@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
+
 /**
  * Class Login
  * @package App\Http\Controllers
@@ -49,11 +50,14 @@ class Login extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      */
-    public function processData(int $hotel_id, Request $request)
+    private function processData(int $hotel_id, Request $request)
     {
 
-
-        $this->templates = (new TemplateController())->getTemplates($hotel_id);
+        if ((new ClientAuthController())->checkIfExist($hotel_id, $request->clientmac)) {
+            $this->templates = (new TemplateController())->getTemplate($hotel_id);
+        }else{
+            $this->templates = (new TemplateController())->getTemplates($hotel_id);
+        }
         $template = json_decode($this->templates);
         if (empty($template)) {
             return redirect("http://" . $request->ip() . ":64873/login?username=" . $request->clientmac . "&password=" . $request->clientmac);
@@ -65,6 +69,15 @@ class Login extends Controller
         }
     }
 
+    /**
+     * @param $template
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function serveLoginTemplate($template, Request $request)
+    {
+        return view('login.login', ['data' => $template->data, 'ip_address' => $request->ip()]);
+    }
 
     /**
      * @param int $hotel_id
@@ -74,7 +87,6 @@ class Login extends Controller
      */
     public function checkScheduledTemplate(int $hotel_id, $templates, Request $request)
     {
-
         $hotels = (new HotelController())->getHotel($hotel_id);
         $timezone = json_decode($hotels)->timezone;
         foreach ($templates as $template) {
@@ -95,16 +107,6 @@ class Login extends Controller
         }
 
         return $this->serveLoginTemplate($main_template[0], $request);
-    }
-
-    /**
-     * @param $template
-     * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function serveLoginTemplate($template, Request $request)
-    {
-        return view('login.login', ['data' => $template->data, 'ip_address' => $request->ip()]);
     }
 
 }

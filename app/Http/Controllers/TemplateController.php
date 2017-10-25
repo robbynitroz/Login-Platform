@@ -38,11 +38,11 @@ class TemplateController extends Controller
      */
     public function getTemplate(int $hotel_id, string $template_type = 'login')
     {
-        if (Redis::get('templates.reserved' . $hotel_id) === null) {
+        if (Redis::get('templates.reserved.' . $hotel_id) === null) {
             $this->user_templates = (new Template())->where('hotel', $hotel_id)->where('activated',
                 'res')->where('type', 'login')->get();
             Redis::set('templates.reserved.' . $hotel_id, json_encode($this->user_templates));
         }
-        return Redis::get('templates.' . $hotel_id);
+        return Redis::get('templates.reserved.' . $hotel_id);
     }
 }

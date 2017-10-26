@@ -26,6 +26,9 @@ class Login extends Controller
     public $templates;
 
 
+    public $client_mac;
+
+
     /**
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
@@ -34,6 +37,7 @@ class Login extends Controller
     {
 
         if ($request->clientmac !== null) {
+            $this->client_mac =$request->clientmac;
             $this->nas_info = (new NasController())->getNas('192.168.253.5');
             $hotel_id = (json_decode($this->nas_info)[0])->hotel_id;
             (new RadcheckController())->checkClient($request->clientmac, $hotel_id);
@@ -88,6 +92,7 @@ class Login extends Controller
 
         return view('login.login', [
             'data' => $template->data,
+            'type' => $template->type,
             'hotel' =>
                 [
                     'id' => $hotel->id,
@@ -96,7 +101,8 @@ class Login extends Controller
                     'facebook_url' => $hotel->facebook_url,
                 ],
             'ip_address' => $request->ip(),
-            'lang' => $lang
+            'lang' => $lang,
+            'mac_address'=>$this->client_mac
         ]);
     }
 

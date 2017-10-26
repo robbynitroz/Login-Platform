@@ -18,15 +18,19 @@ Route::group(array('domain' => 'login.com'), function () {
 });
 
 
+//Auth methods
+Route::prefix('/auth')->group(function () {
+    //By Email
+    Route::post('/email', ['name' => 'test', 'uses' => 'ClientAuthController@getEmailAuth', 'middleware' => 'web']);
+
+});
+
+
 Route::redirect('/', 'http://guestcompass.nl/', 307);
 
 
 Route::get('/test', ['name' => 'test', 'uses' => 'Login@getData', 'middleware' => 'web']);
 
-Route::post('/auth', ['name' => 'test', 'uses' => 'ClientAuthController@getAuth', 'middleware' => 'web']);
 
 
-Route::get('/up', function () {
 
-
-});

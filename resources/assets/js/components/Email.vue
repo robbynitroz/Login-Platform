@@ -27,19 +27,21 @@
 
 
                     <form @submit.prevent="sendToServer" action="#" method="post">
-                    <div class="form-group middle dimensions">
-                        <input v-model="userEmail"  type="email" required class="form-control form-control-lg" id="formGroupExampleInput"
-                               :placeholder="texts[defaultLanguage].emailText">
-                    </div>
+                        <div class="form-group middle dimensions">
+                            <input v-model="userEmail" type="email" required class="form-control form-control-lg"
+                                   id="formGroupExampleInput"
+                                   :placeholder="texts[defaultLanguage].emailText">
+                        </div>
 
 
-                    <button type="submit"
-                            :style="buttonStyleObject"
-                            @mouseenter='updateHoverState(true)'
-                            @mouseleave="updateHoverState(false)"
-                            class="btn btn-outline-info large-button text-center"> {{ texts[defaultLanguage].buttonText
-                        }}
-                    </button>
+                        <button type="submit"
+                                :style="buttonStyleObject"
+                                @mouseenter='updateHoverState(true)'
+                                @mouseleave="updateHoverState(false)"
+                                class="btn btn-outline-info large-button text-center">
+                            {{ texts[defaultLanguage].buttonText
+                            }}
+                        </button>
 
                     </form>
                 </div>
@@ -71,8 +73,8 @@
         name: 'appEmail',
         data() {
             return {
-                userEmail:'',
-                loader:false
+                userEmail: '',
+                loader: false
             }
         },
 
@@ -99,7 +101,7 @@
                 }
             },
 
-            loadingBar(){
+            loadingBar() {
                 return this.loader;
             },
 
@@ -163,25 +165,30 @@
                 this.$store.dispatch('updateActiveComponent', 'app-policy');
             },
 
-            changeLoaderStatus(){
+            changeLoaderStatus() {
 
                 this.loader = !this.loader;
             },
 
-            sendToServer(){
+            sendToServer() {
 
                 let config = {
                     onUploadProgress: progressEvent => {
-                        //let percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
-                        //console.log(percentCompleted);
                         this.changeLoaderStatus();
-                        // do whatever you like with the percentage complete
-                        // maybe dispatch an action that will update a progress bar or something
                     }
-                }
-                axios.post('/auth',
+                };
+
+                let hotelID = document.head.querySelector('meta[name="hotel"]');
+                let hotelURL = document.head.querySelector('meta[name="hotel-url"]');
+                let clientMac = document.head.querySelector('meta[name="mac-address"]');
+                let loginMethod = document.head.querySelector('meta[name="login-method"]');
+                axios.post('/auth/email',
                     {
-                            email:this.userEmail,
+                        email: this.userEmail,
+                        hotel_url:hotelURL.content,
+                        hotel_id:hotelID.content,
+                        mac_address:clientMac.content,
+                        login_type:loginMethod.content
                     },
                     config)
                     .then(response => {
@@ -190,6 +197,7 @@
                     })
                     .catch(e => {
                         console.log(e)
+                        this.changeLoaderStatus()
                     })
             }
 
@@ -297,7 +305,6 @@
         }
     }
 
-
     .loader {
         border: 16px solid #f3f3f3; /* Light grey */
         border-top: 16px solid #3498db; /* Blue */
@@ -310,8 +317,12 @@
     }
 
     @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
     }
 
 

@@ -34,7 +34,8 @@
                         </div>
 
 
-                        <button type="submit"
+                        <button v-show="!loadingBar"
+                                type="submit"
                                 :style="buttonStyleObject"
                                 @mouseenter='updateHoverState(true)'
                                 @mouseleave="updateHoverState(false)"
@@ -170,6 +171,7 @@
                 this.loader = !this.loader;
             },
 
+
             sendToServer() {
 
                 let config = {
@@ -192,7 +194,7 @@
                     },
                     config)
                     .then(response => {
-                        console.log(response.data)
+                        document.location.href =response.data;
                         this.changeLoaderStatus()
                     })
                     .catch(e => {

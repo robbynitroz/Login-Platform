@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\ClientAuth;
 use Illuminate\Http\Request;
-use App\Http\Controllers\EmailController;
 
 /**
  * Class ClientAuthController, meant for hotel clients authorization for using Mikrotik WiFi
@@ -21,36 +20,42 @@ class ClientAuthController extends Controller
      */
     public function checkIfExist(int $hotel_id, string $clientMac)
     {
-        $clientAuth= (new ClientAuth())->where('hotel_id', $hotel_id)->where('mac_address', $clientMac);
+        $clientAuth = (new ClientAuth())->where('hotel_id', $hotel_id)->where('mac_address', $clientMac);
         return ($clientAuth->get()->isNotEmpty());
     }
 
 
     /**
+     * Check request
+     *
      * @param Request $request
+     * @return string
      */
     public function getEmailAuth(Request $request)
     {
 
-        if($request->has('email')){
+        if ($request->has('email')) {
             //Enail auth request here
             $request->validate([
                 'email' => 'required|email|max:250|min:6',
             ]);
 
             $this->addNewClient($request->hotel_id, $request->mac_address, $request->login_type);
-            (new EmailController())->storeEmail($request->email, $request->hotel_id, $request->login_type);
+            (new EmailController())->storeEmail($request->email, (int)$request->hotel_id, $request->login_type);
 
-            echo 'Yes';
+            return "http://" . $request->ip() . ":64873/login?username=" . $request->mac_address . "&password=" . $request->mac_address . "&dst=" . $request->hotel_url;
 
-        }else{
-            echo json_encode(['error'=>'Something went wrong']);
+
+        } else {
+            return json_encode(['error' => 'Something went wrong']);
         }
 
     }
 
 
     /**
+     * Add new client
+     *
      * @param $hotel_id
      * @param $mac_address
      * @param $login_type
@@ -58,13 +63,13 @@ class ClientAuthController extends Controller
     private function addNewClient($hotel_id, $mac_address, $login_type)
     {
 
-        $clientAuth= (new ClientAuth())
+        $clientAuth = (new ClientAuth())
             ->where('hotel_id', $hotel_id)
             ->where('method', $login_type)
             ->where('mac_address', $mac_address);
 
-        if($clientAuth->get()->isEmpty()){
-            $newclientAuth= new ClientAuth();
+        if ($clientAuth->get()->isEmpty()) {
+            $newclientAuth = new ClientAuth();
             $newclientAuth->hotel_id = $hotel_id;
             $newclientAuth->method = $login_type;
             $newclientAuth->mac_address = $mac_address;

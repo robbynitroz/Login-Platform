@@ -55,7 +55,7 @@ class Login extends Controller
 
         if ((new ClientAuthController())->checkIfExist($hotel_id, $request->clientmac)) {
             $this->templates = (new TemplateController())->getTemplate($hotel_id);
-        }else{
+        } else {
             $this->templates = (new TemplateController())->getTemplates($hotel_id);
         }
         $template = json_decode($this->templates);
@@ -63,7 +63,9 @@ class Login extends Controller
             return redirect("http://" . $request->ip() . ":64873/login?username=" . $request->clientmac . "&password=" . $request->clientmac);
         }
         if (count($template) === 1) {
-            return $this->serveLoginTemplate($template[0], $request);
+            $hotel = json_decode((new HotelController())->getHotel($hotel_id));
+
+            return $this->serveLoginTemplate($template[0], $hotel, $request);
         } else {
             return $this->checkScheduledTemplate($hotel_id, $template, $request);
         }
@@ -74,9 +76,28 @@ class Login extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function serveLoginTemplate($template, Request $request)
+    public function serveLoginTemplate($template, $hotel, Request $request)
     {
-        return view('login.login', ['data' => $template->data, 'ip_address' => $request->ip()]);
+
+        $lang = $request->server('HTTP_ACCEPT_LANGUAGE');
+        $lang = substr($lang, 0, 2);
+
+        if (!isset(json_decode($template->data)->texts->{$lang})) {
+            $lang = 'en';
+        };
+
+        return view('login.login', [
+            'data' => $template->data,
+            'hotel' =>
+                [
+                    'id' => $hotel->id,
+                    'name' => $hotel->name,
+                    'url' => $hotel->main_url,
+                    'facebook_url' => $hotel->facebook_url,
+                ],
+            'ip_address' => $request->ip(),
+            'lang' => $lang
+        ]);
     }
 
     /**
@@ -87,8 +108,8 @@ class Login extends Controller
      */
     public function checkScheduledTemplate(int $hotel_id, $templates, Request $request)
     {
-        $hotels = (new HotelController())->getHotel($hotel_id);
-        $timezone = json_decode($hotels)->timezone;
+        $hotels = json_decode((new HotelController())->getHotel($hotel_id));
+        $timezone = $hotels->timezone;
         foreach ($templates as $template) {
             if ($template->scheduled == 'yes') {
                 $hotel_time = (Carbon::now($timezone))->timestamp;
@@ -103,10 +124,10 @@ class Login extends Controller
         }
 
         if (isset($scheduled_template)) {
-            return $this->serveLoginTemplate($scheduled_template[0], $request);
+            return $this->serveLoginTemplate($scheduled_template[0], $hotels, $request);
         }
 
-        return $this->serveLoginTemplate($main_template[0], $request);
+        return $this->serveLoginTemplate($main_template[0], $hotels, $request);
     }
 
 }

@@ -1,16 +1,16 @@
 <!doctype html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ $lang }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="sign up for free WiFi">
+    <meta name="author" content="GuestCompass Login Platform">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="ip" content="{{ $ip_address }}">
     <script id="mainData" type="application/json">{!! $data !!}</script>
     <link rel="manifest" type="text/plain" href="/manifest.json">
-    <title>Welcome</title>
+    <title>{{ $hotel['name'] }}</title>
 
 </head>
 <body>

@@ -12,18 +12,21 @@
 |
 */
 
-
+//Login.com block
 Route::group(array('domain' => 'login.com'), function () {
-    Route::get('/', ['name'=>'Login', 'uses'=>'Login@getData']);
+    Route::get('/', ['name' => 'Login', 'uses' => 'Login@getData']);
 });
 
 
 Route::redirect('/', 'http://guestcompass.nl/', 307);
 
-Route::get('/up', function (){
 
- 
+Route::get('/test', ['name' => 'test', 'uses' => 'Login@getData', 'middleware' => 'web']);
+
+Route::post('/auth', ['name' => 'test', 'uses' => 'ClientAuthController@getAuth', 'middleware' => 'web']);
+
+
+Route::get('/up', function () {
+
 
 });
-
-Route::get('/test', ['name'=>'test', 'uses'=>'Login@getData', 'middleware'=>'web']);

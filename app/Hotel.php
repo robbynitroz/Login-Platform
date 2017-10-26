@@ -24,7 +24,7 @@ class Hotel extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'session_timeout'];
+    protected $fillable = ['name', 'session_timeout', 'timezone', 'main_url', 'facebook_url'];
     /**
      * @var array
      */

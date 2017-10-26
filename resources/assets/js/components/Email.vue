@@ -22,11 +22,13 @@
                     {{ texts[defaultLanguage].greetingText }} </h2>
 
                 <!--Here-->
+                <div v-if="loadingBar" class="loader"></div>
                 <div class="col-xs-12 text-center button align-items-center justify-content-center">
 
 
+                    <form @submit.prevent="sendToServer" action="#" method="post">
                     <div class="form-group middle dimensions">
-                        <input type="email" required class="form-control form-control-lg" id="formGroupExampleInput"
+                        <input v-model="userEmail"  type="email" required class="form-control form-control-lg" id="formGroupExampleInput"
                                :placeholder="texts[defaultLanguage].emailText">
                     </div>
 
@@ -35,12 +37,11 @@
                             :style="buttonStyleObject"
                             @mouseenter='updateHoverState(true)'
                             @mouseleave="updateHoverState(false)"
-                            @click='sendEmailToServer'
                             class="btn btn-outline-info large-button text-center"> {{ texts[defaultLanguage].buttonText
-                        }}   <i
-                                :style="{color:buttonIcon.color}" :class="['fa',buttonIcon.class]"
-                                aria-hidden="true"></i>
+                        }}
                     </button>
+
+                    </form>
                 </div>
                 <!--Here-->
 
@@ -69,7 +70,10 @@
 
         name: 'appEmail',
         data() {
-            return {}
+            return {
+                userEmail:'',
+                loader:false
+            }
         },
 
         filters: {
@@ -93,6 +97,10 @@
                 } else {
                     return 'Good evening!'
                 }
+            },
+
+            loadingBar(){
+                return this.loader;
             },
 
             ...mapGetters([
@@ -153,6 +161,36 @@
 
             changeToPolicy() {
                 this.$store.dispatch('updateActiveComponent', 'app-policy');
+            },
+
+            changeLoaderStatus(){
+
+                this.loader = !this.loader;
+            },
+
+            sendToServer(){
+
+                let config = {
+                    onUploadProgress: progressEvent => {
+                        //let percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
+                        //console.log(percentCompleted);
+                        this.changeLoaderStatus();
+                        // do whatever you like with the percentage complete
+                        // maybe dispatch an action that will update a progress bar or something
+                    }
+                }
+                axios.post('/auth',
+                    {
+                            email:this.userEmail,
+                    },
+                    config)
+                    .then(response => {
+                        console.log(response.data)
+                        this.changeLoaderStatus()
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
             }
 
 
@@ -257,6 +295,23 @@
         .login {
             border-radius: 5px;
         }
+    }
+
+
+    .loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+        animation: spin 0.2s linear infinite;
+        position: absolute;
+        left: 38%;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
 
 

@@ -18,6 +18,8 @@ class TemplateController extends Controller
     public $user_templates;
 
     /**
+     * Get required template from DB or Redis, if template exist in DB cache in Redis
+     *
      * @param int $hotel_id
      * @return mixed
      */
@@ -32,6 +34,8 @@ class TemplateController extends Controller
     }
 
     /**
+     * Get specific template, usually used for users already authorized to use WiFi and shown after session timeout
+     *
      * @param int $hotel_id
      * @param string $template_type
      * @return mixed

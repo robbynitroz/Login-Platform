@@ -37,8 +37,8 @@ class Login extends Controller
     {
 
         if ($request->clientmac !== null) {
-            $this->client_mac =$request->clientmac;
-            $this->nas_info = (new NasController())->getNas('192.168.253.5');
+            $this->client_mac = $request->clientmac;
+            $this->nas_info = (new NasController())->getNas($request->ip());
             $hotel_id = (json_decode($this->nas_info)[0])->hotel_id;
             (new RadcheckController())->checkClient($request->clientmac, $hotel_id);
             return $this->processData($hotel_id, $request);
@@ -64,7 +64,8 @@ class Login extends Controller
         }
         $template = json_decode($this->templates);
         if (empty($template)) {
-            return redirect("http://" . $request->ip() . ":64873/login?username=" . $request->clientmac . "&password=" . $request->clientmac);
+            $hotel = json_decode((new HotelController())->getHotel($hotel_id));
+            return redirect("http://" . $request->ip() . ":64873/login?username=" . $request->clientmac . "&password=" . $request->clientmac . "&dst=" . $hotel->main_url);
         }
         if (count($template) === 1) {
             $hotel = json_decode((new HotelController())->getHotel($hotel_id));
@@ -102,7 +103,7 @@ class Login extends Controller
                 ],
             'ip_address' => $request->ip(),
             'lang' => $lang,
-            'mac_address'=>$this->client_mac
+            'mac_address' => $this->client_mac
         ]);
     }
 

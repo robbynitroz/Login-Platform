@@ -22,12 +22,14 @@
                     {{ texts[defaultLanguage].greetingText }} </h2>
 
                 <!--Here-->
+                <div v-if="loadingBar" class="loader"></div>
                 <div class="col-xs-12 text-center button align-items-center justify-content-center">
-                    <button type="button"
+                    <button @click="sendToServer"
+                            v-show="!loadingBar"
+                            type="button"
                             :style="buttonStyleObject"
                             @mouseenter='updateHoverState(true)'
                             @mouseleave="updateHoverState(false)"
-                            @click='goToMikrotikAuth'
                             class="btn btn-outline-info large-button text-center"> {{ texts[defaultLanguage].buttonText }}
                     </button>
                 </div>
@@ -60,7 +62,7 @@
         name: 'appLogin',
         data() {
             return {
-
+                loader: false
             }
         },
 
@@ -85,6 +87,10 @@
                 } else {
                     return this.texts[this.defaultLanguage].sayTimeEvening;
                 }
+            },
+
+            loadingBar() {
+                return this.loader;
             },
 
             ...mapGetters([
@@ -147,7 +153,40 @@
 
             changeToPolicy(){
                 this.$store.dispatch('updateActiveComponent', 'app-policy');
+            },
+
+
+            sendToServer() {
+
+                let config = {
+                    onUploadProgress: progressEvent => {
+                        this.changeLoaderStatus();
+                    }
+                };
+
+                let hotelID = document.head.querySelector('meta[name="hotel"]');
+                let hotelURL = document.head.querySelector('meta[name="hotel-url"]');
+                let clientMac = document.head.querySelector('meta[name="mac-address"]');
+                let loginMethod = document.head.querySelector('meta[name="login-method"]');
+                axios.post('/auth/login',
+                    {
+                        hotel_url:hotelURL.content,
+                        hotel_id:hotelID.content,
+                        mac_address:clientMac.content,
+                        login_type:loginMethod.content
+                    },
+                    config)
+                    .then(response => {
+                        document.location.href =response.data;
+                        this.changeLoaderStatus()
+                    })
+                    .catch(e => {
+                        console.log(e)
+                        this.changeLoaderStatus()
+                    })
             }
+
+
 
 
         },
@@ -221,5 +260,24 @@
         }
     }
 
+    .loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+        animation: spin 0.2s linear infinite;
+        position: absolute;
+        left: 38%;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
 
 </style>

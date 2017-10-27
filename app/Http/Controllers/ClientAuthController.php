@@ -52,7 +52,6 @@ class ClientAuthController extends Controller
 
     }
 
-
     /**
      * Add new client
      *
@@ -75,6 +74,22 @@ class ClientAuthController extends Controller
             $newclientAuth->mac_address = $mac_address;
             $newclientAuth->save();
         };
+    }
+
+    /**
+     * @param Request $request
+     * @return string
+     */
+    public function getLoginAuth(Request $request)
+    {
+        if ($request->has('hotel_id')) {
+            $this->addNewClient($request->hotel_id, $request->mac_address, $request->login_type);
+            return "http://" . $request->ip() . ":64873/login?username=" . $request->mac_address . "&password=" . $request->mac_address . "&dst=" . $request->hotel_url;
+
+
+        } else {
+            return json_encode(['error' => 'Something went wrong']);
+        }
     }
 
 }

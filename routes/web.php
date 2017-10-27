@@ -21,7 +21,8 @@ Route::group(array('domain' => 'login.com'), function () {
 //Auth methods
 Route::prefix('/auth')->group(function () {
     //By Email
-    Route::post('/email', ['name' => 'test', 'uses' => 'ClientAuthController@getEmailAuth', 'middleware' => 'web']);
+    Route::post('/email', ['name' => 'email_auth', 'uses' => 'ClientAuthController@getEmailAuth', 'middleware' => 'web']);
+    Route::post('/login', ['name' => 'login_auth', 'uses' => 'ClientAuthController@getLoginAuth', 'middleware' => 'web']);
 
 });
 

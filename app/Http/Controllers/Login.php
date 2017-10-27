@@ -39,6 +39,9 @@ class Login extends Controller
         if ($request->clientmac !== null) {
             $this->client_mac = $request->clientmac;
             $this->nas_info = (new NasController())->getNas($request->ip());
+            if(empty(json_decode($this->nas_info))){
+                return redirect('http://guestcompass.nl/');
+            }
             $hotel_id = (json_decode($this->nas_info)[0])->hotel_id;
             (new RadcheckController())->checkClient($request->clientmac, $hotel_id);
             return $this->processData($hotel_id, $request);

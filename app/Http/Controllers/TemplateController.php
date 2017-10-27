@@ -42,7 +42,7 @@ class TemplateController extends Controller
      */
     public function getTemplate(int $hotel_id, string $template_type = 'login')
     {
-        Redis::del("Nas".$hotel_id);
+        Redis::del("templates.reserved.".$hotel_id);
 
         if (Redis::get('templates.reserved.' . $hotel_id) === null) {
             $this->user_templates = (new Template())->where('hotel', $hotel_id)->where('type',

@@ -25,7 +25,7 @@ class HotelController extends Controller
      */
     public function getHotel(int $hotelID)
     {
-        Redis::del('hotel.' . $hotelID);
+        //Redis::del('hotel.' . $hotelID);
         if (Redis::get('hotel.' . $hotelID) === null) {
             $this->single_hotel = Hotel::find($hotelID);
             Redis::set('hotel.'.$hotelID, json_encode($this->single_hotel));

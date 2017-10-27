@@ -46,7 +46,7 @@ class TemplateController extends Controller
 
         if (Redis::get('templates.reserved.' . $hotel_id) === null) {
             $this->user_templates = (new Template())->where('hotel', $hotel_id)->where('type',
-                'reserved')->where('type', 'login')->get();
+                'reserved')->get();
             Redis::set('templates.reserved.' . $hotel_id, json_encode($this->user_templates));
         }
         return Redis::get('templates.reserved.' . $hotel_id);

@@ -28,7 +28,7 @@
 
                     <form @submit.prevent="sendToServer" action="#" method="post">
                         <div class="form-group middle dimensions">
-                            <input v-model="userEmail" type="email" required class="form-control form-control-lg"
+                            <input v-model="userEmail" type="email" class="form-control form-control-lg"
                                    id="formGroupExampleInput"
                                    :placeholder="texts[defaultLanguage].emailText">
                         </div>

@@ -54,7 +54,6 @@
     import {mapActions} from 'vuex';
     import {languageDetection} from '../mixins/languageDetection';
     import {windowSize} from '../mixins/windowSize';
-    import {auth} from '../mixins/auth';
 
 
     export default {
@@ -193,7 +192,6 @@
 
         mixins: [
             windowSize,
-            auth,
             languageDetection
         ],
 

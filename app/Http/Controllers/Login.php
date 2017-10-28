@@ -16,20 +16,25 @@ class Login extends Controller
 
 
     /**
-     * @var
+     * @var object
      */
     public $nas_info;
 
     /**
-     * @var
+     * @var object
      */
     public $templates;
 
 
+    /**
+     * @var string
+     */
     public $client_mac;
 
 
     /**
+     * Get the request see if MAC address received, if yes check the IP address
+     *
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      */
@@ -38,7 +43,7 @@ class Login extends Controller
 
         if ($request->clientmac !== null) {
             $this->client_mac = $request->clientmac;
-            $this->nas_info = (new NasController())->getNas($request->ip());
+            $this->nas_info = (new NasController())->getNas('192.168.253.5');
             if(empty(json_decode($this->nas_info))){
                 return redirect('http://guestcompass.nl/');
             }
@@ -53,6 +58,8 @@ class Login extends Controller
 
 
     /**
+     * Get template
+     *
      * @param int $hotel_id
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
@@ -80,6 +87,8 @@ class Login extends Controller
     }
 
     /**
+     * Return template view to user
+     *
      * @param $template
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -111,6 +120,8 @@ class Login extends Controller
     }
 
     /**
+     * Check for schedule template, return template
+     *
      * @param int $hotel_id
      * @param $templates
      * @param Request $request

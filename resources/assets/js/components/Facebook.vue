@@ -1,7 +1,7 @@
 <template>
 
     <div class="vertical-center" :style="background(false)">
-
+        <div id="fb-root"></div>
         <div class="container justify-content-center  row">
 
             <div :style="background(true)" class="login col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
@@ -21,12 +21,14 @@
                     :style="{ color:greeting.color, fontSize:greeting.size, wordWrap:'break-word'}">
                     {{ texts[defaultLanguage].greetingText }} </h2>
 
+
+
                 <!--Here-->
                 <div v-if="loadingBar" class="loader"></div>
                 <div class="col-xs-12 text-center button align-items-center justify-content-center">
 
 
-                    <form @submit.prevent="sendToServer" action="#" method="post">
+                    <form v-if="showEmailMethod" @submit.prevent="sendToServer" action="#" method="post">
                         <div class="form-group middle dimensions">
                             <input v-model="userEmail" type="email" class="form-control form-control-lg"
                                    id="formGroupExampleInput"
@@ -44,7 +46,26 @@
                             }}
                         </button>
 
+
+
+
                     </form>
+
+
+                    <button v-if="!showEmailMethod"
+                            @click="FBlogin"
+                            class="btn btn-primary btn-lg soc-buttons">
+                        {{ showFBButtonText }}
+                    </button>
+
+
+                    <button v-if="!showEmailMethod"
+                            @click="showEmail"
+                            class="btn btn-primary btn-lg soc-buttons">
+                        {{ showEmailButtonText }}
+                    </button>
+
+
                 </div>
                 <!--Here-->
 
@@ -66,16 +87,19 @@
     import {mapActions} from 'vuex';
     import {languageDetection} from '../mixins/languageDetection';
     import {windowSize} from '../mixins/windowSize';
-
+    import {fb} from '../mixins/fb';
 
 
     export default {
 
-        name: 'appEmail',
+        name: 'appFacebook',
         data() {
             return {
                 userEmail: '',
-                loader: false
+                loader: false,
+                showEmailMethod:false,
+                showEmailButtonText:'Go online by email',
+                showFBButtonText:'Go online by Facebook'
             }
         },
 
@@ -184,7 +208,7 @@
                 let hotelURL = document.head.querySelector('meta[name="hotel-url"]');
                 let clientMac = document.head.querySelector('meta[name="mac-address"]');
                 let loginMethod = document.head.querySelector('meta[name="login-method"]');
-                axios.post('/auth/email',
+                axios.post('/auth/facebook',
                     {
                         email: this.userEmail,
                         hotel_url:hotelURL.content,
@@ -201,14 +225,56 @@
                         console.log(e)
                         this.changeLoaderStatus()
                     })
+            },
+
+
+
+            showEmail(){
+
+                this.showEmailMethod = true;
+            },
+
+
+
+            FBlogin()
+            {
+
+
+                window.FB.getLoginStatus(function(response) {
+                    if (response.status === 'connected') {
+                        // the user is logged in and has authenticated your
+                        // app, and response.authResponse supplies
+                        // the user's ID, a valid access token, a signed
+                        // request, and the time the access token
+                        // and signed request each expire
+                        console.log(response.status);
+
+                    }else {
+
+                        window.FB.login(function(response) {
+                            if (response.authResponse) {
+                                console.log('Welcome!  Fetching your information.... ');
+                                FB.api('/me', function(response) {
+                                    console.log('Good to see you, ' + response.name + '.');
+                                });
+                            } else {
+                                console.log('User cancelled login or did not fully authorize.');
+                            }
+                        });
+                    }
+                });
+
+               /* */
             }
+
 
 
         },
 
         mixins: [
             windowSize,
-            languageDetection
+            languageDetection,
+            fb
         ],
 
 
@@ -259,8 +325,11 @@
         text-align: center;
     }
 
-    .fa {
-        padding-left: 5%;
+
+    .soc-buttons{
+        margin-bottom: 5%;
+        margin-top: 5%;
+        width: 60%;
     }
 
     @media screen and (max-width: 576px) {

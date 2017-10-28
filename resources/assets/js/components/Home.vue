@@ -18,6 +18,7 @@
     import appLogin from './Login.vue';
     import appPolicy from './Policy.vue';
     import appEmail from './Email.vue';
+    import appFacebook from './Facebook.vue';
 
 
     export default {
@@ -31,7 +32,8 @@
         components: {
             appLogin,
             appPolicy,
-            appEmail
+            appEmail,
+            appFacebook
         },
 
         mixins: [windowSize],

@@ -17,7 +17,7 @@ class CreateEmailsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('hotel_id')->unsigned();
             $table->string('type', 20);
-            $table->string('email', 250)->unique();
+            $table->string('email', 250);
             $table->timestamps();
             $table->foreign('hotel_id')->references('id')->on('hotels');
         });

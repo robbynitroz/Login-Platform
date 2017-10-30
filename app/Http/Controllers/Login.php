@@ -43,7 +43,7 @@ class Login extends Controller
 
         if ($request->clientmac !== null) {
             $this->client_mac = $request->clientmac;
-            $this->nas_info = (new NasController())->getNas('192.168.253.5');
+            $this->nas_info = (new NasController())->getNas($request->ip());
             if(empty(json_decode($this->nas_info))){
                 return redirect('http://guestcompass.nl/');
             }

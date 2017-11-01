@@ -15,14 +15,34 @@
 <script>
     import {mapGetters} from 'vuex';
     import {windowSize} from '../mixins/windowSize';
-    import appLogin from './Login.vue';
-    import appPolicy from './Policy.vue';
-    import appEmail from './Email.vue';
-    import appFacebook from './Facebook.vue';
+
+    const appLogin = resolve => {
+        require.ensure(['./Login.vue'], () => {
+            resolve(require('./Login.vue'));
+        });
+    };
+
+    const appPolicy = resolve => {
+        require.ensure(['./Policy.vue'], () => {
+            resolve(require('./Policy.vue'));
+        });
+    };
+
+    const appEmail = resolve => {
+        require.ensure(['./Email.vue'], () => {
+            resolve(require('./Email.vue'));
+        });
+    };
+
+    const appFacebook = resolve => {
+        require.ensure(['./Facebook.vue'], () => {
+            resolve(require('./Facebook.vue'));
+        });
+    };
 
 
     export default {
-        name: 'app',
+        name: 'home',
         data() {
             return {
 

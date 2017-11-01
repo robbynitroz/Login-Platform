@@ -29,6 +29,14 @@ const home = resolve => {
     });
 };
 
+const dashboard = resolve => {
+    require.ensure(['./components/admin/Dashboard.vue'], () => {
+        resolve(require('./components/admin/Dashboard.vue'));
+    });
+};
+
+
+
 
 new Vue({
     el: '#app',
@@ -36,5 +44,6 @@ new Vue({
     router,
     components: {
         loginHome: home,
+        dashboard,
     }
 });

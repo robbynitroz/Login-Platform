@@ -11,15 +11,22 @@
 |
 */
 
-//Login.com block
-Route::group(array('domain' => 'login.com'), function () {
-    Route::get('/', ['name' => 'Login', 'uses' => 'Login@getData']);
-});
+
+//Main URN
+Route::get('/', function (){
+
+    echo "Under construction";
+
+})->name('base_URL');
+
+//Clients | Mikrotik Users auth page
+Route::get('/clients', ['name' => 'Login', 'uses' => 'Login@getData', 'middleware' => 'web']);
 
 
 
 
-//Mikrotik Auth methods
+
+//Mikrotik Auth URNs
 Route::prefix('/auth')->group(function () {
     //By Email
     Route::post('/email',
@@ -32,17 +39,12 @@ Route::prefix('/auth')->group(function () {
 });
 
 
-Route::redirect('/', 'http://guestcompass.nl/', 307);
+//Route::redirect('/', 'http://guestcompass.nl/', 307);
 
 
-Route::get('/test', ['name' => 'test', 'uses' => 'Login@getData', 'middleware' => 'web']);
-
-
-
-
-
-
-
+//Auth URNs
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+

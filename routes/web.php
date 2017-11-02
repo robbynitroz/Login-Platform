@@ -26,6 +26,7 @@ Route::get('/clients', ['name' => 'Login', 'uses' => 'Login@getData', 'middlewar
 
 
 
+
 //Mikrotik Auth URNs
 Route::prefix('/auth')->group(function () {
     //By Email

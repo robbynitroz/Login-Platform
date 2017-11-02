@@ -41,14 +41,14 @@ class Login extends Controller
     public function getData(Request $request)
     {
 
-        if ($request->clientmac !== null) {
-            $this->client_mac = $request->clientmac;
+        if ($request->has('clientmac')) {
+            $this->client_mac = $request->query('clientmac');
             $this->nas_info = (new NasController())->getNas(env('TEST_IP', $request->ip()));
             if(empty(json_decode($this->nas_info))){
                 return redirect()->route('base_URL');
             }
             $hotel_id = (json_decode($this->nas_info)[0])->hotel_id;
-            (new RadcheckController())->checkClient($request->clientmac, $hotel_id);
+            (new RadcheckController())->checkClient($this->client_mac, $hotel_id);
             return $this->processData($hotel_id, $request);
         } else {
             return redirect('http://192.168.88.1/login');
@@ -67,7 +67,7 @@ class Login extends Controller
     private function processData(int $hotel_id, Request $request)
     {
 
-        if ((new ClientAuthController())->checkIfExist($hotel_id, $request->clientmac)) {
+        if ((new ClientAuthController())->checkIfExist($hotel_id, $this->client_mac)) {
             $this->templates = (new TemplateController())->getTemplate($hotel_id);
         } else {
             $this->templates = (new TemplateController())->getTemplates($hotel_id);
@@ -75,7 +75,7 @@ class Login extends Controller
         $template = json_decode($this->templates);
         if (empty($template)) {
             $hotel = json_decode((new HotelController())->getHotel($hotel_id));
-            return redirect("http://" . $request->ip() . ":64873/login?username=" . $request->clientmac . "&password=" . $request->clientmac . "&dst=" . $hotel->main_url);
+            return redirect("http://" . $request->ip() . ":64873/login?username=" . $this->client_mac . "&password=" . $this->client_mac . "&dst=" . $hotel->main_url);
         }
         if (count($template) === 1) {
             $hotel = json_decode((new HotelController())->getHotel($hotel_id));

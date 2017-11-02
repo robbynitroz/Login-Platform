@@ -47,8 +47,6 @@ class Login extends Controller
             $this->client_mac = $request->query('clientmac');
             $this->nas_info = (new NasController())->getNas(env('TEST_IP', $request->ip()));
             if(empty(json_decode($this->nas_info))){
-
-                dd(json_decode($this->nas_info));
                 return redirect()->route('base_URL');
             }
             $hotel_id = (json_decode($this->nas_info)[0])->hotel_id;

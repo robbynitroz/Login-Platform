@@ -15,7 +15,7 @@
 //Main URN
 Route::get('/', function (){
 
-    echo "Under construction";
+    echo $_SERVER['REMOTE_ADDR'];
 
 })->name('base_URL');
 

@@ -2,7 +2,7 @@
 
     <div class="vertical-center" :style="background(false)">
 
-        <div class="container justify-content-center  row">
+        <div class="container justify-content-center row">
 
             <div :style="background(true)" class="login col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
 

@@ -117,7 +117,8 @@ class Login extends Controller
                 ],
             'ip_address' => $request->ip(),
             'lang' => $lang,
-            'mac_address' => $this->client_mac
+            'mac_address' => $this->client_mac,
+            'theme_color'=>str_replace('background:', '', ((json_decode($template->data))->backgroundColor))
         ]);
     }
 

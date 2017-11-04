@@ -14,6 +14,8 @@ const login = resolve => {
 
 new Vue({
     el: '#app',
-
+    components:{
+        login,
+    }
 });
 

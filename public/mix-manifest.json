@@ -1,4 +1,5 @@
 {
     "/js/clients/clients-login.js": "/js/clients/clients-login.js",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/js/login/platform-login.js": "/js/login/platform-login.js"
 }

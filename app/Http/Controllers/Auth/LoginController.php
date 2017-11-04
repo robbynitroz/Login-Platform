@@ -45,6 +45,6 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        return view('login.platform_login');
+        return view('auth.login');
     }
 }

@@ -1,6 +1,13 @@
-const state = JSON.parse((document.head.querySelector('script[id="mainData"]')).innerHTML.replace(/^\s+|\s+$/g, ''));
+import {data} from './loginState'
+const state = data
 
+//JSON.parse((document.head.querySelector('script[id="mainData"]')).innerHTML.replace(/^\s+|\s+$/g, ''));
+
+
+
+//import state from './home'
 /*
+
     {
 
     texts: {

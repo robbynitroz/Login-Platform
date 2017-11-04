@@ -52,8 +52,8 @@
 <script>
     import {mapGetters} from 'vuex';
     import {mapActions} from 'vuex';
-    import {languageDetection} from '../mixins/languageDetection';
-    import {windowSize} from '../mixins/windowSize';
+    import {languageDetection} from '../../mixins/languageDetection';
+    import {windowSize} from '../../mixins/windowSize';
 
 
     export default {

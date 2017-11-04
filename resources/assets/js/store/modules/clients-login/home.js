@@ -1,6 +1,6 @@
-const state = JSON.parse((document.head.querySelector('script[id="mainData"]')).innerHTML.replace(/^\s+|\s+$/g, ''));
+import {data} from './loginState'
 
-
+const state = data
 
 const getters = {
     media: state => {
@@ -21,6 +21,9 @@ const mutations = {
         state.activeComponent = payload;
     },
 
+    loadData(){
+
+    }
 
 };
 
@@ -33,8 +36,8 @@ const actions = {
 };
 
 export default {
-    getters,
     state,
+    getters,
     mutations,
     actions
 }

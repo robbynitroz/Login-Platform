@@ -15,5 +15,5 @@ mix.options({
     processCssUrls: true,
     purifyCss: true,
 });
-mix.js('resources/assets/js/app.js', 'public/js')
+mix.js('resources/assets/js/clients-login.js', 'public/js/clients')
    .sass('resources/assets/sass/app.scss', 'public/css');

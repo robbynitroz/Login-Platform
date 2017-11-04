@@ -8,32 +8,20 @@ require('./bootstrap');
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import {store} from './store/store';
+import { routes } from './routes/router'
+import store from './store/store-clients-login';
 
+Vue.use(VueRouter);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.use(VueRouter);
-
-const router = new VueRouter({
+export const router = new VueRouter({
     mode: 'history',
-
-});
-
-const home = resolve => {
-    require.ensure(['./components/Home.vue'], () => {
-        resolve(require('./components/Home.vue'));
-    });
-};
-
-const dashboard = resolve => {
-    require.ensure(['./components/admin/Dashboard.vue'], () => {
-        resolve(require('./components/admin/Dashboard.vue'));
-    });
-};
+    routes,
+})
 
 
 
@@ -42,8 +30,9 @@ new Vue({
     el: '#app',
     store,
     router,
-    components: {
-        loginHome: home,
-        dashboard,
-    }
 });
+
+
+
+
+

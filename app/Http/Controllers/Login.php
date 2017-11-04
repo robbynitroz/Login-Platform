@@ -105,7 +105,7 @@ class Login extends Controller
             $lang = 'en';
         };
 
-        return view('login.login', [
+        return view('clients.login', [
             'data' => $template->data,
             'type' => $template->type,
             'hotel' =>

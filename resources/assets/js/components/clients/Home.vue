@@ -14,7 +14,7 @@
 
 <script>
     import {mapGetters} from 'vuex';
-    import {windowSize} from '../mixins/windowSize';
+    import {windowSize} from '../../mixins/windowSize';
 
     const appLogin = resolve => {
         require.ensure(['./Login.vue'], () => {

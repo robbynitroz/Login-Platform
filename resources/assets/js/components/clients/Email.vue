@@ -1,7 +1,7 @@
 <template>
 
     <div class="vertical-center" :style="background(false)">
-        <div id="fb-root"></div>
+
         <div class="container justify-content-center  row">
 
             <div :style="background(true)" class="login col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
@@ -16,22 +16,17 @@
                 <h1 v-if="greetingsTime.on" :style="{ color:greetingsTime.color, fontSize:greetingsTime.size}"
                     class="text-center greetings"> {{ sayTime }}</h1>
 
+
                 <h2 class="text-center message"
                     :style="{ color:greeting.color, fontSize:greeting.size, wordWrap:'break-word'}">
                     {{ texts[defaultLanguage].greetingText }} </h2>
-
 
                 <!--Here-->
                 <div v-if="loadingBar" class="loader"></div>
                 <div class="col-xs-12 text-center button align-items-center justify-content-center">
 
 
-                    <div v-if="showLikeButton"  class="col-12 little-down"></div>
-                    <div v-show="showLikeButton" class="fb-like" :data-href="facebookURL" data-layout="button" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>
-
-                    <div v-show="showLikeButton"  class="clearfix"></div>
-
-                    <form v-if="showEmailMethod" @submit.prevent="sendToServer('email')" action="#" method="post">
+                    <form @submit.prevent="sendToServer" action="#" method="post">
                         <div class="form-group middle dimensions">
                             <input v-model="userEmail" type="email" class="form-control form-control-lg"
                                    id="formGroupExampleInput"
@@ -49,25 +44,7 @@
                             }}
                         </button>
 
-
                     </form>
-
-
-                    <button v-if="!showLikeButton"
-                            @click="FBlogin"
-                            class="loginBtn loginBtn--facebook text-center">
-                        {{ showFBButtonText }}
-                    </button>
-
-
-                    <button v-if="!showEmailMethod"
-                            v-show="!showLikeButton"
-                            @click="showEmail"
-                            class="loginBtn loginBtn--google text-center">
-                        {{ showEmailButtonText }}
-                    </button>
-
-
                 </div>
                 <!--Here-->
 
@@ -87,23 +64,18 @@
 <script>
     import {mapGetters} from 'vuex';
     import {mapActions} from 'vuex';
-    import {languageDetection} from '../mixins/languageDetection';
-    import {windowSize} from '../mixins/windowSize';
-    import {fb} from '../mixins/fb';
+    import {languageDetection} from '../../mixins/languageDetection';
+    import {windowSize} from '../../mixins/windowSize';
+
 
 
     export default {
 
-        name: 'appFacebook',
+        name: 'appEmail',
         data() {
             return {
                 userEmail: '',
-                showLike:false,
-                loader: false,
-                showEmailMethod: false,
-                showEmailButtonText: 'Connect using email',
-                showFBButtonText: 'Connect using Facebook',
-                facebookURL:document.head.querySelector('meta[name="fb-url"]').content
+                loader: false
             }
         },
 
@@ -146,8 +118,6 @@
             ]),
 
 
-
-
             buttonStyleObject() {
                 var modifier = '';
                 if (this.button.hoverState)
@@ -161,12 +131,7 @@
             },
 
 
-            showLikeButton(){
-                return this.showLike;
-            }
         },
-
-
 
         methods: {
 
@@ -206,11 +171,8 @@
                 this.loader = !this.loader;
             },
 
-            changeLikeButtonState(){
-                return this.showLike=true;
-            },
 
-            sendToServer(method) {
+            sendToServer() {
 
                 let config = {
                     onUploadProgress: progressEvent => {
@@ -222,63 +184,35 @@
                 let hotelURL = document.head.querySelector('meta[name="hotel-url"]');
                 let clientMac = document.head.querySelector('meta[name="mac-address"]');
                 let loginMethod = document.head.querySelector('meta[name="login-method"]');
-                axios.post('/auth/'+method,
+                axios.post('/auth/email',
                     {
                         email: this.userEmail,
-                        hotel_url: hotelURL.content,
-                        hotel_id: hotelID.content,
-                        mac_address: clientMac.content,
-                        login_type: loginMethod.content
+                        hotel_url:hotelURL.content,
+                        hotel_id:hotelID.content,
+                        mac_address:clientMac.content,
+                        login_type:loginMethod.content
                     },
                     config)
                     .then(response => {
-
-                        console.log(response)
-                        document.location.href = response.data;
+                        document.location.href =response.data;
                         this.changeLoaderStatus()
                     })
                     .catch(e => {
                         console.log(e)
                         this.changeLoaderStatus()
                     })
-            },
+            }
 
 
-            showEmail() {
-
-                this.showEmailMethod = true;
-            },
-
-
-            FBlogin() {
-                this.showEmailMethod=false;
-                window.FB.login((response)=> {
-                        if (response.authResponse) {
-                            FB.api('/me', {fields: 'email'}, (response) =>{
-                                if (typeof response.email!=='undefined'){
-                                    this.showLike= true;
-                                    this.userEmail = response.email;
-                                    FB.Event.subscribe('edge.create', (response) => {
-                                        this.sendToServer('facebook');
-                                    })
-                                }
-                            });
-                        }
-                    },
-                    {
-                        scope: 'email',
-                        return_scopes: true
-                    });
-            },
         },
 
         mixins: [
             windowSize,
-            languageDetection,
-            fb
+            languageDetection
         ],
-    }
 
+
+    }
 </script>
 
 <style scoped>
@@ -325,10 +259,8 @@
         text-align: center;
     }
 
-    .soc-buttons {
-        margin-bottom: 5%;
-        margin-top: 5%;
-        width: 60%;
+    .fa {
+        padding-left: 5%;
     }
 
     @media screen and (max-width: 576px) {
@@ -394,76 +326,5 @@
         }
     }
 
-
-    /*Facebook button*/
-
-
-    .loginBtn {
-        box-sizing: border-box;
-        position: relative;
-        width: 16rem;
-        margin: 0.2em;
-        padding: 0 15px 0 46px;
-        border: none;
-        text-align: left;
-        line-height: 34px;
-        white-space: nowrap;
-        border-radius: 0.2em;
-        font-size: 16px;
-        color: #FFF;
-    }
-    .loginBtn:before {
-        content: "";
-        box-sizing: border-box;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 34px;
-        height: 100%;
-    }
-    .loginBtn:focus {
-        outline: none;
-    }
-    .loginBtn:active {
-        box-shadow: inset 0 0 0 32px rgba(0,0,0,0.1);
-    }
-
-
-    /* Facebook */
-    .loginBtn--facebook {
-        background-color: #4C69BA;
-        background-image: linear-gradient(#4C69BA, #3B55A0);
-        /*font-family: "Helvetica neue", Helvetica Neue, Helvetica, Arial, sans-serif;*/
-        text-shadow: 0 -1px 0 #354C8C;
-        margin: 5%;
-    }
-    .loginBtn--facebook:before {
-        border-right: #364e92 1px solid;
-        background: url('/storage/images/icon_facebook.png') 6px 6px no-repeat;
-    }
-    .loginBtn--facebook:hover,
-    .loginBtn--facebook:focus {
-        background-color: #5B7BD5;
-        background-image: linear-gradient(#5B7BD5, #4864B1);
-    }
-
-
-    /* Google */
-    .loginBtn--google {
-        /*font-family: "Roboto", Roboto, arial, sans-serif;*/
-        background: #DD4B39;
-    }
-    .loginBtn--google:before {
-        border-right: #BB3F30 1px solid;
-        background: url('/storage/images/icon-email.png') 6px 6px no-repeat;
-    }
-    .loginBtn--google:hover,
-    .loginBtn--google:focus {
-        background: #E74B37;
-    }
-
-    .little-down{
-        margin-top: 3rem;
-    }
 
 </style>

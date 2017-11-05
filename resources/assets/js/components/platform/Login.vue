@@ -1,6 +1,7 @@
 <template>
     <div class="container-fluid">
-        <canvas id="stars" width="300" height="300"></canvas>
+        <canvas id="canvas"
+                ref="canvas"></canvas>
         <div class="vertical-center">
             <div class="container justify-content-center">
                 <div class="row">
@@ -28,7 +29,7 @@
                         <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
                     </form>
 
-{{getContext()}}
+
 
                     <!-- errors -->
                     <div v-if=response class="text-red"><p>{{response}}</p></div>
@@ -53,18 +54,25 @@
                 password: '',
                 response: '',
 
+
             }
         },
 
         computed:{
 
+
         },
+
+        mounted: function() {
+           // this.context=(this.$refs.canvas.getContext("2d"))
+          // console.log(this.$refs.canvas)
+
+        },
+
         methods: {
 
 
-            getContext(){
 
-            }
 
             /*checkCreds () {
 
@@ -125,7 +133,7 @@
         },
 
         mixins:[
-            /*loginBackground*/
+            loginBackground
         ],
     }
 </script>
@@ -171,18 +179,32 @@
     }
 
 
-    body {
+    .container-fluid {
         background-color: #31102F; //#280B29
     background: radial-gradient(ellipse at center, rgba(49,16,47,1) 0%, rgba(40,11,41,1) 100%);
     }
 
-    #stars {
+    #canvas {
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        z-index: -100;
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+        background-size: contain;
+    }
+    #canvas {
         display: block;
-        position: relative;
+        position: absolute;
         width: 100%;
         height: 16rem;
         height: 100vh;
         z-index: 1;
     }
+
+
 
 </style>

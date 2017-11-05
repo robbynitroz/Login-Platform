@@ -17,4 +17,5 @@ mix.options({
 });
 mix.js('resources/assets/js/clients-login.js', 'public/js/clients')
 mix.js('resources/assets/js/platform-login.js', 'public/js/login')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+   .sass('resources/assets/sass/login.scss', 'public/css')
+   .sass('resources/assets/sass/client.scss', 'public/css');

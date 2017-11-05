@@ -1,30 +1,34 @@
 <template>
     <div class="container-fluid">
+        <canvas id="stars" width="300" height="300"></canvas>
         <div class="vertical-center">
             <div class="container justify-content-center">
                 <div class="row">
 
 
-                    <div class="col-12 text-center">
-                        <img  src="storage/images/logo-gc.png">
+                    <div class="col-md-12 text-center">
+                        <img alt="guestcompass_logo"  src="storage/images/logo.png">
                     </div>
 
 
-                <div class="text-center col-6 offset-3">
+                    <div class="clearfix"></div>
+                <div class="offset-lg-4 col-lg-4 offset-md-3 col-md-6">
                     <!-- login form -->
-                    <form class="ui form loginForm"  @submit.prevent="checkCreds">
-
+                    <form class="form loginForm"  @submit.prevent="checkCreds">
+                        <label hidden for="email">Email</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                            <input class="form-control" name="username" placeholder="Username" type="text" v-model="username">
+                            <input id="email" class="form-control" name="email" placeholder="Email" type="email" v-model="email">
                         </div>
-
+                        <label hidden for="password">Password</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                            <input class="form-control" name="password" placeholder="Password" type="password" v-model="password">
+                            <input id="password" class="form-control" name="password" placeholder="Password" type="password" v-model="password">
                         </div>
-                        <button type="submit" v-bind:class="'btn btn-primary btn-lg ' + loading">Login</button>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
                     </form>
+
+{{getContext()}}
 
                     <!-- errors -->
                     <div v-if=response class="text-red"><p>{{response}}</p></div>
@@ -38,18 +42,30 @@
 <script>
     //import api from '../api'
 
+    import {loginBackground} from '../../mixins/login-background'
     export default {
         name: 'platform-login',
         data () {
             return {
                 section: 'Login',
                 loading: '',
-                username: '',
+                email: '',
                 password: '',
-                response: ''
+                response: '',
+
             }
         },
+
+        computed:{
+
+        },
         methods: {
+
+
+            getContext(){
+
+            }
+
             /*checkCreds () {
 
 
@@ -103,15 +119,19 @@
             resetResponse () {
                 this.response = ''
             }*/
-        }
+
+
+
+        },
+
+        mixins:[
+            /*loginBackground*/
+        ],
     }
 </script>
 
 <style>
-    html,
-    body {
-        height: 100%
-    }
+
 
     .vertical-center {
         min-height: 100%; /* Fallback for vh unit */
@@ -146,6 +166,23 @@
     }
 
 
+    .input-group{
+        margin: 1rem 0 1rem 0;
+    }
 
+
+    body {
+        background-color: #31102F; //#280B29
+    background: radial-gradient(ellipse at center, rgba(49,16,47,1) 0%, rgba(40,11,41,1) 100%);
+    }
+
+    #stars {
+        display: block;
+        position: relative;
+        width: 100%;
+        height: 16rem;
+        height: 100vh;
+        z-index: 1;
+    }
 
 </style>

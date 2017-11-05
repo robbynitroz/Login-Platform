@@ -35,6 +35,6 @@
 <login></login>
 </div>
 <script src="{{ asset('js/login/platform-login.js') }}"></script>
-<link rel="stylesheet" href="{{ asset('css/app.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ asset('css/login.css') }}" type="text/css">
 </body>
 </html>

@@ -41,6 +41,6 @@
     <router-view></router-view>
 </div>
 <script src="{{ asset('js/clients/clients-login.js') }}"></script>
-<link rel="stylesheet" href="{{ asset('css/app.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ asset('css/client.css') }}" type="text/css">
 </body>
 </html>

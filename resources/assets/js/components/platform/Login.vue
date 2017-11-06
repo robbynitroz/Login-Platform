@@ -26,10 +26,14 @@
                             <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                             <input id="password" class="form-control" name="password" placeholder="Password" type="password" v-model="password">
                         </div>
-                        <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
+                        <button type="submit"  class="btn btn-primary btn-lg btn-block">Login</button>
+                        <div class="clearfix"></div>
+                        <label class="form-check-label remember">
+                            <input type="checkbox" class="form-check-input">
+                            Remember me
+                        </label>
+                        <a class="badge badge-light restore" href="">Forgot password?</a>
                     </form>
-
-
 
                     <!-- errors -->
                     <div v-if=response class="text-red"><p>{{response}}</p></div>
@@ -204,7 +208,26 @@
         height: 100vh;
         z-index: 1;
     }
+    .row{
+        position: relative;
+        z-index: 999;
+    }
 
+
+    .remember{
+        color: white;
+       /*margin: 1rem 0 0 0;*/
+        float: left;
+
+    }
+    .restore{
+        float: right;
+    }
+
+
+    .remember, .restore{
+        margin-top: 1rem;
+    }
 
 
 </style>

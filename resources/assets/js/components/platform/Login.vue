@@ -237,6 +237,9 @@
     .btn:hover{
         background-color: #176282e8;
     }
+    .fa {
+        color: #14395d;
+    }
 
 
 </style>

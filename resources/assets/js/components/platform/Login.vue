@@ -26,7 +26,7 @@
                             <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                             <input id="password" class="form-control" name="password" placeholder="Password" type="password" v-model="password">
                         </div>
-                        <button type="submit"  class="btn btn-primary btn-lg btn-block">Login</button>
+                        <button type="submit"  class="btn btn-lg btn-block">Login</button>
                         <div class="clearfix"></div>
                         <label class="form-check-label remember">
                             <input type="checkbox" class="form-check-input">
@@ -186,6 +186,7 @@
     .container-fluid {
         background-color: #31102F; //#280B29
     background: radial-gradient(ellipse at center, rgba(49,16,47,1) 0%, rgba(40,11,41,1) 100%);
+        font-family: 'Russo One', sans-serif;
     }
 
     #canvas {
@@ -227,6 +228,14 @@
 
     .remember, .restore{
         margin-top: 1rem;
+    }
+
+    .btn{
+        background-color: #cc00ff7a;
+        color: white;
+    }
+    .btn:hover{
+        background-color: #ff00bc7a;
     }
 
 

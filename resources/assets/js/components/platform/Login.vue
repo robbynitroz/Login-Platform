@@ -184,7 +184,7 @@
 
 
     .container-fluid {
-        background-color: #31102F; //#280B29
+        background-color: #0d0631; //#280B29
     background: radial-gradient(ellipse at center, rgba(49,16,47,1) 0%, rgba(40,11,41,1) 100%);
         font-family: 'Russo One', sans-serif;
     }
@@ -231,11 +231,11 @@
     }
 
     .btn{
-        background-color: #cc00ff7a;
+        background-color: #1762828c;
         color: white;
     }
     .btn:hover{
-        background-color: #ff00bc7a;
+        background-color: #176282e8;
     }
 
 

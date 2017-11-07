@@ -7,7 +7,7 @@
                 <div class="row">
 
 
-                    <div class="col-md-12 text-center">
+                    <div class="col-md-12 text-center logo">
                         <img alt="guestcompass_logo" src="storage/images/logo.png">
                     </div>
 
@@ -30,11 +30,13 @@
                             </div>
                             <button type="submit" class="btn btn-lg btn-block">Login</button>
                             <div class="clearfix"></div>
-                            <label class="form-check-label remember">
-                                <input name="remember" type="checkbox" class="form-check-input">
-                                Remember me
+                            <label class="custom-control remember custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                                <input name="remember" type="checkbox" class="custom-control-input">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Remember me</span>
                             </label>
-                            <a class="badge badge-light restore" href="">Forgot password?</a>
+
+                            <a class="restore" href="">Forgot password?</a>
                         </form>
 
                         <!-- errors -->
@@ -149,7 +151,7 @@
     }
 
     .container-fluid {
-        background-color: #0d0631;
+        background-color: #2087b0;
     / / #280B29 background: radial-gradient(ellipse at center, rgba(49, 16, 47, 1) 0 %, rgba(40, 11, 41, 1) 100 %);
         font-family: 'Russo One', sans-serif;
     }
@@ -176,6 +178,10 @@
         z-index: 1;
     }
 
+    .logo img{
+        width: 12.5rem;
+    }
+
     .row {
         position: relative;
         z-index: 999;
@@ -188,12 +194,23 @@
 
     }
 
+
+
     .restore {
         float: right;
+        color:white;
+    }
+
+    .restore:hover {
+        color: #176282e8;
     }
 
     .remember, .restore {
         margin-top: 1rem;
+    }
+
+    .custom-control-input:checked ~ .custom-control-indicator{
+        background-color:#2087b0 !important;
     }
 
     .btn {
@@ -206,8 +223,18 @@
     }
 
     .fa {
-        color: #14395d;
+        color: #2087b0;
     }
+
+
+    @media screen and (max-width: 365px) {
+        .remember, .restore {
+            font-size: 0.95rem;
+        }
+    }
+
+
+
 
 
 </style>

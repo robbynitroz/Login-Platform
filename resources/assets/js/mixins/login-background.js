@@ -17,12 +17,6 @@ export const loginBackground = {
 
 
         backCanvas(canvas, context){
-            /**
-             * Stars
-             * Inspired by Steve Courtney's poster art for Celsius GS's Drifter - http://celsiusgs.com/drifter/posters.php
-             * by Cory Hughart - http://coryhughart.com
-             */
-
                 // Settings
             var particleCount = 40,
                 flareCount = 10,

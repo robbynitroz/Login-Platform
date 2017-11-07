@@ -8,36 +8,38 @@
 
 
                     <div class="col-md-12 text-center">
-                        <img alt="guestcompass_logo"  src="storage/images/logo.png">
+                        <img alt="guestcompass_logo" src="storage/images/logo.png">
                     </div>
 
 
                     <div class="clearfix"></div>
-                <div class="offset-lg-4 col-lg-4 offset-md-3 col-md-6">
-                    <!-- login form -->
-                    <form class="form loginForm"  @submit.prevent="checkCreds">
-                        <label hidden for="email">Email</label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                            <input id="email" class="form-control" name="email" placeholder="Email" type="email" v-model="email">
-                        </div>
-                        <label hidden for="password">Password</label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                            <input id="password" class="form-control" name="password" placeholder="Password" type="password" v-model="password">
-                        </div>
-                        <button type="submit"  class="btn btn-lg btn-block">Login</button>
-                        <div class="clearfix"></div>
-                        <label class="form-check-label remember">
-                            <input type="checkbox" class="form-check-input">
-                            Remember me
-                        </label>
-                        <a class="badge badge-light restore" href="">Forgot password?</a>
-                    </form>
+                    <div class="offset-lg-4 col-lg-4 offset-md-3 col-md-6">
+                        <!-- login form -->
+                        <form class="form loginForm" @submit.prevent="checkLoginData">
+                            <label hidden for="email">Email</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                <input id="email" class="form-control" name="email" placeholder="Email" type="email"
+                                       v-model="email">
+                            </div>
+                            <label hidden for="password">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                <input id="password" class="form-control" name="password" placeholder="Password"
+                                       type="password" v-model="password">
+                            </div>
+                            <button type="submit" class="btn btn-lg btn-block">Login</button>
+                            <div class="clearfix"></div>
+                            <label class="form-check-label remember">
+                                <input name="remember" type="checkbox" class="form-check-input">
+                                Remember me
+                            </label>
+                            <a class="badge badge-light restore" href="">Forgot password?</a>
+                        </form>
 
-                    <!-- errors -->
-                    <div v-if=response class="text-red"><p>{{response}}</p></div>
-                </div>
+                        <!-- errors -->
+                        <div v-if=response class="text-red"><p>{{response}}</p></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -48,95 +50,60 @@
     //import api from '../api'
 
     import {loginBackground} from '../../mixins/login-background'
+
     export default {
         name: 'platform-login',
-        data () {
+        data() {
             return {
                 section: 'Login',
                 loading: '',
                 email: '',
                 password: '',
                 response: '',
+                errorsEmail: false,
+                errorsPassword: false,
 
 
             }
         },
 
-        computed:{
+        computed: {},
 
-
-        },
-
-        mounted: function() {
-           // this.context=(this.$refs.canvas.getContext("2d"))
-          // console.log(this.$refs.canvas)
+        mounted: function () {
+            // this.context=(this.$refs.canvas.getContext("2d"))
+            // console.log(this.$refs.canvas)
 
         },
 
         methods: {
 
 
+            checkLoginData() {
+                /* Making API call to authenticate a user */
 
 
-            /*checkCreds () {
 
-
-
-                /!* Making API call to authenticate a user *!/
-                api.request('post', '/login', {username, password})
+                axios.post('/login',
+                    {
+                        email: this.email,
+                        password: this.password
+                    })
                     .then(response => {
-                        this.toggleLoading()
+                        console.log(response)
 
-                        var data = response.data
-                        /!* Checking if error object was returned from the server *!/
-                        if (data.error) {
-                            var errorName = data.error.name
-                            if (errorName) {
-                                this.response = errorName === 'InvalidCredentialsError'
-                                    ? 'Username/Password incorrect. Please try again.'
-                                    : errorName
-                            } else {
-                                this.response = data.error
-                            }
-
-                            return
-                        }
-
-                        /!* Setting user in the state and caching record to the localStorage *!/
-                        if (data.user) {
-                            var token = 'Bearer ' + data.token
-
-                            this.$store.commit('SET_USER', data.user)
-                            this.$store.commit('SET_TOKEN', token)
-
-                            if (window.localStorage) {
-                                window.localStorage.setItem('user', JSON.stringify(data.user))
-                                window.localStorage.setItem('token', token)
-                            }
-
-                            this.$router.push(data.redirect ? data.redirect : '/')
-                        }
                     })
-                    .catch(error => {
-                        this.$store.commit('TOGGLE_LOADING')
-                        console.log(error)
+                    .catch(e => {
+                        console.log(e)
 
-                        this.response = 'Server appears to be offline'
-                        this.toggleLoading()
-                    })
-            },
-            toggleLoading () {
-                this.loading = (this.loading === '') ? 'loading' : ''
-            },
-            resetResponse () {
-                this.response = ''
-            }*/
+                    });
 
+
+            }
 
 
         },
 
-        mixins:[
+        mixins: [
             loginBackground
         ],
     }
@@ -177,15 +144,13 @@
         justify-content: center;
     }
 
-
-    .input-group{
+    .input-group {
         margin: 1rem 0 1rem 0;
     }
 
-
     .container-fluid {
-        background-color: #0d0631; //#280B29
-    background: radial-gradient(ellipse at center, rgba(49,16,47,1) 0%, rgba(40,11,41,1) 100%);
+        background-color: #0d0631;
+    / / #280B29 background: radial-gradient(ellipse at center, rgba(49, 16, 47, 1) 0 %, rgba(40, 11, 41, 1) 100 %);
         font-family: 'Russo One', sans-serif;
     }
 
@@ -201,6 +166,7 @@
         transform: translateX(-50%) translateY(-50%);
         background-size: contain;
     }
+
     #canvas {
         display: block;
         position: absolute;
@@ -209,34 +175,36 @@
         height: 100vh;
         z-index: 1;
     }
-    .row{
+
+    .row {
         position: relative;
         z-index: 999;
     }
 
-
-    .remember{
+    .remember {
         color: white;
-       /*margin: 1rem 0 0 0;*/
+        /*margin: 1rem 0 0 0;*/
         float: left;
 
     }
-    .restore{
+
+    .restore {
         float: right;
     }
 
-
-    .remember, .restore{
+    .remember, .restore {
         margin-top: 1rem;
     }
 
-    .btn{
+    .btn {
         background-color: #1762828c;
         color: white;
     }
-    .btn:hover{
+
+    .btn:hover {
         background-color: #176282e8;
     }
+
     .fa {
         color: #14395d;
     }

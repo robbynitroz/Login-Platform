@@ -16,17 +16,23 @@ class Login extends Controller
 
 
     /**
-     * @var object
+     * Mikrotik client IP address
+     *
+     * @var string
      */
     public $nas_info;
 
     /**
+     * User template
+     *
      * @var object
      */
     public $templates;
 
 
     /**
+     * Mikrotik client/device MAC address
+     *
      * @var string
      */
     public $client_mac;

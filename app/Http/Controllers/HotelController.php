@@ -20,6 +20,8 @@ class HotelController extends Controller
 
 
     /**
+     * Fetch hotel info from DB and store in Redis or fetch info from Redis
+     *
      * @param int $hotelID
      * @return mixed
      */

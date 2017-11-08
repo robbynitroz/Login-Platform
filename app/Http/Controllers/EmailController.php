@@ -13,6 +13,8 @@ class EmailController extends Controller
     //
 
     /**
+     * Store email in DB if not exist
+     *
      * @param string $email
      * @param int $hotel_id
      * @param string $login_type

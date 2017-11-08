@@ -13,13 +13,14 @@ use Illuminate\Support\Facades\Redis;
  */
 class NasController extends Controller
 {
-    //
+
 
     /**
-     * @param Request $request
+     * Fetch NAS infro from DB and store in Redis or fetch NAS from Redis if exist
+     *
+     * @param string $ip
      * @return string
      */
-
     public function getNas(string $ip):string
     {
 

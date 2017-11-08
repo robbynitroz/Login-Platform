@@ -10,12 +10,23 @@ let mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+
+mix.webpackConfig({
+
+    output: {
+        publicPath: '/',
+        chunkFilename: 'js/[name].[chunkhash].js',
+    },
+});
+
 mix.options({
     extractVueStyles: true,
     processCssUrls: true,
     purifyCss: true,
 });
+
 mix.js('resources/assets/js/clients-login.js', 'public/js/clients')
-mix.js('resources/assets/js/platform-login.js', 'public/js/login')
-   .sass('resources/assets/sass/login.scss', 'public/css')
-   .sass('resources/assets/sass/client.scss', 'public/css');
+    .sass('resources/assets/sass/client.scss', 'public/css/client');
+mix.js('resources/assets/js/auth.js', 'public/js/login')
+   .sass('resources/assets/sass/auth.scss', 'public/css/login')
+

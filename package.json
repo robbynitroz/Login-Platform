@@ -16,11 +16,11 @@
     "cross-env": "^5.0.5",
     "font-awesome": "^4.7.0",
     "laravel-mix": "^1.6.1",
-    "popper.js": "^1.12.5",
-    "purify-css": "^1.2.6",
+    "popper.js": "^1.12.6",
+    "purify-css": "^1.2.5",
     "purifycss-webpack": "^0.7.0",
-    "vue": "^2.5.2",
+    "vue": "^2.5.3",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.0"
+    "vuex": "^3.0.1"
   }
 }

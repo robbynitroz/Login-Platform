@@ -1,7 +1,17 @@
 require('./bootstrap');
 
 import Vue from 'vue';
+import VueRouter from 'vue-router';
+import { authRoutes } from './routes/router'
 
+
+Vue.use(VueRouter);
+
+
+export const router = new VueRouter({
+    mode: 'history',
+    authRoutes,
+});
 
 
 const login = resolve => {
@@ -12,10 +22,12 @@ const login = resolve => {
 
 
 
+
 new Vue({
     el: '#app',
+    router,
     components:{
-        login,
+        login
     }
 });
 

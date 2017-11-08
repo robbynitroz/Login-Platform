@@ -1,6 +1,6 @@
 {
     "/js/clients/clients-login.js": "/js/clients/clients-login.js",
-    "/css/login.css": "/css/login.css",
-    "/css/client.css": "/css/client.css",
-    "/js/login/platform-login.js": "/js/login/platform-login.js"
+    "/css/client/client.css": "/css/client/client.css",
+    "/css/login/auth.css": "/css/login/auth.css",
+    "/js/login/auth.js": "/js/login/auth.js"
 }

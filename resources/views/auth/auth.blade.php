@@ -33,9 +33,9 @@
 </head>
 <body>
 <div id="app">
-<login></login>
+    <router-view></router-view>
 </div>
-<script src="{{ asset('js/login/platform-login.js') }}"></script>
-<link rel="stylesheet" href="{{ asset('css/login.css') }}" type="text/css">
+<script src="{{ asset('js/login/auth.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('css/login/auth.css') }}" type="text/css">
 </body>
 </html>

@@ -46,7 +46,7 @@ Route::prefix('/auth')->group(function () {
 //Auth URNs
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', ['uses'=>'DashboardController@index', 'middleware'=>['web', 'auth']])->name('home');
 
 
 Route::get('/test', function (){

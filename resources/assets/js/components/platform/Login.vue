@@ -8,7 +8,7 @@
 
 
                     <div class="col-md-12 text-center logo">
-                        <img alt="guestcompass_logo" src="storage/images/logo.png">
+                        <img alt="guestcompass_logo" src="/storage/images/logo.png">
                     </div>
 
 
@@ -19,19 +19,19 @@
                             <label hidden for="email">Email</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                <input id="email" class="form-control" name="email" placeholder="Email" type="email"
+                                <input @keyup="errors = false" id="email" class="form-control" name="email" placeholder="Email" required type="email"
                                        v-model="email">
                             </div>
                             <label hidden for="password">Password</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                <input id="password" class="form-control" name="password" placeholder="Password"
+                                <input @keyup="errors = false" id="password" class="form-control" name="password" placeholder="Password" required
                                        type="password" v-model="password">
                             </div>
                             <button type="submit" class="btn btn-lg btn-block">Login</button>
                             <div class="clearfix"></div>
                             <label class="custom-control remember custom-checkbox mb-2 mr-sm-2 mb-sm-0">
-                                <input name="remember" type="checkbox" class="custom-control-input">
+                                <input v-model="remember" name="remember" type="checkbox" class="custom-control-input">
                                 <span class="custom-control-indicator"></span>
                                 <span class="custom-control-description">Remember me</span>
                             </label>
@@ -39,8 +39,13 @@
                             <a class="restore" href="">Forgot password?</a>
                         </form>
 
+                        <div class="clearfix"></div>
                         <!-- errors -->
-                        <div v-if=response class="text-red"><p>{{response}}</p></div>
+                        <transition name="fade">
+                        <div v-if="errors" class="alert alert-danger" role="alert">
+                            Email or password are wrong check out your entry please!
+                        </div>
+                        </transition>
                     </div>
                 </div>
             </div>
@@ -60,10 +65,11 @@
                 section: 'Login',
                 loading: '',
                 email: '',
+                remember:false,
                 password: '',
                 response: '',
-                errorsEmail: false,
-                errorsPassword: false,
+                errors:false
+
 
 
             }
@@ -83,22 +89,21 @@
             checkLoginData() {
                 /* Making API call to authenticate a user */
 
-
-
                 axios.post('/login',
                     {
                         email: this.email,
-                        password: this.password
+                        password: this.password,
+                        remember:this.remember
+
                     })
                     .then(response => {
-                        console.log(response)
+
+                        window.location.href ='/dashboard';
 
                     })
                     .catch(e => {
-                        console.log(e)
-
+                        this.errors=true;
                     });
-
 
             }
 
@@ -233,6 +238,12 @@
         }
     }
 
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0
+    }
 
 
 

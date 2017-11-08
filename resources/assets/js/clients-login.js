@@ -12,11 +12,7 @@ import { routes } from './routes/router'
 import store from './store/store-clients-login';
 
 Vue.use(VueRouter);
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+
 
 export const router = new VueRouter({
     mode: 'history',

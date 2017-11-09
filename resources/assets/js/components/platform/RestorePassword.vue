@@ -22,29 +22,18 @@
                                 <input @keyup="errors = false" id="email" class="form-control" name="email" placeholder="Email" required type="email"
                                        v-model="email">
                             </div>
-                            <label hidden for="password">Password</label>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                <input @keyup="errors = false" id="password" class="form-control" name="password" placeholder="Password" required
-                                       type="password" v-model="password">
-                            </div>
-                            <button type="submit" class="btn btn-lg btn-block">Login</button>
-                            <div class="clearfix"></div>
-                            <label class="custom-control remember custom-checkbox mb-2 mr-sm-2 mb-sm-0">
-                                <input v-model="remember" name="remember" type="checkbox" class="custom-control-input">
-                                <span class="custom-control-indicator"></span>
-                                <span class="custom-control-description">Remember me</span>
-                            </label>
 
-                            <a class="restore" href="">Forgot password?</a>
+                            <button type="submit" class="btn btn-lg btn-block">Submit</button>
+                            <div class="clearfix"></div>
+
                         </form>
 
                         <div class="clearfix"></div>
                         <!-- errors -->
                         <transition name="fade">
-                        <div v-if="errors" class="alert alert-danger" role="alert">
-                            Email or password are wrong check out your entry please!
-                        </div>
+                            <div v-if="errors" class="alert alert-danger" role="alert">
+                                Email doesn't registered in system, please check out your entry!
+                            </div>
                         </transition>
                     </div>
                 </div>
@@ -54,19 +43,15 @@
 </template>
 
 <script>
-    //import api from '../api'
 
     import {loginBackground} from '../../mixins/login-background'
 
     export default {
-        name: 'login',
+        name: 'restorePassword',
         data() {
             return {
-                section: 'Login',
                 loading: '',
                 email: '',
-                remember:false,
-                password: '',
                 response: '',
                 errors:false
 
@@ -89,24 +74,19 @@
             checkLoginData() {
                 /* Making API call to authenticate a user */
 
-                axios.post('/login',
+                axios.post('/password/email',
                     {
                         email: this.email,
-                        password: this.password,
-                        remember:this.remember
 
                     })
                     .then(response => {
-
-                        window.location.href ='/dashboard';
-
+                        console.log(response);
+                        //window.location.href ='/dashboard';
                     })
                     .catch(e => {
                         this.errors=true;
                     });
-
             }
-
 
         },
 

@@ -11,6 +11,18 @@ let mix = require('laravel-mix');
  |
  */
 
+
+mix.options({
+   // extractVueStyles: true,
+    processCssUrls: true,
+    uglify: {},
+    purifyCss: true,
+//purifyCss: {},
+    postCss: [require('autoprefixer')],
+    clearConsole: false
+});
+
+
 mix.webpackConfig({
 
     output: {
@@ -19,11 +31,6 @@ mix.webpackConfig({
     },
 });
 
-mix.options({
-    extractVueStyles: true,
-    processCssUrls: true,
-    purifyCss: true,
-});
 
 mix.js('resources/assets/js/clients-login.js', 'public/js/clients')
     .sass('resources/assets/sass/client.scss', 'public/css/client');

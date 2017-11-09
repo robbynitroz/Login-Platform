@@ -14,7 +14,7 @@ import store from './store/store-clients-login';
 Vue.use(VueRouter);
 
 
-export const router = new VueRouter({
+const router = new VueRouter({
     mode: 'history',
     routes,
 })

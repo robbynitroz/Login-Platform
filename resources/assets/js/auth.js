@@ -2,32 +2,22 @@ require('./bootstrap');
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import { authRoutes } from './routes/router'
-
+import { routes } from './routes/login-routes'
 
 Vue.use(VueRouter);
 
 
-export const router = new VueRouter({
+const router = new VueRouter({
     mode: 'history',
-    authRoutes,
-});
-
-
-const login = resolve => {
-    require.ensure(['./components/platform/Login.vue'], () => {
-        resolve(require('./components/platform/Login.vue'));
-    });
-};
-
+    routes,
+})
 
 
 
 new Vue({
     el: '#app',
     router,
-    components:{
-        login
-    }
 });
+
+
 

@@ -6,21 +6,10 @@ const loginHome = resolve => {
 
 
 
-
 export const routes = [
-    {path: '/clients', component: loginHome },
+    {path: '/clients', component: loginHome},
 
 ];
 
 
-const login = resolve => {
-    require.ensure(['../components/platform/Login.vue'], () => {
-        resolve(require('../components/platform/Login.vue'));
-    });
-};
 
-
-export const authRoutes = [
-    {path: '/login', component: login },
-
-]

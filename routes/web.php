@@ -49,10 +49,10 @@ Auth::routes();
 Route::get('/dashboard', ['uses'=>'DashboardController@index', 'middleware'=>['web', 'auth']])->name('home');
 
 
-Route::get('/test', function (){
+/*Route::get('/test/', function (){
 
-    return view('login.platform_login');
 
-})->name('test');
+
+})->name('test');*/
 
 

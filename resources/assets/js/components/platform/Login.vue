@@ -12,8 +12,6 @@
                              src="/storage/images/logo-layer2.png">
                         <img class="logo-back" alt="guestcompass_logo-back" src="/storage/images/logo-layer1.png">
                     </div>
-
-
                     <div class="clearfix"></div>
                     <div class="offset-lg-4 col-lg-4 offset-md-3 col-md-6">
                         <!-- login form -->

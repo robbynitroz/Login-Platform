@@ -14,7 +14,7 @@
 
 
                     <transition name="animated">
-                    <div v-show="welcome" style="color: white"  class="col-sm-6 offset-3 text-center" ><h1 class="animated" >{{ welcome }}</h1> </div>
+                    <div v-show="welcome" style="color: white"  class="col-sm-6 offset-sm-3 text-center" ><h1 class="animated" >{{ welcome }}</h1> </div>
                     </transition>
 
 

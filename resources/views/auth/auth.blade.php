@@ -37,6 +37,11 @@
 </div>
 <script src="{{ asset('js/login/auth.js') }}"></script>
 <link rel="stylesheet" href="{{ asset('css/login/auth.css') }}" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Russo+One" rel="stylesheet">
+<style type="text/css">
+    @font-face {
+        font-family: Russo One;
+        src: url(/storage/fonts/RussoOne-Regular.ttf);
+    }
+    </style>
 </body>
 </html>

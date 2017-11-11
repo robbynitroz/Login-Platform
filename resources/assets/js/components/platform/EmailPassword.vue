@@ -8,7 +8,8 @@
 
 
                     <div class="col-md-12 text-center logo">
-                        <img alt="guestcompass_logo" src="/storage/images/logo.png">
+                        <img :class="loading" class="logo-arrow" alt="guestcompass_logo-arrow" src="/storage/images/logo-layer2.png">
+                        <img class="logo-back" alt="guestcompass_logo-back" src="/storage/images/logo-layer1.png">
                     </div>
 
 
@@ -20,19 +21,26 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                                 <input @keyup="errors = false" id="email" class="form-control" name="email" placeholder="Email" required type="email"
-                                       v-model="email">
+                                       v-model="email"
+                                       :disabled="success == true">
                             </div>
 
-                            <button type="submit" class="btn btn-lg btn-block">Submit</button>
-                            <div class="clearfix"></div>
+                            <button type="submit" :disabled="success == true" class="btn btn-lg btn-block">Submit</button>
+                            <div class="clearfix back-to-login"></div>
+
+                            <router-link class="back-to-login" to="/login"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Back to Login</router-link>
 
                         </form>
 
                         <div class="clearfix"></div>
                         <!-- errors -->
                         <transition name="fade">
-                            <div v-if="errors" class="alert alert-danger" role="alert">
-                                Email doesn't registered in system, please check out your entry!
+                            <div v-if="errors" class="alert alert-danger error-class" role="alert">
+                                Email doesn't registered in system, please check your entry!
+                            </div>
+
+                            <div v-if="success" class="alert alert-success error-class" role="alert">
+                                Email has been sent with password reset instructions, please check your inbox
                             </div>
                         </transition>
                     </div>
@@ -53,7 +61,8 @@
                 loading: '',
                 email: '',
                 response: '',
-                errors:false
+                errors:false,
+                success:false
 
 
 
@@ -71,20 +80,37 @@
         methods: {
 
 
+            changeLoaderStatus(){
+              this.loading = 'compass'
+            },
+
+
             checkLoginData() {
                 /* Making API call to authenticate a user */
 
+                let config = {
+                    onUploadProgress: progressEvent => {
+                        this.changeLoaderStatus();
+                    }
+                };
                 axios.post('/password/email',
                     {
                         email: this.email,
 
-                    })
+                    }, config)
                     .then(response => {
-                        console.log(response);
-                        //window.location.href ='/dashboard';
+                        let res = response.data;
+                        this.loading='';
+                        if(res=='success'){
+                            this.success=true;
+                        }else {
+                            this.errors=true;
+                        }
+                        this.loading='';
                     })
                     .catch(e => {
                         this.errors=true;
+                        this.loading='';
                     });
             }
 
@@ -97,6 +123,8 @@
 </script>
 
 <style scoped>
+
+
 
 
     .vertical-center {
@@ -172,13 +200,21 @@
         z-index: 999;
     }
 
+    .logo-back{
+        z-index: 2;
+    }
+    .logo-arrow{
+        position: fixed;
+        z-index: 3;
+
+    }
+
     .remember {
         color: white;
         /*margin: 1rem 0 0 0;*/
         float: left;
 
     }
-
 
 
     .restore {
@@ -212,6 +248,10 @@
     }
 
 
+    .error-class{
+        position: absolute;
+    }
+
     @media screen and (max-width: 365px) {
         .remember, .restore {
             font-size: 0.95rem;
@@ -225,5 +265,21 @@
         opacity: 0
     }
 
+    .back-to-login{
+        color: white;
+        margin-top: 10px;
+    }
+    .back-to-login i{
+        color: white;
+    }
+
+    .compass {
+        -webkit-animation:spin 0.8s linear infinite;
+        -moz-animation:spin 0.8s linear infinite;
+        animation:spin 0.8s linear infinite;
+    }
+    @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+    @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+    @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
 </style>

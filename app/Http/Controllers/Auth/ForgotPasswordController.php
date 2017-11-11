@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Http\Request;
 
 class ForgotPasswordController extends Controller
 {
@@ -39,4 +40,28 @@ class ForgotPasswordController extends Controller
     {
         return view('auth.auth');
     }
+
+
+    /**
+     * Get the response for a successful password reset link.
+     *
+     * @return string
+     */
+    protected function sendResetLinkResponse()
+    {
+        return json_encode('success');
+    }
+
+
+    /**
+     * Get the response for a failed password reset link.
+     *
+     * @return string
+     */
+    protected function sendResetLinkFailedResponse()
+    {
+        return json_encode('failure');
+    }
+
+
 }

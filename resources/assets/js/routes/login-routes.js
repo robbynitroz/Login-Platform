@@ -5,8 +5,8 @@ const platformLogin = resolve => {
 };
 
 const platformResetPassword = resolve => {
-    require.ensure(['../components/platform/RestorePassword.vue'], () => {
-        resolve(require('../components/platform/RestorePassword.vue'));
+    require.ensure(['../components/platform/EmailPassword.vue'], () => {
+        resolve(require('../components/platform/EmailPassword.vue'));
     });
 };
 
@@ -18,3 +18,4 @@ export const routes = [
 
 
 ];
+

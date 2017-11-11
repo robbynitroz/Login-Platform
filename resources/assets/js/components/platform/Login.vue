@@ -8,7 +8,9 @@
 
 
                     <div class="col-md-12 text-center logo">
-                        <img alt="guestcompass_logo" src="/storage/images/logo.png">
+                        <img :class="loading" class="logo-arrow" alt="guestcompass_logo-arrow"
+                             src="/storage/images/logo-layer2.png">
+                        <img class="logo-back" alt="guestcompass_logo-back" src="/storage/images/logo-layer1.png">
                     </div>
 
 
@@ -19,13 +21,15 @@
                             <label hidden for="email">Email</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                <input @keyup="errors = false" id="email" class="form-control" name="email" placeholder="Email" required type="email"
+                                <input @keyup="errors = false" id="email" class="form-control" name="email"
+                                       placeholder="Email" required type="email"
                                        v-model="email">
                             </div>
                             <label hidden for="password">Password</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                <input @keyup="errors = false" id="password" class="form-control" name="password" placeholder="Password" required
+                                <input @keyup="errors = false" id="password" class="form-control" name="password"
+                                       placeholder="Password" required
                                        type="password" v-model="password">
                             </div>
                             <button type="submit" class="btn btn-lg btn-block">Login</button>
@@ -36,15 +40,15 @@
                                 <span class="custom-control-description">Remember me</span>
                             </label>
 
-                            <a class="restore" href="">Forgot password?</a>
+                            <router-link class="restore" to="/password/reset">Forgot password?</router-link>
                         </form>
 
                         <div class="clearfix"></div>
                         <!-- errors -->
                         <transition name="fade">
-                        <div v-if="errors" class="alert alert-danger" role="alert">
-                            Email or password are wrong check out your entry please!
-                        </div>
+                            <div v-if="errors" class="alert alert-danger error-class" role="alert">
+                                Email or password are wrong check out your entry please!
+                            </div>
                         </transition>
                     </div>
                 </div>
@@ -65,11 +69,10 @@
                 section: 'Login',
                 loading: '',
                 email: '',
-                remember:false,
+                remember: false,
                 password: '',
                 response: '',
-                errors:false
-
+                errors: false
 
 
             }
@@ -85,24 +88,35 @@
 
         methods: {
 
+            changeLoaderStatus() {
+                this.loading = 'compass'
+            },
+
 
             checkLoginData() {
-                /* Making API call to authenticate a user */
+
+
+                let config = {
+                    onUploadProgress: progressEvent => {
+                        this.changeLoaderStatus();
+                    }
+                };
 
                 axios.post('/login',
                     {
                         email: this.email,
                         password: this.password,
-                        remember:this.remember
+                        remember: this.remember
 
-                    })
+                    }, config)
                     .then(response => {
-
-                        window.location.href ='/dashboard';
+                        this.loading = '';
+                        window.location.href = '/dashboard';
 
                     })
                     .catch(e => {
-                        this.errors=true;
+                        this.loading = '';
+                        this.errors = true;
                     });
 
             }
@@ -183,7 +197,7 @@
         z-index: 1;
     }
 
-    .logo img{
+    .logo img {
         width: 12.5rem;
     }
 
@@ -199,11 +213,9 @@
 
     }
 
-
-
     .restore {
         float: right;
-        color:white;
+        color: white;
     }
 
     .restore:hover {
@@ -214,8 +226,8 @@
         margin-top: 1rem;
     }
 
-    .custom-control-input:checked ~ .custom-control-indicator{
-        background-color:#2087b0 !important;
+    .custom-control-input:checked ~ .custom-control-indicator {
+        background-color: #2087b0 !important;
     }
 
     .btn {
@@ -231,6 +243,19 @@
         color: #2087b0;
     }
 
+    .logo-back {
+        z-index: 2;
+    }
+
+    .logo-arrow {
+        position: fixed;
+        z-index: 3;
+
+    }
+
+    .error-class{
+        position: absolute;
+    }
 
     @media screen and (max-width: 365px) {
         .remember, .restore {
@@ -241,9 +266,34 @@
     .fade-enter-active, .fade-leave-active {
         transition: opacity .5s
     }
-    .fade-enter, .fade-leave-to  {
+
+    .fade-enter, .fade-leave-to {
         opacity: 0
     }
 
+    .compass {
+        -webkit-animation: spin 0.8s linear infinite;
+        -moz-animation: spin 0.8s linear infinite;
+        animation: spin 0.8s linear infinite;
+    }
+
+    @-moz-keyframes spin {
+        100% {
+            -moz-transform: rotate(360deg);
+        }
+    }
+
+    @-webkit-keyframes spin {
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @keyframes spin {
+        100% {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+    }
 
 </style>

@@ -26,7 +26,7 @@
     <link rel="icon" type="image/png" sizes="96x96" href="/storage/icons/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/storage/icons/favicon-16x16.png">
     <meta name="msapplication-TileImage" content="/storage/icons/ms-icon-144x144.png">
-    <link href="https://fonts.googleapis.com/css?family=Russo+One" rel="stylesheet">
+
 
 
 </head>
@@ -37,5 +37,6 @@
 </div>
 <script src="{{ asset('js/login/auth.js') }}"></script>
 <link rel="stylesheet" href="{{ asset('css/login/auth.css') }}" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Russo+One" rel="stylesheet">
 </body>
 </html>

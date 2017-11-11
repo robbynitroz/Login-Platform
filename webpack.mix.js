@@ -13,24 +13,21 @@ let mix = require('laravel-mix');
 
 
 mix.options({
-   // extractVueStyles: true,
+    extractVueStyles: 'public/css/styles.css',
     processCssUrls: true,
-    uglify: {},
+    //uglify: {},
     purifyCss: true,
 //purifyCss: {},
     postCss: [require('autoprefixer')],
     clearConsole: false
 });
 
-
 mix.webpackConfig({
-
     output: {
         publicPath: '/',
         chunkFilename: 'js/[name].[chunkhash].js',
     },
 });
-
 
 mix.js('resources/assets/js/clients-login.js', 'public/js/clients')
     .sass('resources/assets/sass/client.scss', 'public/css/client');

@@ -15,7 +15,7 @@
 //Main URN
 Route::get('/', function (){
 
-    echo $_SERVER['REMOTE_ADDR'];
+    return view('auth.auth');
 
 })->name('base_URL');
 

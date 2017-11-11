@@ -10,9 +10,16 @@ const platformResetPassword = resolve => {
     });
 };
 
+const Welcome = resolve => {
+    require.ensure(['../components/platform/Welcome.vue'], () => {
+        resolve(require('../components/platform/Welcome.vue'));
+    });
+};
+
 
 
 export const routes = [
+    {path: '/', component: Welcome},
     {path: '/login', component: platformLogin},
     {path: '/password/reset', component: platformResetPassword},
 

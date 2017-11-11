@@ -7,8 +7,10 @@
     <meta name="description" content="GuestCompass">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="theme-color" content="#2087b0"/>
+    <meta name="background_color" content="#2087b0"/>
     <link rel="manifest" type="text/plain" href="/manifest.json">
-    <title>Login</title>
+    <title>GuestCompass</title>
     {{--Favicons for every device--}}
     <link rel="apple-touch-icon" sizes="57x57" href="/storage/icons/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/storage/icons/apple-icon-60x60.png">
@@ -25,12 +27,11 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/storage/icons/favicon-16x16.png">
     <meta name="msapplication-TileImage" content="/storage/icons/ms-icon-144x144.png">
     <link href="https://fonts.googleapis.com/css?family=Russo+One" rel="stylesheet">
-   {{-- <meta name="theme-color" content="{{ $theme_color }}">--}}
-    {{--Favicon end--}}
 
 
 </head>
 <body>
+<noscript>Please enable JavaScript in order to use platform</noscript>
 <div id="app">
     <router-view></router-view>
 </div>

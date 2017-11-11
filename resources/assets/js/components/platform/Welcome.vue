@@ -45,7 +45,7 @@
         mounted: function () {
             setTimeout(()=>{
                 this.loading=''
-                this.welcome='GuestCopmass'
+                this.welcome='GuestCompass'
 
             }, 1500)
 

@@ -81,8 +81,7 @@
         computed: {},
 
         mounted: function () {
-            // this.context=(this.$refs.canvas.getContext("2d"))
-            // console.log(this.$refs.canvas)
+            document.title = "Login";
 
         },
 

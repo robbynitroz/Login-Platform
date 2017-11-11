@@ -43,6 +43,7 @@
         computed: {},
 
         mounted: function () {
+            document.title = "GuestCompass WiFi Platform";
             setTimeout(()=>{
                 this.loading=''
                 this.welcome='GuestCompass'

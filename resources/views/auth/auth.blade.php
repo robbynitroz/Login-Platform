@@ -36,8 +36,8 @@
 <div id="app">
     <router-view></router-view>
 </div>
-<script rel="preload" src="{{ asset('js/login/auth.js') }}"></script>
-<link rel="preload" href="{{ asset('css/login/auth.css') }}" as="style" type="text/css">
+<script src="{{ asset('js/login/auth.js') }}" type="application/javascript"></script>
+<link rel="stylesheet" href="{{ asset('css/login/auth.css') }}" type="text/css">
 <style type="text/css">
     @font-face {
         font-family: Russo One;

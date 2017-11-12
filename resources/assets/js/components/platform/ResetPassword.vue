@@ -23,26 +23,30 @@
                                        placeholder="Email" required type="email"
                                        v-model="email">
                             </div>
+
                             <label hidden for="password">Password</label>
-                            <div class="input-group">
+                            <div :class="['input-group', counter('main')]">
                                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                <input @keyup="errors = false" id="password" class="form-control" name="password"
+                                <input @keyup="counter('main')" id="password" class="form-control" name="password"
                                        placeholder="Password" min="6" required
                                        type="password" v-model="password">
                             </div>
 
                             <label hidden for="password">Password confirm</label>
-                            <div class="input-group">
+                            <transition name="flip" mode="out-in">
+                            <div v-if="activeConfirm" :class="['input-group', counter('secondary')]">
                                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                <input @keyup="errors = false" id="password-confirm" class="form-control" name="password"
+                                <input @keyup="counter('secondary')" id="password-confirm" class="form-control" name="password-confirm"
                                        placeholder="Password confirmation" required
                                        type="password" v-model="passwordConfirm">
                             </div>
-
+                            </transition>
+                            <transition name="flip" mode="out-in">
                             <button type="submit" class="btn btn-lg btn-block"
-                                   v-if=""
+                                   v-if="equal"
                                    >
                                 Submit</button>
+                            </transition>
                             <div class="clearfix"></div>
 
                         </form>
@@ -75,26 +79,56 @@
                 email: '',
                 password: '',
                 passwordConfirm:'',
+                activeConfirm:false,
                 equal:false,
                 errors: false,
-
-
-
             }
         },
 
         computed: {},
+
+
 
         mounted: function () {
             document.title = "Login";
 
         },
 
+
+
         methods: {
 
             changeLoaderStatus() {
                 this.loading = 'compass'
             },
+
+
+            counter(param){
+
+                if(param =='main') {
+                    if (this.password.length < 6 && this.password.length > 0) {
+                        this.activeConfirm=false;
+                        return 'red-border'
+                    } else if (this.password.length >= 6) {
+                        this.activeConfirm=true;
+                        return 'green-border';
+                    }
+                    return '';
+                }
+
+                if(param =='secondary') {
+                    if (this.password !==this.passwordConfirm && this.passwordConfirm.length > 0) {
+                        this.equal=false;
+                        return 'red-border'
+                    } else if (this.password ===this.passwordConfirm && this.passwordConfirm.length > 0) {
+                        this.equal=true;
+                        return 'green-border';
+                    }
+                    return '';
+                }
+
+            },
+
 
 
             checkLoginData() {
@@ -106,12 +140,12 @@
                     }
                 };
 
-                axios.post('/password/reset',
+                axios.post('/api/password/reset',
                     {
                         email: this.email,
                         password: this.password,
+                        password_confirmation:this.passwordConfirm,
                         token: document.head.querySelector('meta[name="token"]')
-
                     }, config)
                     .then(response => {
                         console.log(response)
@@ -120,10 +154,7 @@
                         this.loading = '';
                         this.errors = true;
                     });
-
             }
-
-
         },
 
         mixins: [
@@ -273,11 +304,79 @@
         opacity: 0
     }
 
+    .red-border input{
+        border-top: 1px solid #ff5856 !important;
+        border-bottom: 1px solid #ff5856 !important;
+        border-right: 1px solid #ff5856 !important;
+    }
+    .green-border input{
+        border-top: 1px solid #0bfc00 !important;
+        border-bottom: 1px solid #0bfc00 !important;
+        border-right: 1px solid #0bfc00 !important;
+
+    }
+
+    .red-border span{
+        border-top: 1px solid #ff5856 !important;
+        border-bottom: 1px solid #ff5856 !important;
+        border-left: 1px solid #ff5856 !important;
+    }
+    .green-border span{
+        border-top: 1px solid #0bfc00 !important;
+        border-bottom: 1px solid #0bfc00 !important;
+        border-left: 1px solid #0bfc00 !important;
+
+    }
+
+
+
     .compass {
         -webkit-animation: spin 0.8s linear infinite;
         -moz-animation: spin 0.8s linear infinite;
         animation: spin 0.8s linear infinite;
     }
+
+
+
+    /*Flip transition start*/
+
+    .flip-enter{
+
+    }
+    .flip-enter-active{
+        animation: flip-in 0.5s ease-out forwards;
+    }
+    .flip-leave{
+
+
+    }
+    .flip-leave-active{
+        animation: flip-out 0.5s ease-out forwards;
+    }
+    @keyframes flip-out {
+
+        from {
+            transform: rotateY(0deg)
+        }
+        to{
+
+            transform: rotateY(90deg)
+
+        }
+    }
+
+    @keyframes flip-in {
+
+        from {
+            transform: rotateY(90deg)
+        }
+        to{
+
+            transform: rotateY(0deg)
+
+        }
+    }
+    /*flip transition end*/
 
     @-moz-keyframes spin {
         100% {

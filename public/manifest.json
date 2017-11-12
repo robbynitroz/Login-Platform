@@ -2,9 +2,10 @@
   "name": "GuestCompass Login Platform",
   "short_name": "GuestCompass",
   "start_url":"/",
-  "display":"fullscreen",
+  "display":"standalone",
   "theme_color": "#2087b0",
   "background_color": "#2087b0",
+  "lang": "en",
   "icons": [
     {
       "src": "\/storage/icons/android-icon-36x36.png",

@@ -1,10 +1,10 @@
-const platformLogin = resolve => {
+const Login = resolve => {
     require.ensure(['../components/platform/Login.vue'], () => {
         resolve(require('../components/platform/Login.vue'));
     });
 };
 
-const platformResetPassword = resolve => {
+const EmailPassword = resolve => {
     require.ensure(['../components/platform/EmailPassword.vue'], () => {
         resolve(require('../components/platform/EmailPassword.vue'));
     });
@@ -16,13 +16,16 @@ const Welcome = resolve => {
     });
 };
 
-
+const resetPassword = resolve => {
+    require.ensure(['../components/platform/ResetPassword.vue'], () => {
+        resolve(require('../components/platform/ResetPassword.vue'));
+    });
+};
 
 export const routes = [
     {path: '/', component: Welcome},
-    {path: '/login', component: platformLogin},
-    {path: '/password/reset', component: platformResetPassword},
-
-
+    {path: '/login', component: Login},
+    {path: '/password/reset', component: EmailPassword},
+    {path: '/password/reset/:token', component: resetPassword}
 ];
 

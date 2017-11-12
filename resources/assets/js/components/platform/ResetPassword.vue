@@ -27,18 +27,24 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                 <input @keyup="errors = false" id="password" class="form-control" name="password"
-                                       placeholder="Password" required
+                                       placeholder="Password" min="6" required
                                        type="password" v-model="password">
                             </div>
-                            <button type="submit" class="btn btn-lg btn-block">Login</button>
-                            <div class="clearfix"></div>
-                            <label class="custom-control remember custom-checkbox mb-2 mr-sm-2 mb-sm-0">
-                                <input v-model="remember" name="remember" type="checkbox" class="custom-control-input">
-                                <span class="custom-control-indicator"></span>
-                                <span class="custom-control-description">Remember me</span>
-                            </label>
 
-                            <router-link class="restore" to="/password/reset">Forgot password?</router-link>
+                            <label hidden for="password">Password confirm</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                <input @keyup="errors = false" id="password-confirm" class="form-control" name="password"
+                                       placeholder="Password confirmation" required
+                                       type="password" v-model="passwordConfirm">
+                            </div>
+
+                            <button type="submit" class="btn btn-lg btn-block"
+                                   v-if=""
+                                   >
+                                Submit</button>
+                            <div class="clearfix"></div>
+
                         </form>
 
                         <div class="clearfix"></div>
@@ -61,16 +67,17 @@
     import {loginBackground} from '../../mixins/login-background'
 
     export default {
-        name: 'Login',
+        name: 'ResetPassword',
         data() {
             return {
-                section: 'Login',
+                section: 'ResetPassword',
                 loading: '',
                 email: '',
-                remember: false,
                 password: '',
-                response: '',
-                errors: false
+                passwordConfirm:'',
+                equal:false,
+                errors: false,
+
 
 
             }
@@ -99,17 +106,15 @@
                     }
                 };
 
-                axios.post('/login',
+                axios.post('/password/reset',
                     {
                         email: this.email,
                         password: this.password,
-                        remember: this.remember
+                        token: document.head.querySelector('meta[name="token"]')
 
                     }, config)
                     .then(response => {
-                        this.loading = '';
-                        window.location.href = '/dashboard';
-
+                        console.log(response)
                     })
                     .catch(e => {
                         this.loading = '';

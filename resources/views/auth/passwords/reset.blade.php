@@ -7,6 +7,7 @@
     <meta name="description" content="GuestCompass">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="token" content="{{ $token }}">
     <meta name="theme-color" content="#2087b0"/>
     <meta name="background_color" content="#2087b0"/>
     <link rel="manifest" type="text/plain" href="/manifest.json">
@@ -43,6 +44,6 @@
         font-family: Russo One;
         src: url(/storage/fonts/RussoOne-Regular.ttf);
     }
-    </style>
+</style>
 </body>
 </html>

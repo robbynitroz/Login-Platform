@@ -6,7 +6,6 @@
             <div class="container justify-content-center">
                 <div class="row">
 
-
                     <div class="col-md-12 text-center logo">
                         <img :class="loading" class="logo-arrow" alt="guestcompass_logo-arrow"
                              src="/storage/images/logo-layer2.png">

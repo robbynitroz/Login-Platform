@@ -36,6 +36,8 @@ class ResetPasswordController extends Controller
      */
     public function __construct()
     {
+        echo 1;
+        exit();
         $this->middleware('guest');
     }
 

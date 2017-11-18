@@ -2,7 +2,7 @@ require('./bootstrap');
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import { routes } from './routes/auth-routes'
+import { routes } from './routes/dashboard-routes'
 
 Vue.use(VueRouter);
 
@@ -17,6 +17,3 @@ new Vue({
     el: '#app',
     router,
 });
-
-
-

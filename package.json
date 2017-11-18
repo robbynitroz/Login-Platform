@@ -14,11 +14,12 @@
     "bootstrap": "4.0.0-beta.2",
     "font-awesome": "^4.7.0",
     "popper.js": "^1.12.6",
+    "purify-css": "^1.2.6",
+    "purifycss-webpack": "^0.7.0",
+    "simple-line-icons": "^2.4.1",
     "vue": "^2.5.3",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1",
-    "purify-css": "^1.2.6",
-    "purifycss-webpack": "^0.7.0"
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.26.0",

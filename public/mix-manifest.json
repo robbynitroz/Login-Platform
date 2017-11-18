@@ -2,5 +2,7 @@
     "/js/clients/clients-login.js": "/js/clients/clients-login.js",
     "/css/client/client.css": "/css/client/client.css",
     "/css/login/auth.css": "/css/login/auth.css",
-    "/js/login/auth.js": "/js/login/auth.js"
+    "/css/dashboard/dashboard.css": "/css/dashboard/dashboard.css",
+    "/js/login/auth.js": "/js/login/auth.js",
+    "/js/dashboard/dashboard.js": "/js/dashboard/dashboard.js"
 }

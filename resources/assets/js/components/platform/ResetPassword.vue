@@ -140,12 +140,12 @@
                     }
                 };
 
-                axios.post('/api/password/reset',
+                axios.post('/password/reset',
                     {
                         email: this.email,
                         password: this.password,
                         password_confirmation:this.passwordConfirm,
-                        token: document.head.querySelector('meta[name="token"]')
+                        token: document.head.querySelector('meta[name="token"]').content
                     }, config)
                     .then(response => {
                         console.log(response)

@@ -19,8 +19,8 @@ Route::get('/', function (){
 
 })->name('base_URL');
 
-//Clients | Mikrotik Users auth page
-Route::get('/clients', ['name' => 'Login', 'uses' => 'Login@getData', 'middleware' => 'web']);
+//Clients | MikroTik Users auth page
+Route::get('/clients', ['uses' => 'MikrotikLogin@getData', 'middleware' => 'web'])->name('mikrotik_login');
 
 
 
@@ -28,11 +28,11 @@ Route::get('/clients', ['name' => 'Login', 'uses' => 'Login@getData', 'middlewar
 Route::prefix('/auth')->group(function () {
     //By Email
     Route::post('/email',
-        ['name' => 'email_auth', 'uses' => 'ClientAuthController@getEmailAuth', 'middleware' => 'web']);
+        ['uses' => 'ClientAuthController@getEmailAuth', 'middleware' => 'web'])->name('email_auth');
     Route::post('/login',
-        ['name' => 'login_auth', 'uses' => 'ClientAuthController@getLoginAuth', 'middleware' => 'web']);
+        ['uses' => 'ClientAuthController@getLoginAuth', 'middleware' => 'web'])->name('email_auth');
     Route::post('/facebook',
-        ['name' => 'fb_auth', 'uses' => 'ClientAuthController@getEmailAuth', 'middleware' => 'web']);
+        ['uses' => 'ClientAuthController@getEmailAuth', 'middleware' => 'web'])->name('fb_auth');
 
 });
 

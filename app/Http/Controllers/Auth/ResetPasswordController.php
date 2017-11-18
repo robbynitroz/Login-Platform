@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\ResetsPasswords;
 
 
 class ResetPasswordController extends Controller
@@ -20,6 +19,7 @@ class ResetPasswordController extends Controller
     |
     */
 
+    use ResetsPasswords;
 
 
     /**
@@ -36,19 +36,28 @@ class ResetPasswordController extends Controller
      */
     public function __construct()
     {
-        echo 1;
-        exit();
         $this->middleware('guest');
     }
 
-    protected function guard()
+    /**
+     * Overrides sendResetResponse in ResetPassword, change success response
+     *
+     * @return string
+     */
+    protected function sendResetResponse()
     {
-        return Auth::guard('api');
+        return json_encode('success');
     }
 
-    public function showResetForm()
+    /**
+     * Overrides sendResetFailedResponse in ResetPassword, change failed response
+     *
+     * @return string
+     */
+    protected function sendResetFailedResponse()
     {
-        return view('auth.passwords.reset');
+        return json_encode('failure');
     }
+
 
 }

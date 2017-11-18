@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 
 
 /**
- * Class Login
+ * Class MikrotikLogin
  * @package App\Http\Controllers
  */
-class Login extends Controller
+class MikrotikLogin extends Controller
 {
 
 

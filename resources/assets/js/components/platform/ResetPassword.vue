@@ -54,8 +54,13 @@
                         <div class="clearfix"></div>
                         <!-- errors -->
                         <transition name="fade">
-                            <div v-if="errors" class="alert alert-danger error-class" role="alert">
+                            <div v-if="errors" class="alert alert-danger error-class text-center" role="alert">
                                 Email or password are wrong check out your entry please!
+                            </div>
+                        </transition>
+                        <transition name="fade">
+                            <div v-if="errors" class="alert alert-success error-class text-center" role="alert">
+                                Password changed
                             </div>
                         </transition>
                     </div>
@@ -82,6 +87,7 @@
                 activeConfirm:false,
                 equal:false,
                 errors: false,
+                success:false
             }
         },
 
@@ -148,7 +154,16 @@
                         token: document.head.querySelector('meta[name="token"]').content
                     }, config)
                     .then(response => {
-                        console.log(response)
+                        this.loading = '';
+                        if(response.data=='success'){
+                            this.success=true;
+                            setTimeout(()=>{
+                                window.location.href = '/dashboard';
+                            }, 1000)
+                        }else {
+                            this.loading = '';
+                            this.errors=true;
+                        }
                     })
                     .catch(e => {
                         this.loading = '';
@@ -288,6 +303,7 @@
 
     .error-class{
         position: absolute;
+        width: 92.5%
     }
 
     @media screen and (max-width: 365px) {

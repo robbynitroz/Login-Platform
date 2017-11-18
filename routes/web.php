@@ -14,9 +14,7 @@
 
 //Main URN
 Route::get('/', function (){
-
     return view('auth.auth');
-
 })->name('base_URL');
 
 //Clients | MikroTik Users auth page
@@ -37,13 +35,13 @@ Route::prefix('/auth')->group(function () {
 });
 
 
-//Route::redirect('/', 'http://guestcompass.nl/', 307);
+
 
 
 //Auth URNs
 Auth::routes();
 
-Route::get('/dashboard', ['uses'=>'DashboardController@index', 'middleware'=>['web', 'auth']])->name('home');
+Route::get('/dashboard/{param?}', ['uses'=>'DashboardController@index', 'middleware'=>['web', 'auth']])->name('dashboard');
 
 
 /*Route::get('/test/', function (){

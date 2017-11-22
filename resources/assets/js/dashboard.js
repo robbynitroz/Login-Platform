@@ -2,9 +2,11 @@ require('./bootstrap');
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import { routes } from './routes/dashboard-routes'
+import BootstrapVue from 'bootstrap-vue';
+import { routes } from './routes/dashboard-routes';
 
 Vue.use(VueRouter);
+Vue.use(BootstrapVue);
 
 
 const router = new VueRouter({

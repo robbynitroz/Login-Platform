@@ -1,8 +1,8 @@
 {
-    "/js/clients/clients-login.js": "/js/clients/clients-login.js",
+    "/js/dashboard/dashboard.js": "/js/dashboard/dashboard.js",
     "/css/client/client.css": "/css/client/client.css",
+    "/js/clients/clients-login.js": "/js/clients/clients-login.js",
     "/css/login/auth.css": "/css/login/auth.css",
     "/css/dashboard/dashboard.css": "/css/dashboard/dashboard.css",
-    "/js/login/auth.js": "/js/login/auth.js",
-    "/js/dashboard/dashboard.js": "/js/dashboard/dashboard.js"
+    "/js/login/auth.js": "/js/login/auth.js"
 }

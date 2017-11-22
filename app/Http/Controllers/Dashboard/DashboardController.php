@@ -24,6 +24,6 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
-        dd('Welcome');
+        return view('dashboard.dashboard');
     }
 }

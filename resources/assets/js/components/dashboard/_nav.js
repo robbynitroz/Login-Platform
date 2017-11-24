@@ -19,9 +19,9 @@ export default {
       }
     },
     {
-      name: 'Components',
-      url: '/components',
-      icon: 'icon-puzzle',
+      name: 'Hotels',
+      url: '/hotels',
+      icon: 'fa fa-building-o',
       children: [
         {
           name: 'Buttons',
@@ -61,9 +61,9 @@ export default {
       ]
     },
     {
-      name: 'Icons',
-      url: '/icons',
-      icon: 'icon-star',
+      name: 'Login methods',
+      url: '/templates',
+      icon: 'icon-puzzle',
       children: [
         {
           name: 'Font Awesome',

@@ -11,6 +11,8 @@ Vue.use(BootstrapVue);
 
 const router = new VueRouter({
     mode: 'history',
+    linkActiveClass: 'open active',
+    scrollBehavior: () => ({ y: 0 }),
     routes,
 })
 

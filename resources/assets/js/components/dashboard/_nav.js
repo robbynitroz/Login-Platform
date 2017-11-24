@@ -4,14 +4,14 @@ export default {
       name: 'Dashboard',
       url: '/dashboard',
       icon: 'icon-speedometer',
-      badge: {
+      /*badge: {
         variant: 'primary',
         text: 'NEW'
-      }
+      }*/
     },
     {
       title: true,
-      name: 'UI elements',
+      name: 'Hotel management',
       class: '',
       wrapper: {
         element: '',
@@ -85,10 +85,10 @@ export default {
       name: 'Widgets',
       url: '/widgets',
       icon: 'icon-calculator',
-      badge: {
+      /*badge: {
         variant: 'primary',
         text: 'NEW'
-      }
+      }*/
     },
     {
       name: 'Charts',
@@ -100,12 +100,12 @@ export default {
     },
     {
       title: true,
-      name: 'Extras'
+      name: 'Settings'
     },
     {
-      name: 'Pages',
-      url: '/pages',
-      icon: 'icon-star',
+      name: 'Settings',
+      url: '/settings',
+      icon: 'icon-settings',
       children: [
         {
           name: 'Login',
@@ -130,16 +130,16 @@ export default {
       ]
     },
     {
-      name: '',
+      name: 'Mikrotik status',
       url: '',
-      icon: 'icon-cloud-download',
+      icon: 'icon-compass',
       class: 'mt-auto',
       variant: 'success'
     },
     {
-      name: '',
+      name: 'Server status',
       url: '',
-      icon: 'icon-layers',
+      icon: 'icon-cloud-download',
       variant: 'danger'
     }
   ]

@@ -41,7 +41,7 @@ Route::prefix('/auth')->group(function () {
 //Auth URNs
 Auth::routes();
 
-Route::get('/dashboard/{param?}', ['uses'=>'DashboardController@index', 'middleware'=>['web', 'auth']])->name('dashboard');
+Route::get('/dashboard/{param?}/{argument?}', ['uses'=>'DashboardController@index', 'middleware'=>['web', 'auth']])->name('dashboard');
 
 
 /*Route::get('/test/', function (){

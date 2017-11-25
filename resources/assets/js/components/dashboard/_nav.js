@@ -1,121 +1,118 @@
 export default {
-  items: [
-    {
-      name: 'Dashboard',
-      url: '/dashboard',
-      icon: 'icon-speedometer',
-      /*badge: {
-        variant: 'primary',
-        text: 'NEW'
-      }*/
-    },
-    {
-      title: true,
-      name: 'Hotel management',
-      class: '',
-      wrapper: {
-        element: '',
-        attributes: {}
-      }
-    },
-    {
-      name: 'Hotels',
-      url: '/hotels',
-      icon: 'fa fa-building-o',
-      children: [
+    items: [
         {
-          name: 'Add hotel',
-          url: '/dashboard/hotel/add',
-          icon: 'icon-puzzle'
+            name: 'Dashboard',
+            url: '/dashboard',
+            icon: 'icon-speedometer',
+            /*badge: {
+              variant: 'primary',
+              text: 'NEW'
+            }*/
         },
         {
-          name: 'Show hotels',
-          url: '/dashboard/hotels',
-          icon: 'icon-puzzle'
-        },
-      ]
-    },
-    {
-      name: 'Login templates',
-      url: '/templates',
-      icon: 'icon-screen-tablet',
-      children: [
-        {
-          name: 'Font Awesome',
-          url: '/icons/font-awesome',
-          icon: 'icon-star',
-          badge: {
-            variant: 'secondary',
-            text: '4.7'
-          }
+            title: true,
+            name: 'Hotel management',
+            class: '',
+            wrapper: {
+                element: '',
+                attributes: {}
+            }
         },
         {
-          name: 'Simple Line Icons',
-          url: '/icons/simple-line-icons',
-          icon: 'icon-star'
+            name: 'Hotels',
+            url: '/hotels',
+            icon: 'fa fa-building-o',
+            children: [
+                {
+                    name: 'Add hotel',
+                    url: '/dashboard/hotel/add',
+                    icon: 'icon-plus'
+                },
+                {
+                    name: 'Show hotels',
+                    url: '/dashboard/hotels',
+                    icon: 'icon-list'
+                },
+
+
+            ]
+        },
+
+        {
+            name: 'Login templates',
+            url: '/dashboard/templates',
+            icon: 'icon-screen-tablet',
+            children: [
+                {
+                    name: 'By hotel',
+                    url: '/dashboard/template/1',
+                    icon: 'icon-doc',
+                },
+                {
+                    name: 'All',
+                    url: '/dashboard/templates',
+                    icon: 'icon-docs'
+                }
+            ]
+        },
+        {
+            name: 'Routers',
+            url: '/dashboard/routers',
+            icon: 'fa fa-wifi',
+            /*badge: {
+              variant: 'primary',
+              text: 'NEW'
+            }*/
+        },
+        {
+            divider: true
+        },
+        {
+            title: true,
+            name: 'Settings'
+        },
+        {
+            name: 'Settings',
+            url: '/dashboard/settings',
+            icon: 'icon-settings',
+            children: [
+                {
+                    name: 'My account settings',
+                    url: '/dashboard/settings/account',
+                    icon: 'icon-user'
+                },
+
+                {
+                    name: 'Users accounts',
+                    url: '/dashboard/settings/users',
+                    icon: 'fa fa-users'
+                },
+
+                {
+                    name: 'System utilities',
+                    url: '/dashboard/settings/utilities',
+                    icon: 'fa fa-wrench'
+                },
+                {
+                    name: 'System configurations',
+                    url: '/dashboard/settings/config',
+                    icon: 'fa fa-cogs'
+                },
+
+            ]
+        },
+        {
+            name: 'Mikrotik status',
+            url: '',
+            icon: 'icon-compass',
+            class: 'mt-auto',
+            variant: 'success'
+        },
+        {
+            name: 'Server status',
+            url: '',
+            icon: 'icon-cloud-download',
+            variant: 'danger'
         }
-      ]
-    },
-    {
-      name: 'Routers',
-      url: '/routers',
-      icon: 'fa fa-wifi',
-      /*badge: {
-        variant: 'primary',
-        text: 'NEW'
-      }*/
-    },
-    {
-      name: 'Charts',
-      url: '/charts',
-      icon: 'icon-pie-chart'
-    },
-    {
-      divider: true
-    },
-    {
-      title: true,
-      name: 'Settings'
-    },
-    {
-      name: 'Settings',
-      url: '/settings',
-      icon: 'icon-settings',
-      children: [
-        {
-          name: 'Login',
-          url: '/pages/login',
-          icon: 'icon-star'
-        },
-        {
-          name: 'Register',
-          url: '/pages/register',
-          icon: 'icon-star'
-        },
-        {
-          name: 'Error 404',
-          url: '/pages/404',
-          icon: 'icon-star'
-        },
-        {
-          name: 'Error 500',
-          url: '/pages/500',
-          icon: 'icon-star'
-        }
-      ]
-    },
-    {
-      name: 'Mikrotik status',
-      url: '',
-      icon: 'icon-compass',
-      class: 'mt-auto',
-      variant: 'success'
-    },
-    {
-      name: 'Server status',
-      url: '',
-      icon: 'icon-cloud-download',
-      variant: 'danger'
-    }
-  ]
+    ]
 }

@@ -10,11 +10,6 @@
         <b-dropdown-item><i class="fa fa-comments"></i> Comments<b-badge variant="warning">{{itemsCount}}</b-badge></b-dropdown-item>
         <b-dropdown-header tag="div" class="text-center"><strong>Settings</strong></b-dropdown-header>
         <b-dropdown-item><i class="fa fa-user"></i> Profile</b-dropdown-item>
-        <b-dropdown-item><i class="fa fa-wrench"></i> Settings</b-dropdown-item>
-        <b-dropdown-item><i class="fa fa-usd"></i> Payments<b-badge variant="default">{{itemsCount}}</b-badge></b-dropdown-item>
-        <b-dropdown-item><i class="fa fa-file"></i> Projects<b-badge variant="primary">{{itemsCount}}</b-badge></b-dropdown-item>
-        <b-dropdown-divider></b-dropdown-divider>
-        <b-dropdown-item><i class="fa fa-shield"></i> Lock Account</b-dropdown-item>
         <b-dropdown-item><i class="fa fa-lock"></i> Logout</b-dropdown-item>
       </b-nav-item-dropdown>
 </template>

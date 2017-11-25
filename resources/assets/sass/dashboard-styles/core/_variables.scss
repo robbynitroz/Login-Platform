@@ -49,7 +49,7 @@ $navbar-border: (
 $navbar-brand-width:                  155px !default;
 $navbar-brand-bg:                     #fff !default;
 $navbar-brand-logo:                   url('/storage/images/logo-gc.png') !default;
-$navbar-brand-logo-size:              70px auto !default;
+$navbar-brand-logo-size:              120px auto !default;
 $navbar-brand-border: (
   bottom: (
     size:                             1px,
@@ -60,7 +60,7 @@ $navbar-brand-border: (
 
 $navbar-brand-minimized-width:        50px !default;
 $navbar-brand-minimized-bg:           $navbar-brand-bg !default;
-$navbar-brand-minimized-logo:         url('/storage/images/logo-symbol.png') !default;
+$navbar-brand-minimized-logo:         url('/storage/images/logo-compl.png') !default;
 $navbar-brand-minimized-logo-size:    24px !default;
 $navbar-brand-minimized-border:       $navbar-brand-border !default;
 

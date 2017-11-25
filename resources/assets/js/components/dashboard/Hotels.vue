@@ -14,8 +14,9 @@
                             </b-input-group>
                         </b-col>
 
-                        <b-col lg="12" class="hotels">
 
+                        <b-col lg="12" class="hotels">
+                                <b-table class="table-outline table-responsive-sm mb-0" striped hover :items="items"></b-table>
                         </b-col>
 
                     </b-row>
@@ -40,6 +41,11 @@
         data: function () {
             return {
 
+                items: [
+                    {  hotel_name: "Hotel CC", web_page: 'google.com', login_method: 'email' },
+
+                ]
+
 
             }
         },
@@ -48,3 +54,9 @@
         }
     }
 </script>
+
+<style>
+    .hotels{
+        border:1px solid #f0f3f5;
+    }
+</style>

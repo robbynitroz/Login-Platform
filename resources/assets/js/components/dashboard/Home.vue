@@ -13,8 +13,8 @@
                             <b-dropdown-item>Something else here...</b-dropdown-item>
                             <b-dropdown-item disabled>Disabled action</b-dropdown-item>
                         </b-dropdown>
-                        <h4 class="mb-0">9.823</h4>
-                        <p>Members online</p>
+                        <h4 class="mb-0">2</h4>
+                        <p>Users online</p>
                     </div>
                     <card-line1-chart-example class="chart-wrapper px-3" style="height:70px;" height="70"/>
                 </b-card>
@@ -31,8 +31,8 @@
                             <b-dropdown-item>Something else here...</b-dropdown-item>
                             <b-dropdown-item disabled>Disabled action</b-dropdown-item>
                         </b-dropdown>
-                        <h4 class="mb-0">9.823</h4>
-                        <p>Members online</p>
+                        <h4 class="mb-0">2</h4>
+                        <p>Routers online</p>
                     </div>
                     <card-line2-chart-example class="chart-wrapper px-3" style="height:70px;" height="70"/>
                 </b-card>
@@ -49,8 +49,8 @@
                             <b-dropdown-item>Something else here...</b-dropdown-item>
                             <b-dropdown-item disabled>Disabled action</b-dropdown-item>
                         </b-dropdown>
-                        <h4 class="mb-0">9.823</h4>
-                        <p>Members online</p>
+                        <h4 class="mb-0">389 MB</h4>
+                        <p>Server memory usage</p>
                     </div>
                     <card-line3-chart-example class="chart-wrapper" style="height:70px;" height="70"/>
                 </b-card>
@@ -67,8 +67,8 @@
                             <b-dropdown-item>Something else here...</b-dropdown-item>
                             <b-dropdown-item disabled>Disabled action</b-dropdown-item>
                         </b-dropdown>
-                        <h4 class="mb-0">9.823</h4>
-                        <p>Members online</p>
+                        <h4 class="mb-0">10%</h4>
+                        <p>Server CPU usage</p>
                     </div>
                     <card-bar-chart-example class="chart-wrapper px-3" style="height:70px;" height="70"/>
                 </b-card>

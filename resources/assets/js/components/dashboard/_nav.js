@@ -24,46 +24,21 @@ export default {
       icon: 'fa fa-building-o',
       children: [
         {
-          name: 'Buttons',
-          url: '/components/buttons',
+          name: 'Add hotel',
+          url: '/dashboard/hotel/add',
           icon: 'icon-puzzle'
         },
         {
-          name: 'Social Buttons',
-          url: '/components/social-buttons',
+          name: 'Show hotels',
+          url: '/dashboard/hotels',
           icon: 'icon-puzzle'
         },
-        {
-          name: 'Cards',
-          url: '/components/cards',
-          icon: 'icon-puzzle'
-        },
-        {
-          name: 'Forms',
-          url: '/components/forms',
-          icon: 'icon-puzzle'
-        },
-        {
-          name: 'Modals',
-          url: '/components/modals',
-          icon: 'icon-puzzle'
-        },
-        {
-          name: 'Switches',
-          url: '/components/switches',
-          icon: 'icon-puzzle'
-        },
-        {
-          name: 'Tables',
-          url: '/components/tables',
-          icon: 'icon-puzzle'
-        }
       ]
     },
     {
-      name: 'Login methods',
+      name: 'Login templates',
       url: '/templates',
-      icon: 'icon-puzzle',
+      icon: 'icon-screen-tablet',
       children: [
         {
           name: 'Font Awesome',
@@ -82,9 +57,9 @@ export default {
       ]
     },
     {
-      name: 'Widgets',
-      url: '/widgets',
-      icon: 'icon-calculator',
+      name: 'Routers',
+      url: '/routers',
+      icon: 'fa fa-wifi',
       /*badge: {
         variant: 'primary',
         text: 'NEW'

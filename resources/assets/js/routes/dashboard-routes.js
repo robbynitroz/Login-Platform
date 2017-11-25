@@ -23,7 +23,19 @@ export const routes = [
                 path: '/dashboard/home',
                 name: 'Home',
                 component: Home
-            }]
+            },
+            {
+                path: '/dashboard/hotels',
+                name: 'Hotels',
+
+            },
+            {
+                path: '/dashboard/hotel/add',
+                name: 'Add Hotel',
+
+            },
+
+        ]
 
     },
 

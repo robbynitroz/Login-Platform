@@ -44,6 +44,11 @@ Auth::routes();
 Route::get('/dashboard/{param?}/{argument?}', ['uses'=>'DashboardController@index', 'middleware'=>['web', 'auth']])->name('dashboard');
 
 
+
+Route::get('/hotels', ['uses'=>'HotelController@getHotels', 'middleware'=>['web', 'auth']])->name('hotels');
+Route::delete('/hotels/{id}', ['uses'=>'HotelController@deleteHotel', 'middleware'=>['web', 'auth']])->name('delete_hotels');
+
+
 /*Route::get('/test/', function (){
 
 

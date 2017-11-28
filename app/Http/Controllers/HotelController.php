@@ -55,6 +55,7 @@ class HotelController extends Controller
     public function deleteHotel($id)
     {
         $hotel = Hotel::find($id);
+        $hotel->templates->delete();
         $hotel->delete();
         return 'Success';
     }

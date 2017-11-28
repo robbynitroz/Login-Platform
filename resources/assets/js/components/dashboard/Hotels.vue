@@ -1,4 +1,6 @@
 <template>
+    <div class="wrapper">
+
     <div class="animated fadeIn">
         <div class="row">
             <div class="col-md-12">
@@ -32,26 +34,33 @@
                                     {{ hotel.main_url }}
                                 </p>
                                 <b-button  type="edit" size="sm" variant="primary"><i class="fa fa-pencil-square-o"></i> Edit</b-button>
-                                <b-button @click="deleteHotel(hotel.id)" type="delete" size="sm" variant="danger"><i class="fa fa-ban"></i> Delete</b-button>
+                                <b-button @click="confirmDelete(hotel.id, hotel.name)" type="delete" size="sm" variant="danger"><i class="fa fa-ban"></i> Delete</b-button>
+
                                 <img class="hotel-logo" :src="'/storage/images/'+ hotel.logo">
                             </b-card>
                             </b-col>
-
-
-
-
-
-
                         </b-col>
 
                     </b-row>
-
-
-
                 </b-card>
             </div><!--/.col-->
+            <b-modal centered title="Warning" class="modal-danger" v-model="dangerModal" @ok="deleteHotel(delHotel.id)">
+                You are going to delete {{ delHotel.name }}.  Press OK if you are sure
+            </b-modal>
+            <b-modal centered ref="myModalRef" size="sm" hide-footer title="Information">
+                <div class="d-block text-center">
+                    <h3>{{ delHotel.name }}  successfully deleted </h3>
+                </div>
+                <b-btn class="mt-3" variant="success" block @click="hideModal">OK</b-btn>
+            </b-modal>
         </div><!--/.row-->
+
     </div>
+
+    </div>
+
+
+
 </template>
 
 <script>
@@ -70,7 +79,13 @@
                 fetchComplete:false,
                 filter:'',
                 filtered:[],
-                milter:['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present']
+                dangerModal:false,
+                successDel:true,
+                delHotel:{
+                    id:'',
+                    name:'',
+                }
+
 
 
             }
@@ -107,6 +122,20 @@
 
         methods: {
 
+
+
+
+
+            hideModal () {
+                this.$refs.myModalRef.hide()
+            },
+
+            confirmDelete(id, name){
+                this.delHotel.id=id;
+                this.delHotel.name=name;
+                this.dangerModal=true
+            },
+
             deleteHotel(id){
 
                 let config = {
@@ -118,7 +147,7 @@
                     config)
                     .then(response => {
 
-                        console.log(response);
+                        this.afterDelete()
 
 
                     })
@@ -126,7 +155,22 @@
                         //this.loading = '';
 
                     });
-            }
+            },
+
+            afterDelete(){
+
+                axios.get('/hotels')
+                    .then(response => {
+
+                        this.$refs.myModalRef.show();
+                        this.hotels= response.data;
+
+                    })
+                    .catch(e => {
+                        //this.loading = '';
+
+                    });
+            },
 
         }
     }

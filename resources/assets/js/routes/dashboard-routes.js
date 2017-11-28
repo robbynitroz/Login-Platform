@@ -17,6 +17,12 @@ const Hotels = resolve => {
     });
 };
 
+const Modals = resolve => {
+    require.ensure(['../components/dashboard/Modals.vue'], () => {
+        resolve(require('../components/dashboard/Modals.vue'));
+    });
+};
+
 
 export const routes = [
     {
@@ -39,6 +45,7 @@ export const routes = [
             {
                 path: '/dashboard/hotel/add',
                 name: 'Add Hotel',
+                component: Modals
 
             },
 

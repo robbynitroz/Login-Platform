@@ -33,7 +33,7 @@
                                 <p class="card-text">
                                     {{ hotel.main_url }}
                                 </p>
-                                <b-button  type="edit" size="sm" variant="primary"><i class="fa fa-pencil-square-o"></i> Edit</b-button>
+                                <b-button @click="editHotel(hotel.id)"  type="edit" size="sm" variant="primary"><i class="fa fa-pencil-square-o"></i> Edit</b-button>
                                 <b-button @click="confirmDelete(hotel.id, hotel.name)" type="delete" size="sm" variant="danger"><i class="fa fa-ban"></i> Delete</b-button>
 
                                 <img class="hotel-logo" :src="'/storage/images/'+ hotel.logo">
@@ -122,9 +122,10 @@
 
         methods: {
 
+            editHotel (id) {
 
-
-
+                this.$router.push({ name: 'Edit Hotel', params: { hotelID: id }})
+            },
 
             hideModal () {
                 this.$refs.myModalRef.hide()

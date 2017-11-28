@@ -56,6 +56,7 @@ class HotelController extends Controller
      */
     public function deleteHotel($id)
     {
+        Redis::del('hotel.' . $id);
         $templates = (Hotel::find($id))->templates()->delete();
         $hotel = (Hotel::find($id))->delete();
         return 'Success';

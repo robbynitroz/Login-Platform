@@ -45,7 +45,12 @@ export const routes = [
             {
                 path: '/dashboard/hotel/add',
                 name: 'Add Hotel',
-                component: Modals
+
+            },
+
+            {
+                path: '/dashboard/hotel/edit/:hotelID',
+                name: 'Edit Hotel',
 
             },
 

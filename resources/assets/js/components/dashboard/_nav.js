@@ -44,12 +44,12 @@ export default {
             icon: 'icon-screen-tablet',
             children: [
                 {
-                    name: 'By hotel',
+                    name: 'Add template',
                     url: '/dashboard/template/1',
-                    icon: 'icon-doc',
+                    icon: 'icon-plus',
                 },
                 {
-                    name: 'All',
+                    name: 'All templates',
                     url: '/dashboard/templates',
                     icon: 'icon-docs'
                 }
@@ -59,10 +59,18 @@ export default {
             name: 'Routers',
             url: '/dashboard/routers',
             icon: 'fa fa-wifi',
-            /*badge: {
-              variant: 'primary',
-              text: 'NEW'
-            }*/
+            children: [
+                {
+                    name: 'Add Router',
+                    url: '/dashboard/template/1',
+                    icon: 'icon-plus',
+                },
+                {
+                    name: 'All routers',
+                    url: '/dashboard/templates',
+                    icon: 'fa fa-sitemap'
+                }
+            ]
         },
         {
             divider: true

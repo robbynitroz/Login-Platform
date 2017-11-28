@@ -49,16 +49,18 @@ class HotelController extends Controller
 
 
     /**
+     * Delete hotels and related templates
+     *
      * @param $id
      * @return string
      */
     public function deleteHotel($id)
     {
-        $hotel = Hotel::find($id);
-        $hotel->templates->delete();
-        $hotel->delete();
+        $templates = (Hotel::find($id))->templates()->delete();
+        $hotel = (Hotel::find($id))->delete();
         return 'Success';
     }
+
 
 
 }

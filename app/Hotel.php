@@ -35,7 +35,7 @@ class Hotel extends Model
      */
     public function templates()
     {
-        return $this->hasMany('App\Template');
+        return $this->hasMany('App\Template','hotel', 'id');
     }
 
     /**

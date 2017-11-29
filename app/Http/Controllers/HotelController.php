@@ -36,6 +36,11 @@ class HotelController extends Controller
         return Redis::get('hotel.' . $hotelID);
     }
 
+    public function getHotelAdmin(int $id)
+    {
+        return Hotel::find($id);
+    }
+
 
     /**
      * Get * hotels

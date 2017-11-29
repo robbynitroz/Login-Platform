@@ -23,6 +23,12 @@ const Modals = resolve => {
     });
 };
 
+const Hotel = resolve => {
+    require.ensure(['../components/dashboard/Hotel.vue'], () => {
+        resolve(require('../components/dashboard/Hotel.vue'));
+    });
+};
+
 
 export const routes = [
     {
@@ -51,6 +57,7 @@ export const routes = [
             {
                 path: '/dashboard/hotel/edit/:hotelID',
                 name: 'Edit Hotel',
+                component: Hotel
 
             },
 

@@ -45,7 +45,8 @@ Route::get('/dashboard/{page?}/{argument?}/{secondary?}', ['uses'=>'DashboardCon
 
 
 Route::get('/hotels', ['uses'=>'HotelController@getHotels', 'middleware'=>['web', 'auth']])->name('hotels');
-Route::delete('/hotels/{id}', ['uses'=>'HotelController@deleteHotel', 'middleware'=>['web', 'auth']])->name('delete_hotels');
+Route::get('/hotel/{id}', ['uses'=>'HotelController@getHotelAdmin', 'middleware'=>['web', 'auth']])->name('get_hotel');
+Route::delete('/hotel/{id}', ['uses'=>'HotelController@deleteHotel', 'middleware'=>['web', 'auth']])->name('delete_hotels');
 
 
 /*Route::get('/test/', function (){

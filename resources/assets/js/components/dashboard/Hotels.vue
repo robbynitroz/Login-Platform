@@ -178,7 +178,7 @@
 
 </script>
 
-<style>
+<style scoped>
 .hotels{
     border-radius: 10px;
     float: left;
@@ -189,5 +189,8 @@
         position: absolute;
         top:30px;
         right:10px;
+    }
+    .form-control{
+        margin-left: -1px;
     }
 </style>

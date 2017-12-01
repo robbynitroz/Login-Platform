@@ -3,13 +3,15 @@
 
         <div v-if="fetchComplite" class="animated fadeIn">
 
-            <div class="row">
+            <div v-if="!isEmpty" class="row">
 
                 <div class="col-md-12">
+                    <form enctype="multipart/form-data" @submit.prevent="confirmSave(hotel.id)">
                     <b-card>
                         <div slot="header">
                             <strong>{{ hotel.name }}</strong>
                         </div>
+
 
                         <!--Hotel name-->
                         <b-form-fieldset label="Hotel name" description="Type hotel name or change it || Required ">
@@ -35,9 +37,21 @@
                         <b-form-fieldset label="Facebook page URL"
                                          description="Type hotel FB URL or change it || Optional">
                             <b-form-fieldset>
-                                <b-input-group left="<i class='fa fa-facebook-square'></i>">
+                                <b-input-group>
                                     <b-form-input type="text" v-model="hotel.facebook_url"
                                                   placeholder="Facebook URL"></b-form-input>
+                                </b-input-group>
+                            </b-form-fieldset>
+                        </b-form-fieldset>
+
+
+                        <!--Timeout-->
+                        <b-form-fieldset label="Mikrotik timeout for this hotel"
+                                         description="Example: 7d (1d default) || Required">
+                            <b-form-fieldset>
+                                <b-input-group left="<i class='fa fa-clock-o'></i>">
+                                    <b-form-input type="text" v-model="hotel.session_timeout"
+                                                  placeholder="TimeoutL"></b-form-input>
                                 </b-input-group>
                             </b-form-fieldset>
                         </b-form-fieldset>
@@ -49,7 +63,7 @@
                             <b-form-select
                                     :plain="true"
                                     :options="timezones"
-                                    v-model="selectedTimezone"
+                                    v-model="timezone"
                                     left="<i class='fa fa-facebook-square'></i> ">
                             </b-form-select>
                         </b-form-fieldset>
@@ -58,22 +72,38 @@
                         <!--Hotel logo-->
                         <b-form-fieldset
                                 label="Logo input"
-                                :plain="true"
-                                :label-cols="2"
-                                v-model="hotel.logo"
-                                :horizontal="true">
-                            <b-form-file :plain="true"></b-form-file>
+                                description="Upload Hotel logo || optional"
+                        >
+                            <b-form-file
+                                    id="logo"
+                                    label="Logo input"
+                                    v-model="hotel.logo"
+                            ></b-form-file>
                         </b-form-fieldset>
 
 
+
+
+
                         <div slot="footer">
-                            <b-button @click="confirmDelete(hotel.id, hotel.name, 'delete')" type="submit" size="sm" variant="success"><i
-                                    class="fa fa-dot-circle-o"></i>
-                                Submit
+                            <b-button
+                                    type="submit"
+                                    variant="primary"><i
+                                    class="fa fa-floppy-o"></i>
+                                Save
                             </b-button>
-                            <b-button type="reset" size="sm" variant="danger"><i class="fa fa-ban"></i> Reset</b-button>
+                            <b-button :to="{name:'Hotels'}" variant="secondary"><i class="fa fa-times"></i>
+                                Cancel
+                            </b-button>
+                            <b-button  @click="confirmDelete(hotel.id, hotel.name, 'delete')" variant="danger">
+                                <i class="fa fa-ban"></i> Delete
+                            </b-button>
+
                         </div>
                     </b-card>
+                    </form>
+
+
                 </div>
 
 
@@ -113,7 +143,15 @@
             return {
 
                 fetchComplite: false,
-                hotel: {},
+                hotel: {
+                    id: '',
+                    name: '',
+                    main_url: '',
+                    facebook_url: '',
+                    session_timeout:'1d',
+                    selectedtimeZone:'',
+                    logo:''
+                },
                 isEmpty: true,
                 dangerModal: false,
                 successDel: true,
@@ -568,7 +606,15 @@
 
                     if (response.data.name) {
                         this.isEmpty = false;
-                        this.hotel = response.data;
+                        this.hotel.id = response.data.id;
+                        this.hotel.name = response.data.name;
+                        this.hotel.facebook_url = response.data.facebook_url;
+                        this.hotel.logo = response.data.logo;
+                        this.hotel.main_url = response.data.main_url;
+                        this.hotel.timezone = response.data.timezone;
+                        this.session_timeout=response.data.session_timeout
+
+
                     } else {
                         console.log("sellers is not empty !");
                     }
@@ -584,20 +630,48 @@
 
         computed: {
 
-            selectedTimezone() {
-                for (var key in this.timezones) {
-                    if (this.timezones[key] == this.hotel.timezone) {
-                        return key
+            timezone: {
+                // getter
+                get: function () {
+                    for (var key in this.timezones) {
+                        if (this.timezones[key] == this.hotel.timezone) {
+                            return key
+                        }
                     }
+                },
+                // setter
+                set: function (timeZone) {
+                    this.hotel.timezone=timeZone;
                 }
+            },
+
+            timezoneChange(){
+                this.hotel.selectedtimeZone = this.timezones[this.hotel.timezone]
             }
+
+
         },
 
         methods: {
 
-            editHotel(id) {
 
-                this.$router.push({name: 'Edit Hotel', params: {hotelID: id}})
+            confirmSave(id) {
+
+                var uploadLogo=document.querySelector( '#logo' ).files[0];
+                console.log(uploadLogo);
+                axios.put('/hotel/' + id, {
+                    hotel:this.hotel,
+                    timezone:this.timezones[this.hotel.timezone],
+                    logo:uploadLogo
+                })
+                    .then(response => {
+                        console.log(response.data)
+
+                    })
+                    .catch(e => {
+                        //this.loading = '';
+
+                    });
             },
 
             hideModal() {
@@ -619,12 +693,10 @@
 
                     }
                 };
-                axios.delete('/hotels/' + id,
+                axios.delete('/hotel/' + id,
                     config)
                     .then(response => {
-
-                        this.afterAction()
-
+                        return this.$router.push({name: 'Hotels'})
 
                     })
                     .catch(e => {

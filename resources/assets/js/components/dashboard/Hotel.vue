@@ -77,9 +77,17 @@
                             <b-form-file
                                     id="logo"
                                     label="Logo input"
-                                    v-model="hotel.logo"
+                                    @change="onFileChange"
                             ></b-form-file>
                         </b-form-fieldset>
+                        <b-button
+                                type="button"
+                                @click="uploadImage(hotel.id)"
+                               v-if="uploadButton"
+                                variant="success"><i
+                                class="fa fa-upload"></i>
+                            Upload image
+                        </b-button>
 
 
 
@@ -151,10 +159,13 @@
                     session_timeout:'1d',
                     selectedtimeZone:'',
                     logo:''
+
                 },
+                logo:'',
                 isEmpty: true,
                 dangerModal: false,
                 successDel: true,
+                uploadButton:false,
                 delHotel: {
                     id: '',
                     name: '',
@@ -655,14 +666,30 @@
         methods: {
 
 
+            onFileChange(e) {
+                let files = e.target.files || e.dataTransfer.files;
+                if (!files.length)
+                    return;
+                this.createImage(files[0]);
+            },
+
+            createImage(file) {
+                let reader = new FileReader();
+                let vm = this;
+                reader.onload = (e) => {
+                    vm.logo = e.target.result;
+                };
+                reader.readAsDataURL(file);
+                this.uploadButton = true
+
+            },
+
+
             confirmSave(id) {
 
-                var uploadLogo=document.querySelector( '#logo' ).files[0];
-                console.log(uploadLogo);
                 axios.put('/hotel/' + id, {
                     hotel:this.hotel,
                     timezone:this.timezones[this.hotel.timezone],
-                    logo:uploadLogo
                 })
                     .then(response => {
                         console.log(response.data)
@@ -672,6 +699,25 @@
                         //this.loading = '';
 
                     });
+            },
+
+            uploadImage(id){
+
+
+                var data = new FormData();
+                data.append('logo', document.getElementById('logo').files[0]);
+
+                axios.post('/hotel/files/' + id, data,
+                    )
+                    .then(response => {
+                        console.log(response)
+
+                    })
+                    .catch(e => {
+                        //this.loading = '';
+
+                    });
+
             },
 
             hideModal() {

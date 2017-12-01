@@ -47,6 +47,7 @@ Route::get('/dashboard/{page?}/{argument?}/{secondary?}', ['uses'=>'DashboardCon
 Route::get('/hotels', ['uses'=>'HotelController@getHotels', 'middleware'=>['web', 'auth']])->name('hotels');
 Route::get('/hotel/{id}', ['uses'=>'HotelController@getHotelAdmin', 'middleware'=>['web', 'auth']])->name('get_hotel');
 Route::put('/hotel/{id}', ['uses'=>'HotelController@editHotel', 'middleware'=>['web', 'auth']])->name('edit_hotel');
+Route::post('/hotel/files/{id}', ['uses'=>'HotelController@editHotelFiles', 'middleware'=>['web', 'auth']])->name('edit_hotel_files');
 Route::delete('/hotel/{id}', ['uses'=>'HotelController@deleteHotel', 'middleware'=>['web', 'auth']])->name('delete_hotels');
 
 

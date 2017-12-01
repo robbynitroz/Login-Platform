@@ -36,6 +36,12 @@ class HotelController extends Controller
         return Redis::get('hotel.' . $hotelID);
     }
 
+    /**
+     * Get single hotel by id for administrator
+     *
+     * @param int $id
+     * @return mixed
+     */
     public function getHotelAdmin(int $id)
     {
         return Hotel::find($id);
@@ -67,23 +73,47 @@ class HotelController extends Controller
         return 'Success';
     }
 
+    /**
+     * Edit/update hotel information
+     *
+     * @param Request $request
+     */
     public function editHotel(Request $request)
     {
-
-
-        $updateHotel=(Hotel::find($request->id));
-        $updateHotel->name=$request->hotel['name'];
-        $updateHotel->main_url=$request->hotel['main_url'];
-        $updateHotel->facebook_url=$request->hotel['facebook_url'];
-        $updateHotel->session_timeout=$request->hotel['session_timeout'];
-        if ($request->timezone){
-            $updateHotel->timezone= $request->timezone;
+        $updateHotel = (Hotel::find($request->id));
+        $updateHotel->name = $request->hotel['name'];
+        $updateHotel->main_url = $request->hotel['main_url'];
+        $updateHotel->facebook_url = $request->hotel['facebook_url'];
+        $updateHotel->session_timeout = $request->hotel['session_timeout'];
+        if ($request->timezone) {
+            $updateHotel->timezone = $request->timezone;
         }
-
         $updateHotel->save();
-
         Redis::del('hotel.' . $request->id);
     }
 
 
+    /**
+     * Update/edit hotel logo
+     *
+     * @param Request $request
+     * @return string
+     */
+    public function editHotelFiles(Request $request)
+    {
+        if ($request->file('logo')->isValid()) {
+            $request->validate([
+                'logo' => 'required|image:jpeg,jpg,png',
+            ]);
+            $updateHotelLogo = (Hotel::find($request->id));
+            $updateHotelLogo->logo = $request->logo->hashName();
+            $request->logo->store('public/images');
+            $updateHotelLogo->save();
+
+            return 'success';
+        }
+
+        return 'fail';
+
+    }
 }

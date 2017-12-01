@@ -7,108 +7,110 @@
 
                 <div class="col-md-12">
                     <form enctype="multipart/form-data" @submit.prevent="confirmSave(hotel.id)">
-                    <b-card>
-                        <div slot="header">
-                            <strong>{{ hotel.name }}</strong>
-                        </div>
+                        <b-card>
+                            <div slot="header">
+                                <strong>{{ hotel.name }}</strong>
+                            </div>
 
 
-                        <!--Hotel name-->
-                        <b-form-fieldset label="Hotel name" description="Type hotel name or change it || Required ">
-                            <b-form-fieldset>
-                                <b-input-group left="<i class='fa fa-university'></i>">
-                                    <b-form-input type="text" v-model="hotel.name"
-                                                  placeholder="Hotel name"></b-form-input>
-                                </b-input-group>
+                            <!--Hotel name-->
+                            <b-form-fieldset label="Hotel name" description="Type hotel name or change it || Required ">
+                                <b-form-fieldset>
+                                    <b-input-group left="<i class='fa fa-university'></i>">
+                                        <b-form-input type="text" v-model="hotel.name"
+                                                      required
+                                                      placeholder="Hotel name"></b-form-input>
+                                    </b-input-group>
+                                </b-form-fieldset>
                             </b-form-fieldset>
-                        </b-form-fieldset>
 
-                        <!--Hotel url-->
-                        <b-form-fieldset label="URL" description="Type hotel URL or change it || Required">
-                            <b-form-fieldset>
-                                <b-input-group left="<i class='fa fa-globe'></i>">
-                                    <b-form-input type="text" v-model="hotel.main_url"
-                                                  placeholder="Hotel URL"></b-form-input>
-                                </b-input-group>
+                            <!--Hotel url-->
+                            <b-form-fieldset label="URL" description="Type hotel URL or change it || Required">
+                                <b-form-fieldset>
+                                    <b-input-group left="<i class='fa fa-globe'></i>">
+                                        <b-form-input type="text" v-model="hotel.main_url"
+                                                      required
+                                                      placeholder="Hotel URL"></b-form-input>
+                                    </b-input-group>
+                                </b-form-fieldset>
                             </b-form-fieldset>
-                        </b-form-fieldset>
 
-                        <!--facebook url-->
-                        <b-form-fieldset label="Facebook page URL"
-                                         description="Type hotel FB URL or change it || Optional">
-                            <b-form-fieldset>
-                                <b-input-group>
-                                    <b-form-input type="text" v-model="hotel.facebook_url"
-                                                  placeholder="Facebook URL"></b-form-input>
-                                </b-input-group>
+                            <!--facebook url-->
+                            <b-form-fieldset label="Facebook page URL"
+                                             description="Type hotel FB URL or change it || Optional">
+                                <b-form-fieldset>
+                                    <b-input-group>
+                                        <b-form-input type="text" v-model="hotel.facebook_url"
+                                                      placeholder="Facebook URL"></b-form-input>
+                                    </b-input-group>
+                                </b-form-fieldset>
                             </b-form-fieldset>
-                        </b-form-fieldset>
 
 
-                        <!--Timeout-->
-                        <b-form-fieldset label="Mikrotik timeout for this hotel"
-                                         description="Example: 7d (1d default) || Required">
-                            <b-form-fieldset>
-                                <b-input-group left="<i class='fa fa-clock-o'></i>">
-                                    <b-form-input type="text" v-model="hotel.session_timeout"
-                                                  placeholder="TimeoutL"></b-form-input>
-                                </b-input-group>
+                            <!--Timeout-->
+                            <b-form-fieldset label="Mikrotik timeout for this hotel"
+                                             description="Example: 7d (1d default) || Required">
+                                <b-form-fieldset>
+                                    <b-input-group left="<i class='fa fa-clock-o'></i>">
+                                        <b-form-input type="text" v-model="hotel.session_timeout"
+                                                      required
+                                                      placeholder="TimeoutL"></b-form-input>
+                                    </b-input-group>
+                                </b-form-fieldset>
                             </b-form-fieldset>
-                        </b-form-fieldset>
 
 
-                        <!--hotel timezone-->
-                        <b-form-fieldset label="Hotel Timezone"
-                                         description="Select hotel timezone">
-                            <b-form-select
-                                    :plain="true"
-                                    :options="timezones"
-                                    v-model="timezone"
-                                    left="<i class='fa fa-facebook-square'></i> ">
-                            </b-form-select>
-                        </b-form-fieldset>
+                            <!--hotel timezone-->
+                            <b-form-fieldset label="Hotel Timezone"
+                                             description="Select hotel timezone">
+                                <b-form-select
+                                        :plain="true"
+                                        :options="timezones"
+                                        v-model="timezone"
+                                        left="<i class='fa fa-facebook-square'></i> ">
+                                </b-form-select>
+                            </b-form-fieldset>
 
 
-                        <!--Hotel logo-->
-                        <b-form-fieldset
-                                label="Logo input"
-                                description="Upload Hotel logo || optional"
-                        >
-                            <b-form-file
-                                    id="logo"
+                            <!--Hotel logo-->
+                            <b-form-fieldset
                                     label="Logo input"
-                                    @change="onFileChange"
-                            ></b-form-file>
-                        </b-form-fieldset>
-                        <b-button
-                                type="button"
-                                @click="uploadImage(hotel.id)"
-                               v-if="uploadButton"
-                                variant="success"><i
-                                class="fa fa-upload"></i>
-                            Upload image
-                        </b-button>
-
-
-
-
-
-                        <div slot="footer">
+                                    description="Upload Hotel logo || optional"
+                            >
+                                <b-form-file
+                                        id="logo"
+                                        label="Logo input"
+                                        @change="onFileChange"
+                                ></b-form-file>
+                            </b-form-fieldset>
                             <b-button
-                                    type="submit"
-                                    variant="primary"><i
-                                    class="fa fa-floppy-o"></i>
-                                Save
-                            </b-button>
-                            <b-button :to="{name:'Hotels'}" variant="secondary"><i class="fa fa-times"></i>
-                                Cancel
-                            </b-button>
-                            <b-button  @click="confirmDelete(hotel.id, hotel.name, 'delete')" variant="danger">
-                                <i class="fa fa-ban"></i> Delete
+                                    type="button"
+                                    @click="uploadImage(hotel.id)"
+                                    v-if="uploadButton"
+                                    variant="success"><i
+                                    class="fa fa-upload"></i>
+                                Upload image
                             </b-button>
 
-                        </div>
-                    </b-card>
+                            <b-alert v-model="logoUploaded" variant="success" dismissible>
+                                Logo successfully updated
+                            </b-alert>
+                            <div slot="footer">
+                                <b-button
+                                        type="submit"
+                                        variant="primary"><i
+                                        class="fa fa-floppy-o"></i>
+                                    Save
+                                </b-button>
+                                <b-button :to="{name:'Hotels'}" variant="secondary"><i class="fa fa-times"></i>
+                                    Cancel
+                                </b-button>
+                                <b-button @click="confirmDelete(hotel.id, hotel.name, 'delete')" variant="danger">
+                                    <i class="fa fa-ban"></i> Delete
+                                </b-button>
+
+                            </div>
+                        </b-card>
                     </form>
 
 
@@ -129,11 +131,21 @@
         <b-modal centered title="Warning" class="modal-danger" v-model="dangerModal" @ok="deleteHotel(delHotel.id)">
             You are going to delete {{ delHotel.name }}.  Press OK if you are sure
         </b-modal>
+
+        <b-modal centered title="Critical error" class="modal-danger" v-model="critError" hide-footer>
+            Please contact your webmaster or support
+        </b-modal>
         <b-modal centered ref="myModalRef" size="sm" hide-footer title="Information">
             <div class="d-block text-center">
                 <h3>{{ delHotel.name }}  successfully deleted </h3>
             </div>
             <b-btn class="mt-3" variant="success" block @click="hideModal">OK</b-btn>
+        </b-modal>
+
+        <b-modal centered v-model="hotelUpdated" class="modal-success" size="sm" hide-footer title="Success">
+            <div class="d-block text-center">
+                <h3>{{ hotel.name }}  successfully updated </h3>
+            </div>
         </b-modal>
 
     </div>
@@ -156,16 +168,19 @@
                     name: '',
                     main_url: '',
                     facebook_url: '',
-                    session_timeout:'1d',
-                    selectedtimeZone:'',
-                    logo:''
+                    session_timeout: '1d',
+                    selectedtimeZone: '',
+                    logo: ''
 
                 },
-                logo:'',
+                critError: false,
+                hotelUpdated: false,
+                logoUploaded: false,
+                logo: '',
                 isEmpty: true,
                 dangerModal: false,
                 successDel: true,
-                uploadButton:false,
+                uploadButton: false,
                 delHotel: {
                     id: '',
                     name: '',
@@ -623,7 +638,7 @@
                         this.hotel.logo = response.data.logo;
                         this.hotel.main_url = response.data.main_url;
                         this.hotel.timezone = response.data.timezone;
-                        this.session_timeout=response.data.session_timeout
+                        this.session_timeout = response.data.session_timeout
 
 
                     } else {
@@ -633,7 +648,7 @@
 
                 })
                 .catch(e => {
-                    //this.loading = '';
+                    this.critError = true;
 
                 });
 
@@ -652,11 +667,11 @@
                 },
                 // setter
                 set: function (timeZone) {
-                    this.hotel.timezone=timeZone;
+                    this.hotel.timezone = timeZone;
                 }
             },
 
-            timezoneChange(){
+            timezoneChange() {
                 this.hotel.selectedtimeZone = this.timezones[this.hotel.timezone]
             }
 
@@ -688,33 +703,33 @@
             confirmSave(id) {
 
                 axios.put('/hotel/' + id, {
-                    hotel:this.hotel,
-                    timezone:this.timezones[this.hotel.timezone],
+                    hotel: this.hotel,
+                    timezone: this.timezones[this.hotel.timezone],
                 })
                     .then(response => {
-                        console.log(response.data)
-
+                        this.hotelUpdated = true;
+                        setTimeout(() => {
+                            return this.$router.push({name: 'Hotels'})
+                        }, 1000);
                     })
                     .catch(e => {
-                        //this.loading = '';
-
+                        this.critError = true;
                     });
             },
 
-            uploadImage(id){
-
+            uploadImage(id) {
 
                 var data = new FormData();
                 data.append('logo', document.getElementById('logo').files[0]);
 
                 axios.post('/hotel/files/' + id, data,
-                    )
+                )
                     .then(response => {
-                        console.log(response)
+                        this.logoUploaded = true
 
                     })
                     .catch(e => {
-                        //this.loading = '';
+                        this.critError = true;
 
                     });
 
@@ -733,30 +748,18 @@
             },
 
             deleteHotel(id) {
-
-                let config = {
-                    onUploadProgress: progressEvent => {
-
-                    }
-                };
-                axios.delete('/hotel/' + id,
-                    config)
+                axios.delete('/hotel/' + id)
                     .then(response => {
                         return this.$router.push({name: 'Hotels'})
-
                     })
                     .catch(e => {
-                        //this.loading = '';
-
+                        this.critError = true;
                     });
             },
 
             afterDelete() {
-
                 this.$refs.myModalRef.show();
                 this.hotels = response.data;
-
-
             },
 
         }

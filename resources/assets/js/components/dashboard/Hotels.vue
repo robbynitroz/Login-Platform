@@ -36,7 +36,10 @@
                                 <b-button @click="editHotel(hotel.id)"  type="edit" variant="primary"><i class="fa fa-pencil-square-o"></i> Edit</b-button>
                                 <b-button @click="confirmDelete(hotel.id, hotel.name)" type="delete" variant="danger"><i class="fa fa-ban"></i> Delete</b-button>
 
-                                <img class="hotel-logo" :src="'/storage/images/'+ hotel.logo">
+                                <b-col v-if="hotel.logo" class="hotel-logo" cols="3">
+                                    <b-img :src="'/storage/images/'+ hotel.logo" fluid alt="Fluid image" />
+
+                                </b-col>
                             </b-card>
                             </b-col>
                         </b-col>
@@ -177,19 +180,17 @@
     }
 
 </script>
-
 <style scoped>
 .hotels{
     border-radius: 10px;
     float: left;
     width: 100%;
 }
-    .hotel-logo{
-        width: 200px;
-        position: absolute;
-        top:30px;
-        right:10px;
-    }
+.hotel-logo {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
     .form-control{
         margin-left: -1px;
     }

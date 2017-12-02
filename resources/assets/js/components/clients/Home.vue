@@ -11,7 +11,9 @@
     </div>
 
 </template>
-
+<style lang="scss">
+    @import '~bootstrap/scss/bootstrap';
+</style>
 <script>
     import {mapGetters} from 'vuex';
     import {windowSize} from '../../mixins/windowSize';

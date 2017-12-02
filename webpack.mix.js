@@ -29,11 +29,11 @@ mix.webpackConfig({
     },
 });
 
-mix.js('resources/assets/js/clients-login.js', 'public/js/clients')
-    .sass('resources/assets/sass/client.scss', 'public/css/client');
+mix.js('resources/assets/js/clients-login.js', 'public/js/clients');
+
 mix.js('resources/assets/js/auth.js', 'public/js/login')
    .sass('resources/assets/sass/auth.scss', 'public/css/login')
 
-mix.js('resources/assets/js/dashboard.js', 'public/js/dashboard')
-    .sass('resources/assets/sass/dashboard.scss', 'public/css/dashboard')
+mix.js('resources/assets/js/dashboard.js', 'public/js/dashboard');
+
 

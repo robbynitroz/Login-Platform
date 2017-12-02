@@ -116,4 +116,22 @@ class HotelController extends Controller
         return 'fail';
 
     }
+
+    /**
+     * Create new hotel
+     *
+     * @param Request $request
+     * @return int
+     */
+    public function newHotel(Request $request):int
+    {
+        $newHotel = new Hotel();
+        $newHotel->name = $request->hotel['name'];
+        $newHotel->main_url = $request->hotel['main_url'];
+        $newHotel->facebook_url = $request->hotel['facebook_url'];
+        $newHotel->session_timeout = $request->hotel['session_timeout'];
+        $newHotel->timezone = $request->timezone;
+        $newHotel->save();
+        return $newHotel->id;
+    }
 }

@@ -29,6 +29,12 @@ const Hotel = resolve => {
     });
 };
 
+const AddHotel = resolve => {
+    require.ensure(['../components/dashboard/AddHotel.vue'], () => {
+        resolve(require('../components/dashboard/AddHotel.vue'));
+    });
+};
+
 
 export const routes = [
     {
@@ -51,6 +57,7 @@ export const routes = [
             {
                 path: '/dashboard/hotel/add',
                 name: 'Add Hotel',
+                component:AddHotel
 
             },
 
@@ -64,6 +71,7 @@ export const routes = [
             {
                 path: '/dashboard/templates',
                 name: 'All login templates',
+
 
             },
 

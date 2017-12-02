@@ -1,15 +1,15 @@
 <template>
     <div class="wrapper">
 
-        <div v-if="fetchComplite" class="animated fadeIn">
+        <div class="animated fadeIn">
 
-            <div v-if="!isEmpty" class="row">
+            <div class="row">
 
                 <div class="col-md-12">
-                    <form enctype="multipart/form-data" @submit.prevent="confirmSave(hotel.id)">
+                    <form enctype="multipart/form-data" @submit.prevent="save()">
                         <b-card>
                             <div slot="header">
-                                <strong>{{ hotel.name }}</strong>
+                                <strong>{{ hotel.name || "Add hotel" }}</strong>
                             </div>
 
 
@@ -64,10 +64,10 @@
                             <b-form-fieldset label="Hotel Timezone"
                                              description="Select hotel timezone">
                                 <b-form-select
-                                        :plain="true"
                                         :options="timezones"
                                         v-model="timezone"
-                                        left="<i class='fa fa-facebook-square'></i> ">
+                                        required
+                                        >
                                 </b-form-select>
                             </b-form-fieldset>
 
@@ -80,21 +80,10 @@
                                 <b-form-file
                                         id="logo"
                                         label="Logo input"
-                                        @change="onFileChange"
+                                        @change="imageChange"
                                 ></b-form-file>
                             </b-form-fieldset>
-                            <b-button
-                                    type="button"
-                                    @click="uploadImage(hotel.id)"
-                                    v-if="uploadButton"
-                                    variant="success"><i
-                                    class="fa fa-upload"></i>
-                                Upload image
-                            </b-button>
 
-                            <b-alert v-model="logoUploaded" variant="success" dismissible>
-                                Logo successfully updated
-                            </b-alert>
                             <div slot="footer">
                                 <b-button
                                         type="submit"
@@ -102,13 +91,9 @@
                                         class="fa fa-floppy-o"></i>
                                     Save
                                 </b-button>
-                                <b-button :to="{name:'Hotels'}" variant="secondary"><i class="fa fa-times"></i>
-                                    Cancel
+                                <b-button  variant="danger">
+                                    <i class="fa fa-ban"></i> Discard
                                 </b-button>
-                                <b-button @click="confirmDelete(hotel.id, hotel.name, 'delete')" variant="danger">
-                                    <i class="fa fa-ban"></i> Delete
-                                </b-button>
-
                             </div>
                         </b-card>
                     </form>
@@ -123,28 +108,17 @@
             <!--Ends here-->
 
 
-            <b-alert v-model="isEmpty" variant="danger">
-                Wrong way or hotel doesn't exist!
-                <router-link :to="{name:'Hotels'}">Go back </router-link>
-            </b-alert>
         </div><!--/.col-->
-        <b-modal centered title="Warning" class="modal-danger" v-model="dangerModal" @ok="deleteHotel(delHotel.id)">
-            You are going to delete {{ delHotel.name }}.  Press OK if you are sure
-        </b-modal>
+
 
         <b-modal centered title="Critical error" class="modal-danger" v-model="critError" hide-footer>
             Please contact your webmaster or support
         </b-modal>
-        <b-modal centered ref="myModalRef" size="sm" hide-footer title="Information">
-            <div class="d-block text-center">
-                <h3>{{ delHotel.name }}  successfully deleted </h3>
-            </div>
-            <b-btn class="mt-3" variant="success" block @click="hideModal">OK</b-btn>
-        </b-modal>
 
-        <b-modal centered v-model="hotelUpdated" class="modal-success" size="sm" hide-footer title="Success">
+
+        <b-modal centered v-model="hotelCreated" class="modal-success" size="sm" hide-footer title="Success">
             <div class="d-block text-center">
-                <h3>{{ hotel.name }}  successfully updated </h3>
+                <h3>{{ hotel.name }}  successfully created </h3>
             </div>
         </b-modal>
 
@@ -157,35 +131,27 @@
 
 
     export default {
-        name: 'Hotel',
+        name: 'AddHotel',
         components: {},
         data: function () {
             return {
 
-                fetchComplite: false,
                 hotel: {
-                    id: '',
                     name: '',
                     main_url: '',
                     facebook_url: '',
                     session_timeout: '1d',
                     selectedtimeZone: '',
-                    logo: ''
+                    logo: '',
+                    timezone:''
+
 
                 },
                 critError: false,
-                hotelUpdated: false,
+                hotelCreated: false,
                 logoUploaded: false,
                 logo: '',
-                isEmpty: true,
-                dangerModal: false,
-                successDel: true,
                 uploadButton: false,
-                delHotel: {
-                    id: '',
-                    name: '',
-                    action: ''
-                },
                 timezones: {
                     "0": "Africa\/Abidjan",
                     "1": "Africa\/Accra",
@@ -614,43 +580,10 @@
                     "424": "UTC"
                 },
 
-
             }
         },
 
         mounted() {
-            let config = {
-                onUploadProgress: progressEvent => {
-
-                }
-            };
-            axios.get('/hotel/' + this.$route.params.hotelID,
-                config)
-                .then(response => {
-                    //this.loading = '';
-                    //this.fetchComplete = true;
-
-                    if (response.data.name) {
-                        this.isEmpty = false;
-                        this.hotel.id = response.data.id;
-                        this.hotel.name = response.data.name;
-                        this.hotel.facebook_url = response.data.facebook_url;
-                        this.hotel.logo = response.data.logo;
-                        this.hotel.main_url = response.data.main_url;
-                        this.hotel.timezone = response.data.timezone;
-                        this.session_timeout = response.data.session_timeout
-
-
-                    } else {
-                        console.log("sellers is not empty !");
-                    }
-                    this.fetchComplite = true;
-
-                })
-                .catch(e => {
-                    this.critError = true;
-
-                });
 
         },
 
@@ -680,22 +613,27 @@
 
         methods: {
 
-
-            onFileChange(e) {
-                this.uploadButton = true
+            imageChange(){
+              this.logoUploaded=true
             },
 
-            confirmSave(id) {
+            save(){
 
-                axios.put('/hotel/' + id, {
+                axios.post('/hotel', {
                     hotel: this.hotel,
                     timezone: this.timezones[this.hotel.timezone],
                 })
                     .then(response => {
-                        this.hotelUpdated = true;
-                        setTimeout(() => {
-                            return this.$router.push({name: 'Hotels'})
-                        }, 1000);
+                        if(this.logoUploaded===true){
+                            this.uploadImage(response.data)
+                        }else {
+                            this.hotelCreated = true;
+                            setTimeout(() => {
+                                return this.$router.push({name: 'Hotels'})
+                            }, 1000);
+                        }
+
+
                     })
                     .catch(e => {
                         this.critError = true;
@@ -710,42 +648,22 @@
                 axios.post('/hotel/files/' + id, data,
                 )
                     .then(response => {
-                        this.logoUploaded = true
-
+                        this.hotelCreated = true;
+                        setTimeout(() => {
+                            return this.$router.push({name: 'Hotels'})
+                        }, 1000);
                     })
                     .catch(e => {
                         this.critError = true;
 
                     });
-
             },
-
             hideModal() {
                 this.$refs.myModalRef.hide()
             },
 
-            confirmDelete(id, name, action) {
-                this.delHotel.id = id;
-                this.delHotel.name = name;
-                this.deleteHotel.action = action
-                this.dangerModal = true
 
-            },
 
-            deleteHotel(id) {
-                axios.delete('/hotel/' + id)
-                    .then(response => {
-                        return this.$router.push({name: 'Hotels'})
-                    })
-                    .catch(e => {
-                        this.critError = true;
-                    });
-            },
-
-            afterDelete() {
-                this.$refs.myModalRef.show();
-                this.hotels = response.data;
-            },
 
         }
     }
@@ -757,6 +675,13 @@
         border-radius: 10px;
         float: left;
         width: 100%;
+    }
+
+    .hotel-logo {
+        width: 200px;
+        position: absolute;
+        top: 30px;
+        right: 10px;
     }
 
     .form-control {

@@ -62,7 +62,7 @@ export default {
             children: [
                 {
                     name: 'Add Router',
-                    url: '/dashboard/template/1',
+                    url: '/dashboard/template/add',
                     icon: 'icon-plus',
                 },
                 {

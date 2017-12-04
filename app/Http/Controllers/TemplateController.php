@@ -25,7 +25,7 @@ class TemplateController extends Controller
      */
     public function getTemplates(int $hotel_id)
     {
-        Redis::del('templates.'.$hotel_id);
+        Redis::del('templates.' . $hotel_id);
         if (Redis::get('templates.' . $hotel_id) === null) {
             $this->user_templates = (new Template())->where('hotel', $hotel_id)->where('activated', 'yes')->get();
             Redis::set('templates.' . $hotel_id, json_encode($this->user_templates));
@@ -42,7 +42,7 @@ class TemplateController extends Controller
      */
     public function getTemplate(int $hotel_id, string $template_type = 'login')
     {
-        Redis::del("templates.reserved.".$hotel_id);
+        Redis::del("templates.reserved." . $hotel_id);
 
         if (Redis::get('templates.reserved.' . $hotel_id) === null) {
             $this->user_templates = (new Template())->where('hotel', $hotel_id)->where('type',
@@ -51,4 +51,13 @@ class TemplateController extends Controller
         }
         return Redis::get('templates.reserved.' . $hotel_id);
     }
+
+
+    public function getLoginMethods()
+    {
+        return ['Login', 'Email', 'Facebook'];
+        //$data = Template::find(1);
+        //var_export(json_decode($data->data, true));
+    }
+
 }

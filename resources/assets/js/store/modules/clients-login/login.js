@@ -90,9 +90,6 @@ const getters = {
         return state.button;
     },
 
-    buttonIcon: state => {
-        return state.buttonIcon;
-    },
 
     littleTextColor: state => {
         return state.littleTextColor;

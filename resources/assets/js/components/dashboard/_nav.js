@@ -45,7 +45,7 @@ export default {
             children: [
                 {
                     name: 'Add template',
-                    url: '/dashboard/template/1',
+                    url: '/dashboard/template/add',
                     icon: 'icon-plus',
                 },
                 {

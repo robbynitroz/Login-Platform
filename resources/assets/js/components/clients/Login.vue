@@ -34,7 +34,7 @@
                     </button>
                 </div>
                 <!--Here-->
-                <p :style="{ color:littleTextColor.color }" class="text-center"><i> {{ littleTextColor.text }} </i></p>
+                <p :style="{ color:littleTextColor.color }" class="text-center"><i> {{ texts[defaultLanguage].littleText }} </i></p>
 
 
                 <div class="col-xs-12 text-center">
@@ -99,7 +99,6 @@
                 'greetingsTime',
                 'greeting',
                 'button',
-                'buttonIcon',
                 'littleTextColor'
 
             ]),

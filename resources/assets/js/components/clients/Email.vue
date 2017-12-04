@@ -113,7 +113,7 @@
                 'greetingsTime',
                 'greeting',
                 'button',
-                'buttonIcon',
+
 
             ]),
 

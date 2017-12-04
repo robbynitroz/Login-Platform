@@ -41,17 +41,21 @@ Route::prefix('/auth')->group(function () {
 //Auth URNs
 Auth::routes();
 
+//Dashboard universal route
 Route::get('/dashboard/{page?}/{argument?}/{secondary?}', ['uses'=>'DashboardController@index', 'middleware'=>['web', 'auth']])->name('dashboard');
 
-
+// Hotel Routes for Dashboard
 Route::get('/hotels', ['uses'=>'HotelController@getHotels', 'middleware'=>['web', 'auth']])->name('hotels');
-
 Route::post('/hotel', ['uses'=>'HotelController@newHotel', 'middleware'=>['web', 'auth']])->name('create_hotel');
-
 Route::get('/hotel/{id}', ['uses'=>'HotelController@getHotelAdmin', 'middleware'=>['web', 'auth']])->name('get_hotel');
 Route::put('/hotel/{id}', ['uses'=>'HotelController@editHotel', 'middleware'=>['web', 'auth']])->name('edit_hotel');
 Route::post('/hotel/files/{id}', ['uses'=>'HotelController@editHotelFiles', 'middleware'=>['web', 'auth']])->name('edit_hotel_files');
 Route::delete('/hotel/{id}', ['uses'=>'HotelController@deleteHotel', 'middleware'=>['web', 'auth']])->name('delete_hotels');
+// Hotel routes end
+
+//Templates and login method routes
+Route::get('/template/methods', ['uses'=>'TemplateController@getLoginMethods', 'middleware'=>['web', 'auth']])->name('template_methods');
+
 
 
 /*Route::get('/test/', function (){

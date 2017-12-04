@@ -141,7 +141,7 @@
                 'greetingsTime',
                 'greeting',
                 'button',
-                'buttonIcon',
+
 
             ]),
 

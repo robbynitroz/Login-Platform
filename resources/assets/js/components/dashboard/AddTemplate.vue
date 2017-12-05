@@ -13,7 +13,6 @@
                             </div>
 
 
-
                             <!--hotel-->
                             <b-form-fieldset label="Select hotel"
                                              description="which one of hotels this template belongs to ?">
@@ -33,181 +32,189 @@
                             <hr>
 
                             <div v-if="changeStatus">
-                            <h3>Required images</h3>
-                            <!--Hotel logo-->
-                            <b-form-fieldset
-                                    label="Logo input"
-                                    description="Upload Hotel logo || required"
-                                    required
-                            >
-                                <b-form-file
-                                        id="logo"
+                                <h3>Required images</h3>
+                                <!--Hotel logo-->
+                                <b-form-fieldset
                                         label="Logo input"
-                                        @change="imageChange"
+                                        description="Upload Hotel logo || required"
                                         required
-                                ></b-form-file>
-                            </b-form-fieldset>
+                                >
+                                    <b-form-file
+                                            id="logo"
+                                            label="Logo input"
+                                            @change="imageChange"
+                                            required
+                                    ></b-form-file>
+                                </b-form-fieldset>
 
 
-                            <!--Background picture or video-->
-                            <b-form-fieldset
-                                    label="Template background"
-                                    description="Background picture or video || required"
-                                    required
-                            >
-                                <b-form-file
-                                        id="background"
-                                        label="Packground picture"
-                                        @change="imageChange"
+                                <!--Background picture or video-->
+                                <b-form-fieldset
+                                        label="Template background"
+                                        description="Background picture or video || required"
                                         required
-                                ></b-form-file>
-                            </b-form-fieldset>
-
-
-                            <hr>
-
-                            <h3>Required texts</h3>
-
-
-                            <!--Template texts-->
-                            <div v-for="lang in langs">
-                            <b-form-fieldset  label="Enter text in language you choose, default is english" description="Required">
-                                <!--greetingText-->
-                                <b-form-fieldset>
-                                    <b-input-group left="<i class='fa fa-home'></i>">
-                                        <b-form-input type="text"
-                                                      required
-                                                      v-model="texts[lang].greetingText"
-                                                      placeholder="Heading text"></b-form-input>
-                                    </b-input-group>
+                                >
+                                    <b-form-file
+                                            id="background"
+                                            label="Packground picture"
+                                            @change="imageChange"
+                                            required
+                                    ></b-form-file>
                                 </b-form-fieldset>
 
-                                <!--button text-->
-                                <b-form-fieldset>
-                                    <b-input-group left="<i class='fa fa-bars'></i>">
-                                        <b-form-input type="text"
-                                                      required
-                                                      v-model="texts[lang].buttonText"
-                                                      placeholder="Login/Email button text"></b-form-input>
-                                    </b-input-group>
-                                </b-form-fieldset>
-
-
-                                <!--Email text-->
-                                <b-form-fieldset v-if="showSomeField">
-                                    <b-input-group left="<i class='fa fa-envelope'></i>">
-                                        <b-form-input type="text"
-                                                      required
-                                                      v-model="texts[lang].emailText"
-                                                      placeholder="Email heading text"></b-form-input>
-                                    </b-input-group>
-                                </b-form-fieldset>
-
-
-                                <!--Little text text-->
-                                <b-form-fieldset v-if="defaultComponent =='Login'">
-                                    <b-input-group left="<i class='fa fa-envelope'></i>">
-                                        <b-form-input type="text"
-                                                      required
-                                                      v-model="texts[lang].littleText"
-                                                      placeholder="Little text under button"></b-form-input>
-                                    </b-input-group>
-                                </b-form-fieldset>
 
                                 <hr>
-                                <p>Terms and Conditions settings</p>
+
+                                <h3>Required texts</h3>
 
 
-                                <!--policyText text-->
-                                <b-form-fieldset>
-                                    <b-input-group left="<i class='fa fa-question-circle'></i>">
-                                        <b-form-input type="text"
-                                                      required
-                                                      v-model="texts[lang].policyText"
-                                                      placeholder="Terms and condition text"></b-form-input>
-                                    </b-input-group>
-                                </b-form-fieldset>
+                                <!--Template texts-->
+                                <div v-for="lang in langs">
+                                    <b-form-fieldset label="Enter text in language you choose, default is english"
+                                                     description="Required">
+                                        <!--greetingText-->
+                                        <b-form-fieldset>
+                                            <b-input-group left="<i class='fa fa-home'></i>">
+                                                <b-form-input type="text"
+                                                              required
+                                                              v-model="texts[lang].greetingText"
+                                                              placeholder="Heading text"></b-form-input>
+                                            </b-input-group>
+                                        </b-form-fieldset>
+
+                                        <!--button text-->
+                                        <b-form-fieldset>
+                                            <b-input-group left="<i class='fa fa-bars'></i>">
+                                                <b-form-input type="text"
+                                                              required
+                                                              v-model="texts[lang].buttonText"
+                                                              placeholder="Login/Email button text"></b-form-input>
+                                            </b-input-group>
+                                        </b-form-fieldset>
 
 
-                                <!--policy link text-->
-                                <b-form-fieldset>
-                                    <b-input-group left="<i class='fa fa-question-circle'></i>">
-                                        <b-form-input type="text"
-                                                      required
-                                                      v-model="texts[lang].policyLinkText"
-                                                      placeholder="Terms link text, almost always - Terms & Condition"></b-form-input>
-                                    </b-input-group>
-                                </b-form-fieldset>
+                                        <!--Email text-->
+                                        <b-form-fieldset v-if="showSomeField">
+                                            <b-input-group left="<i class='fa fa-envelope'></i>">
+                                                <b-form-input type="text"
+                                                              required
+                                                              v-model="texts[lang].emailText"
+                                                              placeholder="Email heading text"></b-form-input>
+                                            </b-input-group>
+                                        </b-form-fieldset>
 
 
-                                <!--Go back from terms and conditions page links text-->
-                                <b-form-fieldset>
-                                    <b-input-group left="<i class='fa fa-question-circle'></i>">
-                                        <b-form-input type="text"
-                                                      required
-                                                      v-model="texts[lang].policyBackLinkText"
-                                                      placeholder="Go back from terms and conditions page links text"></b-form-input>
-                                    </b-input-group>
-                                </b-form-fieldset>
+                                        <!--Little text text-->
+                                        <b-form-fieldset v-if="defaultComponent =='Login'">
+                                            <b-input-group left="<i class='fa fa-podcast'></i>">
+                                                <b-form-input type="text"
+                                                              required
+                                                              v-model="texts[lang].littleText"
+                                                              placeholder="Little text under button"></b-form-input>
+                                            </b-input-group>
+                                        </b-form-fieldset>
+
+                                        <hr>
+                                        <p>Terms and Conditions settings</p>
 
 
-                            </b-form-fieldset>
-                            </div>
+                                        <!--policyText text-->
+                                        <b-form-fieldset>
+                                            <b-input-group left="<i class='fa fa-question-circle'></i>">
+                                                <b-form-input type="text"
+                                                              required
+                                                              v-model="texts[lang].policyText"
+                                                              placeholder="Terms and condition text"></b-form-input>
+                                            </b-input-group>
+                                        </b-form-fieldset>
 
 
-                            <!--Hotel url-->
-                            <b-form-fieldset label="URL" description="Type hotel URL or change it || Required">
-                                <b-form-fieldset>
-                                    <b-input-group left="<i class='fa fa-globe'></i>">
-                                        <b-form-input type="text"
+                                        <!--policy link text-->
+                                        <b-form-fieldset>
+                                            <b-input-group left="<i class='fa fa-question-circle'></i>">
+                                                <b-form-input type="text"
+                                                              required
+                                                              v-model="texts[lang].policyLinkText"
+                                                              placeholder="Terms link text, almost always - Terms & Condition"></b-form-input>
+                                            </b-input-group>
+                                        </b-form-fieldset>
 
 
-                                                      required
-                                                      placeholder="Hotel URL"></b-form-input>
-                                    </b-input-group>
-                                </b-form-fieldset>
-                            </b-form-fieldset>
-
-                            <!--facebook url-->
-                            <b-form-fieldset label="Facebook page URL"
-                                             description="Type hotel FB URL or change it || Optional">
-                                <b-form-fieldset>
-                                    <b-input-group>
-                                        <b-form-input type="text"
+                                        <!--Go back from terms and conditions page links text-->
+                                        <b-form-fieldset>
+                                            <b-input-group left="<i class='fa fa-question-circle'></i>">
+                                                <b-form-input type="text"
+                                                              required
+                                                              v-model="texts[lang].policyBackLinkText"
+                                                              placeholder="Go back from terms and conditions page links text"></b-form-input>
+                                            </b-input-group>
+                                        </b-form-fieldset>
 
 
-                                                      placeholder="Facebook URL"></b-form-input>
-                                    </b-input-group>
-                                </b-form-fieldset>
-                            </b-form-fieldset>
+                                    </b-form-fieldset>
+                                </div>
 
 
-                            <!--Timeout-->
-                            <b-form-fieldset label="Mikrotik timeout for this hotel"
-                                             description="Example: 7d (1d default) || Required">
-                                <b-form-fieldset>
-                                    <b-input-group left="<i class='fa fa-clock-o'></i>">
-                                        <b-form-input type="text"
+                                <hr>
+
+                                <h3>Required color settings and button colors</h3>
 
 
-                                                      required
-                                                      placeholder="TimeoutL"></b-form-input>
-                                    </b-input-group>
-                                </b-form-fieldset>
-                            </b-form-fieldset>
+                                <div>
+                                    <a href="" @click.prevent="storeColor('buttonBCK')">Button background color || </a>
+                                    <a href="" @click.prevent="storeColor('buttonText')">Button text color || </a>
+                                    <a href="" @click.prevent="storeColor('buttonHoverText')">Button text color on hover || </a>
+                                    <a href="" @click.prevent="storeColor('buttonHoverBack')">Button background on hover || </a>
+                                    <a href="" @click.prevent="storeColor('buttonBorder')">Button border || </a>
+                                    <a href=""
+                                       @click.prevent="storeColor('buttonBorderHover')">Button border on hover </a>
+                                </div>
+
+                                <button
+                                        type="button"
+                                        :style="buttonStyleObject"
+                                        @mouseenter='updateHoverState(true)'
+                                        @mouseleave="updateHoverState(false)"
+                                        class="btn btn-outline-info large-button text-center"><i
+                                        class='fa fa-sign-in'></i> {{ texts.en.buttonText }}
+                                </button>
 
 
-                            <div slot="footer">
-                                <b-button
-                                        type="submit"
-                                        variant="primary"><i
-                                        class="fa fa-floppy-o"></i>
-                                    Save
-                                </b-button>
-                                <b-button variant="danger">
-                                    <i class="fa fa-ban"></i> Discard
-                                </b-button>
-                            </div>
+                                <br>
+
+                                <hr>
+
+                                <br>
+
+                                <h4> Greeting text </h4>
+
+                                <div>
+                                    <a href="" @click.prevent="storeColor('background')">Background color (transparency allowed) || </a>
+                                    <a href="" @click.prevent="storeColor('policy')">Tems&Cond link and text color  || </a>
+                                    <a href="" @click.prevent="storeColor('greeting')">Greeting or text on the top|| </a>
+                                    <a v-if="defaultComponent =='Login'" href="" @click.prevent="storeColor('littleText')">Little text under login button || </a>
+
+                                </div>
+
+
+                                <br>
+
+                                <hr>
+
+                                <br>
+
+
+                                <div slot="footer">
+                                    <b-button
+                                            type="submit"
+                                            variant="primary"><i
+                                            class="fa fa-floppy-o"></i>
+                                        Save
+                                    </b-button>
+                                    <b-button variant="danger">
+                                        <i class="fa fa-ban"></i> Discard
+                                    </b-button>
+                                </div>
                             </div>
                         </b-card>
                     </form>
@@ -237,13 +244,40 @@
         </b-modal>
 
 
+        <b-modal centered v-model="colorPicker"
+                 size="sm"
+                 hide-footer
+                 hide-header
+                 title="Pick up a color"
+
+        >
+            <b-container
+                    fluid
+                    :style="{ background:'rgba('+
+                            colors.rgba.r + ','+ colors.rgba.g + ','
+                            + colors.rgba.b + ',' + colors.rgba.a + ')',
+                             }"
+            >
+                <div class="color-modal">
+                    <sketch v-model="colors" @change-color="colorChange"></sketch>
+                </div>
+
+                <b-btn class="mt-3 button-close-picker" @click="colorSelected(forSection)" data-dismiss="modal"
+                       variant="primary" block>OK
+                </b-btn>
+                <hr>
+            </b-container>
+
+        </b-modal>
+
+
     </div>
 
 
 </template>
 
 <script>
-
+    import {Photoshop, Chrome, Sketch} from 'vue-color'
 
     export default {
         name: 'AddTemplate',
@@ -251,6 +285,8 @@
         data: function () {
             return {
 
+                colorPicker: false,
+                forSection: '',
 
                 hotels: {},
                 methods: [],
@@ -269,14 +305,12 @@
                     }
                 },
 
-                langs:[
+                langs: [
                     'en',
                 ],
-                addLangs:[
+                addLangs: [
                     'nl',
                 ],
-
-
 
                 button: {
                     color: '#d3e0ff',
@@ -290,18 +324,18 @@
 
                 policy: {
                     size: '1rem',
-                    color: 'grey',
+                    color: '#d3e0ff',
                 },
 
                 greeting: {
                     size: '2rem',
-                    color: 'white',
+                    color: '#ffffff',
                 },
 
                 hotelLogo: '',
 
                 greetingsTime: {
-                    on: true,
+                    on: false,
                     size: '2.4rem',
                     color: 'white',
                 },
@@ -327,7 +361,26 @@
                 hotelsFetchComplete: false,
                 methodsFetchComplete: false,
 
+
+                colors: {
+                    hex: '#194d33',
+                    rgba: {
+                        r: 25,
+                        g: 77,
+                        b: 51,
+                        a: 1
+                    },
+
+                }
             }
+
+
+        },
+
+        components: {
+            Photoshop,
+            Chrome,
+            Sketch
         },
 
         mounted() {
@@ -361,24 +414,78 @@
 
         computed: {
 
-            showSomeField(){
-                if(this.defaultComponent =='Facebook' || this.defaultComponent =='Email'){
+
+            showSomeField() {
+                if (this.defaultComponent == 'Facebook' || this.defaultComponent == 'Email') {
                     return true
                 }
                 return false;
             },
 
-            changeStatus(){
-                if(this.defaultComponent!==''){
-                    this.activeComponent=this.defaultComponent;
+            changeStatus() {
+                if (this.defaultComponent !== '') {
+                    this.activeComponent = this.defaultComponent;
                     return true
                 }
                 return this.activeComponent
-            }
+            },
+
+
+            buttonStyleObject() {
+                var modifier = '';
+                if (this.button.hoverState)
+                    modifier = 'Hover';
+
+                return {
+                    color: this.button['color' + modifier],
+                    backgroundColor: this.button['colorBackd' + modifier],
+                    borderColor: this.button['borderColor' + modifier]
+                };
+            },
 
         },
 
         methods: {
+
+            colorSelected(section) {
+                this.colorPicker = false;
+                if (section == 'buttonBCK') {
+                    this.button.colorBackd = this.colors.hex
+                } else if (section == 'buttonText') {
+                    this.button.color = this.colors.hex
+                } else if (section == 'buttonHoverText') {
+                    this.button.colorHover = this.colors.hex
+                } else if (section == 'buttonHoverBack') {
+                    this.button.colorBackdHover = this.colors.hex
+                } else if (section == 'buttonBorder') {
+                    this.button.borderColor = this.colors.hex
+                } else if (section == 'buttonBorderHover') {
+                    this.button.borderColorHover = this.colors.hex
+                } else if (section == 'background') {
+                    this.backgroundColor = 'background:rgba('+
+                    colors.rgba.r + ','+ colors.rgba.g + ','
+                    + colors.rgba.b + ',' + colors.rgba.a + ')'
+                } else if (section == 'termsColor') {
+                    this.policy.color = this.colors.hex
+                } else if (section == 'greeting') {
+                    this.policy.color = this.colors.hex
+                }
+            },
+
+
+            updateHoverState(isHover) {
+                this.button.hoverState = isHover;
+            },
+
+
+            storeColor(id) {
+                this.colorPicker = true;
+                this.forSection = id;
+            },
+
+            colorChange(val) {
+                this.colors = val
+            },
 
             imageChange() {
                 this.logoUploaded = true
@@ -452,4 +559,12 @@
     .form-control {
         margin-left: -1px;
     }
+
+    .color-modal {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        margin-left: -5px;
+    }
+
+
 </style>

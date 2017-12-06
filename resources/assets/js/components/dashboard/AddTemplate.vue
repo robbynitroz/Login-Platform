@@ -289,13 +289,13 @@
                                     <b-card v-if="dependOnComponent('emailOnly')" class="text-center fix-margin"
                                             header="Require Email also">
                                         <c-switch type="text" variant="success" on="On" off="Off"
-                                                  @change="changeTimeGreeting()" :checked="requireEmail"/>
+                                                  @change="changeEmailState()" :checked="requireEmail"/>
                                     </b-card>
 
                                     <b-card v-if="dependOnComponent('fullName')" class="text-center fix-margin"
                                             header="Require Full name from user">
                                         <c-switch type="text" variant="success" on="On" off="Off"
-                                                  @change="changeTimeGreeting()" :checked="requireName"/>
+                                                  @change="changeNameState()" :checked="requireName"/>
                                     </b-card>
                                     <!--/.col-->
                                 </div>
@@ -309,10 +309,16 @@
 
                                 <div slot="footer">
                                     <b-button
-                                            type="submit"
-                                            variant="primary"><i
+                                            type="button"
+                                            variant="success"><i
                                             class="fa fa-floppy-o"></i>
                                         Save
+                                    </b-button>
+                                    <b-button
+                                            type="button"
+                                            variant="primary"><i
+                                            class="fa fa-adjust"></i>
+                                        Preview
                                     </b-button>
                                     <b-button variant="danger">
                                         <i class="fa fa-ban"></i> Discard
@@ -505,7 +511,6 @@
                     //this.loading = '';
                     this.hotelsFetchComplete = true;
                     this.hotels = response.data;
-                    console.log(this.hotels)
                 })
                 .catch(e => {
                     //this.loading = '';
@@ -595,6 +600,13 @@
 
             changeTimeGreeting() {
                 this.greetingsTime.on = !this.greetingsTime.on
+            },
+            changeEmailState(){
+              this.requireEmail = !this.requireEmail
+            },
+
+            changeNameState(){
+                this.requireName = !this.requireName
             },
 
             dependOnComponent(component) {

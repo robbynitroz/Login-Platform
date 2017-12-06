@@ -276,6 +276,28 @@
                                 <br>
 
 
+                                <h4> Text sizes  </h4>
+                                <div>
+
+                                </div>
+
+
+                                <p> Greeting text size - <span style="color: #bb0000"> {{ greeting.size }} </span></p>
+                                <b-form-fieldset>
+                                    <b-input-group
+                                            left="<i class='fa fa-minus'></i>"
+                                            right="<i class='fa fa-plus'></i>"
+                                    >
+                                        <b-form-input type="range" min="1" max="50" v-model="getGreatingSize" value="getGreatingSize" class="slider"></b-form-input>
+                                    </b-input-group>
+                                </b-form-fieldset>
+
+
+
+                                <br>
+                                <hr>
+                                <br>
+
                                 <h4> Options </h4>
                                 <br>
                                 <div class="col-md-12">
@@ -449,7 +471,7 @@
                 },
 
                 greeting: {
-                    size: '2rem',
+                    size: '2.0rem',
                     color: '#ffffff',
                 },
 
@@ -536,6 +558,24 @@
 
             sayTime() {
                 return this.greetingsTime.on;
+            },
+
+            getGreatingSize:{
+                //getter
+                get: function () {
+
+                    var rez= this.greeting.size.slice(0, 3);
+                    if(typeof rez != "Nan"){
+                        console.log(parseFloat(rez))
+                        var rez= parseFloat(rez);
+                    }
+                    return rez*10;
+
+                    },
+                               // setter
+                set: function (newSize) {
+                    this.greeting.size = newSize/10+'rem';
+                }
             },
 
 
@@ -753,5 +793,36 @@
         margin: 10px;
     }
 
+
+    .slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 25px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+    }
+
+    .slider:hover {
+        opacity: 1;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        background: #4CAF50;
+        cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        background: #4CAF50;
+        cursor: pointer;
+    }
 
 </style>

@@ -69,93 +69,155 @@
 
 
                                 <!--Template texts-->
-                                <div v-for="lang in langs">
-                                    <b-form-fieldset label="Enter text in language you choose, default is english"
-                                                     description="Required">
-                                        <!--greetingText-->
-                                        <b-form-fieldset>
-                                            <b-input-group left="<i class='fa fa-home'></i>">
-                                                <b-form-input type="text"
-                                                              required
-                                                              v-model="texts[lang].greetingText"
-                                                              placeholder="Heading text"></b-form-input>
-                                            </b-input-group>
-                                        </b-form-fieldset>
+                                <div>
+                                    <b-tabs>
+                                        <template v-for="lang in langs">
+                                            <b-tab :title="addLangs[lang]">
+                                                <b-form-fieldset
+                                                        label="Enter text in language of the tab, all fields are required"
+                                                        description="NOTE:  All fields above are required!!!">
+                                                    <!--greetingText-->
+                                                    <b-form-fieldset>
+                                                        <b-input-group left="<i class='fa fa-home'></i>">
+                                                            <b-form-input type="text"
+                                                                          required
+                                                                          v-model="texts[lang].greetingText"
+                                                                          placeholder="Heading text"></b-form-input>
+                                                        </b-input-group>
+                                                    </b-form-fieldset>
 
-                                        <!--button text-->
-                                        <b-form-fieldset>
-                                            <b-input-group left="<i class='fa fa-bars'></i>">
-                                                <b-form-input type="text"
-                                                              required
-                                                              v-model="texts[lang].buttonText"
-                                                              placeholder="Login/Email button text"></b-form-input>
-                                            </b-input-group>
-                                        </b-form-fieldset>
-
-
-                                        <!--Email text-->
-                                        <b-form-fieldset v-if="showSomeField">
-                                            <b-input-group left="<i class='fa fa-envelope'></i>">
-                                                <b-form-input type="text"
-                                                              required
-                                                              v-model="texts[lang].emailText"
-                                                              placeholder="Email heading text"></b-form-input>
-                                            </b-input-group>
-                                        </b-form-fieldset>
+                                                    <!--button text-->
+                                                    <b-form-fieldset>
+                                                        <b-input-group left="<i class='fa fa-bars'></i>">
+                                                            <b-form-input type="text"
+                                                                          required
+                                                                          v-model="texts[lang].buttonText"
+                                                                          placeholder="Login/Email button text"></b-form-input>
+                                                        </b-input-group>
+                                                    </b-form-fieldset>
 
 
-                                        <!--Little text text-->
-                                        <b-form-fieldset v-if="defaultComponent =='Login'">
-                                            <b-input-group left="<i class='fa fa-podcast'></i>">
-                                                <b-form-input type="text"
-                                                              required
-                                                              v-model="texts[lang].littleText"
-                                                              placeholder="Little text under button"></b-form-input>
-                                            </b-input-group>
-                                        </b-form-fieldset>
-
-                                        <hr>
-                                        <p>Terms and Conditions settings</p>
+                                                    <!--Email text-->
+                                                    <b-form-fieldset v-if="showSomeField">
+                                                        <b-input-group left="<i class='fa fa-envelope'></i>">
+                                                            <b-form-input type="text"
+                                                                          required
+                                                                          v-model="texts[lang].emailText"
+                                                                          placeholder="Email heading text"></b-form-input>
+                                                        </b-input-group>
+                                                    </b-form-fieldset>
 
 
-                                        <!--policyText text-->
-                                        <b-form-fieldset>
-                                            <b-input-group left="<i class='fa fa-question-circle'></i>">
-                                                <b-form-input type="text"
-                                                              required
-                                                              v-model="texts[lang].policyText"
-                                                              placeholder="Terms and condition text"></b-form-input>
-                                            </b-input-group>
-                                        </b-form-fieldset>
+                                                    <!--Little text text-->
+                                                    <b-form-fieldset v-if="defaultComponent =='Login'">
+                                                        <b-input-group left="<i class='fa fa-podcast'></i>">
+                                                            <b-form-input type="text"
+                                                                          required
+                                                                          v-model="texts[lang].littleText"
+                                                                          placeholder="Little text under button"></b-form-input>
+                                                        </b-input-group>
+                                                    </b-form-fieldset>
+
+                                                    <hr>
+                                                    <p>Terms and Conditions settings</p>
 
 
-                                        <!--policy link text-->
-                                        <b-form-fieldset>
-                                            <b-input-group left="<i class='fa fa-question-circle'></i>">
-                                                <b-form-input type="text"
-                                                              required
-                                                              v-model="texts[lang].policyLinkText"
-                                                              placeholder="Terms link text, almost always - Terms & Condition"></b-form-input>
-                                            </b-input-group>
-                                        </b-form-fieldset>
+                                                    <!--policyText text-->
+                                                    <b-form-fieldset>
+                                                        <b-input-group left="<i class='fa fa-question-circle'></i>">
+                                                            <b-form-input type="text"
+                                                                          required
+                                                                          v-model="texts[lang].policyText"
+                                                                          placeholder="Terms and condition text"></b-form-input>
+                                                        </b-input-group>
+                                                    </b-form-fieldset>
 
 
-                                        <!--Go back from terms and conditions page links text-->
-                                        <b-form-fieldset>
-                                            <b-input-group left="<i class='fa fa-question-circle'></i>">
-                                                <b-form-input type="text"
-                                                              required
-                                                              v-model="texts[lang].policyBackLinkText"
-                                                              placeholder="Go back from terms and conditions page links text"></b-form-input>
-                                            </b-input-group>
-                                        </b-form-fieldset>
+                                                    <!--policy link text-->
+                                                    <b-form-fieldset>
+                                                        <b-input-group left="<i class='fa fa-question-circle'></i>">
+                                                            <b-form-input type="text"
+                                                                          required
+                                                                          v-model="texts[lang].policyLinkText"
+                                                                          placeholder="Terms link text, almost always - Terms & Condition"></b-form-input>
+                                                        </b-input-group>
+                                                    </b-form-fieldset>
 
 
-                                    </b-form-fieldset>
+                                                    <!--Go back from terms and conditions page links text-->
+                                                    <b-form-fieldset>
+                                                        <b-input-group left="<i class='fa fa-question-circle'></i>">
+                                                            <b-form-input type="text"
+                                                                          required
+                                                                          v-model="texts[lang].policyBackLinkText"
+                                                                          placeholder="Go back from terms and conditions page links text"></b-form-input>
+                                                        </b-input-group>
+                                                    </b-form-fieldset>
+
+
+                                                    <div v-if='sayTime'>
+                                                        <hr>
+                                                        <p>
+                                                            Enter greeting for every time period || Note: You can leave default</p>
+
+                                                        <!--morining-->
+                                                        <b-form-fieldset>
+                                                            <b-input-group left="<i class='fa fa-sun-o'></i>">
+                                                                <b-form-input type="text"
+                                                                              required
+                                                                              v-model="texts[lang].sayTimeMorning"
+                                                                              placeholder="Morning"></b-form-input>
+                                                            </b-input-group>
+                                                        </b-form-fieldset>
+
+                                                        <!--Afternoon-->
+                                                        <b-form-fieldset>
+                                                            <b-input-group left="<i class='fa fa-cloud'></i>">
+                                                                <b-form-input type="text"
+                                                                              required
+                                                                              v-model="texts[lang].sayTimeAfternoon"
+                                                                              placeholder="Afternoon"></b-form-input>
+                                                            </b-input-group>
+                                                        </b-form-fieldset>
+
+                                                        <!--Evening-->
+                                                        <b-form-fieldset>
+                                                            <b-input-group left="<i class='fa fa-moon-o'></i>">
+                                                                <b-form-input type="text"
+                                                                              required
+                                                                              v-model="texts[lang].sayTimeEvening"
+                                                                              placeholder="Evening"></b-form-input>
+                                                            </b-input-group>
+                                                        </b-form-fieldset>
+
+
+                                                    </div>
+
+                                                </b-form-fieldset>
+
+                                            </b-tab>
+                                        </template>
+                                    </b-tabs>
+
                                 </div>
 
+                                <!--Add language button-->
+
+                                <div>
+                                    <b-dropdown id="ddown-buttons" text="Add languages"
+                                                class="m-2">
+                                        <template v-for="(lang, key) in addLangs">
+                                            <b-dropdown-item-button @click="addLanguage(key)">{{ lang }}
+                                            </b-dropdown-item-button>
+                                        </template>
+                                    </b-dropdown>
+                                </div>
+                                <b-alert v-model="langWanring" dismissible show variant="warning">
+                                    Language have been already added to list
+                                </b-alert>
 
                                 <hr>
+
 
                                 <h3>Required color settings and button colors</h3>
 
@@ -189,14 +251,55 @@
                                 <h4> Greeting text </h4>
 
                                 <div>
-                                    <a href="" @click.prevent="storeColor('background')">Background color (transparency allowed) || </a>
-                                    <a href="" @click.prevent="storeColor('policy')">Tems&Cond link and text color  || </a>
-                                    <a href="" @click.prevent="storeColor('greeting')">Greeting or text on the top|| </a>
-                                    <a v-if="defaultComponent =='Login'" href="" @click.prevent="storeColor('littleText')">Little text under login button || </a>
+                                    <a href=""
+                                       @click.prevent="storeColor('policy')">
+                                        Terms aka Policy link and text color  || </a>
+                                    <a href=""
+                                       @click.prevent="storeColor('greeting')"> Greeting or text on the top  || </a>
+                                    <a v-if="defaultComponent =='Login'" href=""
+                                       @click.prevent="storeColor('littleTextColor')">
+                                        Little text under login button  </a>
 
                                 </div>
+                                <br>
+                                <hr>
+                                <br>
+                                <h4> Background color </h4>
+                                <div>
+                                    <a href="" @click.prevent="storeColor('background')">
+                                        Background color (transparency allowed)  </a>
+                                </div>
+                                <br>
+                                <div class="demo-div" :style="backgroundColor"></div>
+                                <br>
+                                <hr>
+                                <br>
 
 
+                                <h4> Options </h4>
+                                <br>
+                                <div class="col-md-12">
+
+                                    <b-card class="text-center fix-margin" header="Show Time greeting">
+                                        <c-switch type="text" variant="success" on="On" off="Off"
+                                                  @change="changeTimeGreeting()" :checked="greetingsTime.on"/>
+                                    </b-card>
+
+
+                                    <b-card v-if="dependOnComponent('emailOnly')" class="text-center fix-margin"
+                                            header="Require Email also">
+                                        <c-switch type="text" variant="success" on="On" off="Off"
+                                                  @change="changeTimeGreeting()" :checked="requireEmail"/>
+                                    </b-card>
+
+                                    <b-card v-if="dependOnComponent('fullName')" class="text-center fix-margin"
+                                            header="Require Full name from user">
+                                        <c-switch type="text" variant="success" on="On" off="Off"
+                                                  @change="changeTimeGreeting()" :checked="requireName"/>
+                                    </b-card>
+                                    <!--/.col-->
+                                </div>
+                                <div class="clearfix"></div>
                                 <br>
 
                                 <hr>
@@ -277,7 +380,8 @@
 </template>
 
 <script>
-    import {Photoshop, Chrome, Sketch} from 'vue-color'
+    import {Sketch} from 'vue-color'
+    import cSwitch from './additional-components/Switch.vue'
 
     export default {
         name: 'AddTemplate',
@@ -305,12 +409,23 @@
                     }
                 },
 
+                requireName: false,
+
+                requireEmail:true,
+
                 langs: [
                     'en',
                 ],
-                addLangs: [
-                    'nl',
-                ],
+                addLangs: {
+                    en: 'English',
+                    nl: "Dutch",
+                    de: "German",
+                    fr: 'French',
+                    es: 'Spanish',
+                    zh: 'Chinese',
+                    ru: 'Russian',
+                    ar: 'Arabic',
+                },
 
                 button: {
                     color: '#d3e0ff',
@@ -360,6 +475,7 @@
                 uploadButton: false,
                 hotelsFetchComplete: false,
                 methodsFetchComplete: false,
+                langWanring: false,
 
 
                 colors: {
@@ -378,9 +494,8 @@
         },
 
         components: {
-            Photoshop,
-            Chrome,
-            Sketch
+            Sketch,
+            cSwitch
         },
 
         mounted() {
@@ -413,6 +528,10 @@
 
 
         computed: {
+
+            sayTime() {
+                return this.greetingsTime.on;
+            },
 
 
             showSomeField() {
@@ -462,14 +581,59 @@
                 } else if (section == 'buttonBorderHover') {
                     this.button.borderColorHover = this.colors.hex
                 } else if (section == 'background') {
-                    this.backgroundColor = 'background:rgba('+
-                    colors.rgba.r + ','+ colors.rgba.g + ','
-                    + colors.rgba.b + ',' + colors.rgba.a + ')'
+                    this.backgroundColor = 'background:rgba(' +
+                        this.colors.rgba.r + ',' + this.colors.rgba.g + ','
+                        + this.colors.rgba.b + ',' + this.colors.rgba.a + ')'
                 } else if (section == 'termsColor') {
                     this.policy.color = this.colors.hex
                 } else if (section == 'greeting') {
-                    this.policy.color = this.colors.hex
+                    this.greeting.color = this.colors.hex
+                } else if (section == 'littleTextColor') {
+                    this.littleTextColor = this.colors.hex
                 }
+            },
+
+            changeTimeGreeting() {
+                this.greetingsTime.on = !this.greetingsTime.on
+            },
+
+            dependOnComponent(component) {
+                if(this.activeComponent =='Login'){
+                    return false;
+                } else if(this.activeComponent =='Email' &&  component == 'fullName'){
+                    return true;
+                } else if(this.activeComponent =='Facebook' &&  component == 'emailOnly'){
+                    return true;
+                } else if(this.activeComponent =='Facebook' &&  component == 'fullName' && this.requireEmail == true){
+                    return true;
+                }
+            },
+
+
+            addLanguage(lang) {
+
+                this.langWanring = false;
+                if (typeof this.texts[lang] === 'undefined') {
+
+                    var newObj = {
+                        greetingText: '',
+                        emailText: '',
+                        buttonText: '',
+                        policyText: '',
+                        policyLinkText: '',
+                        policyBackLinkText: '',
+                        sayTimeEvening: 'Good evening!',
+                        sayTimeMorning: 'Good morning!',
+                        sayTimeAfternoon: 'Good afternoon!',
+                        littleText: 'connect and proceed to our webapp',
+                    }
+
+                    this.$set(this.texts, lang, newObj)
+                    this.langs.push(lang);
+                } else {
+                    this.langWanring = true
+                }
+
             },
 
 
@@ -564,6 +728,17 @@
         padding-top: 20px;
         padding-bottom: 20px;
         margin-left: -5px;
+    }
+
+    .demo-div {
+        width: 100px;
+        height: 100px
+    }
+
+    .fix-margin {
+        width: 20%;
+        float: left;
+        margin: 10px;
     }
 
 

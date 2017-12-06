@@ -34,7 +34,7 @@
                     </button>
                 </div>
                 <!--Here-->
-                <p :style="{ color:littleTextColor.color }" class="text-center"><i> {{ texts[defaultLanguage].littleText }} </i></p>
+                <p :style="{ color:littleTextColor }" class="text-center"><i> {{ texts[defaultLanguage].littleText }} </i></p>
 
 
                 <div class="col-xs-12 text-center">

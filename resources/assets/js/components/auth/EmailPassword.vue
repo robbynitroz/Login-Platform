@@ -123,7 +123,8 @@
 
 <style scoped>
 
-
+    @import "~bootstrap/dist/css/bootstrap.css";
+    @import "~font-awesome/css/font-awesome.css";
 
 
     .vertical-center {

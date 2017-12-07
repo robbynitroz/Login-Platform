@@ -179,7 +179,8 @@
 </script>
 
 <style scoped>
-
+    @import "~bootstrap/dist/css/bootstrap.css";
+    @import "~font-awesome/css/font-awesome.css";
 
     .vertical-center {
         min-height: 100%; /* Fallback for vh unit */

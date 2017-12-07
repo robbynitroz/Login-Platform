@@ -55,6 +55,8 @@ Route::delete('/hotel/{id}', ['uses'=>'HotelController@deleteHotel', 'middleware
 
 //Templates and login method routes
 Route::get('/template/methods', ['uses'=>'TemplateController@getLoginMethods', 'middleware'=>['web', 'auth']])->name('template_methods');
+Route::post('/template/add', ['uses'=>'TemplateController@newTemplate', 'middleware'=>['web', 'auth']])->name('create_template');
+
 
 
 

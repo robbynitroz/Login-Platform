@@ -288,15 +288,39 @@
                                             left="<i class='fa fa-minus'></i>"
                                             right="<i class='fa fa-plus'></i>"
                                     >
-                                        <b-form-input type="range" min="1" max="50" v-model="getGreatingSize" value="getGreatingSize" class="slider"></b-form-input>
+                                        <b-form-input type="range" min="1" max="50" v-model="getGreatingSize"
+                                                      value="getGreatingSize" class="slider"></b-form-input>
                                     </b-input-group>
                                 </b-form-fieldset>
+                                <br>
 
-
-
+                                <template v-if="sayTime">
+                                <p> Greeting time text size- <span style="color: #bb0000"> {{ greetingsTime.size }} </span></p>
+                                <b-form-fieldset>
+                                    <b-input-group
+                                            left="<i class='fa fa-minus'></i>"
+                                            right="<i class='fa fa-plus'></i>"
+                                    >
+                                        <b-form-input type="range" min="1" max="50" v-model="getTimeSize"
+                                                      value="getTimeSize" class="slider"></b-form-input>
+                                    </b-input-group>
+                                </b-form-fieldset>
+                                <br>
+                                </template>
+                                <p> Terms (Policy) text and link size- <span style="color: #bb0000"> {{ policy.size }} </span></p>
+                                <b-form-fieldset>
+                                    <b-input-group
+                                            left="<i class='fa fa-minus'></i>"
+                                            right="<i class='fa fa-plus'></i>"
+                                    >
+                                        <b-form-input type="range" min="1" max="50" v-model="getPolicySize"
+                                                      value="getPolicySize" class="slider"></b-form-input>
+                                    </b-input-group>
+                                </b-form-fieldset>
                                 <br>
                                 <hr>
                                 <br>
+
 
                                 <h4> Options </h4>
                                 <br>
@@ -331,7 +355,7 @@
 
                                 <div slot="footer">
                                     <b-button
-                                            type="button"
+                                            type="submit"
                                             variant="success"><i
                                             class="fa fa-floppy-o"></i>
                                         Save
@@ -439,7 +463,7 @@
 
                 requireName: false,
 
-                requireEmail:true,
+                requireEmail: true,
 
                 langs: [
                     'en',
@@ -560,24 +584,57 @@
                 return this.greetingsTime.on;
             },
 
-            getGreatingSize:{
+            getGreatingSize: {
                 //getter
                 get: function () {
 
-                    var rez= this.greeting.size.slice(0, 3);
-                    if(typeof rez != "Nan"){
-                        console.log(parseFloat(rez))
-                        var rez= parseFloat(rez);
+                    var rez = this.greeting.size.slice(0, 3);
+                    if (typeof rez != "Nan") {
+                        var rez = parseFloat(rez);
                     }
-                    return rez*10;
+                    return rez * 10;
 
-                    },
-                               // setter
+                },
+                // setter
                 set: function (newSize) {
-                    this.greeting.size = newSize/10+'rem';
+                    this.greeting.size = newSize / 10 + 'rem';
                 }
             },
 
+            getTimeSize: {
+                //getter
+                get: function () {
+
+                    var rez = this.greetingsTime.size.slice(0, 3);
+                    if (typeof rez != "Nan") {
+                        var rez = parseFloat(rez);
+                    }
+                    return rez * 10;
+
+                },
+                // setter
+                set: function (newSize) {
+                    this.greetingsTime.size = newSize / 10 + 'rem';
+                }
+            },
+
+
+            getPolicySize: {
+                //getter
+                get: function () {
+
+                    var rez = this.policy.size.slice(0, 3);
+                    if (typeof rez != "Nan") {
+                        var rez = parseFloat(rez);
+                    }
+                    return rez * 10;
+
+                },
+                // setter
+                set: function (newSize) {
+                    this.policy.size = newSize / 10 + 'rem';
+                }
+            },
 
             showSomeField() {
                 if (this.defaultComponent == 'Facebook' || this.defaultComponent == 'Email') {
@@ -641,22 +698,22 @@
             changeTimeGreeting() {
                 this.greetingsTime.on = !this.greetingsTime.on
             },
-            changeEmailState(){
-              this.requireEmail = !this.requireEmail
+            changeEmailState() {
+                this.requireEmail = !this.requireEmail
             },
 
-            changeNameState(){
+            changeNameState() {
                 this.requireName = !this.requireName
             },
 
             dependOnComponent(component) {
-                if(this.activeComponent =='Login'){
+                if (this.activeComponent == 'Login') {
                     return false;
-                } else if(this.activeComponent =='Email' &&  component == 'fullName'){
+                } else if (this.activeComponent == 'Email' && component == 'fullName') {
                     return true;
-                } else if(this.activeComponent =='Facebook' &&  component == 'emailOnly'){
+                } else if (this.activeComponent == 'Facebook' && component == 'emailOnly') {
                     return true;
-                } else if(this.activeComponent =='Facebook' &&  component == 'fullName' && this.requireEmail == true){
+                } else if (this.activeComponent == 'Facebook' && component == 'fullName' && this.requireEmail == true) {
                     return true;
                 }
             },
@@ -688,7 +745,6 @@
 
             },
 
-
             updateHoverState(isHover) {
                 this.button.hoverState = isHover;
             },
@@ -709,19 +765,37 @@
 
             save() {
 
-                axios.post('/hotel', {
-                    hotel: this.hotel,
-                    timezone: this.timezones[this.hotel.timezone],
+
+
+                axios.post('/template/add', {
+                    data:{
+                        texts:this.texts,
+                        langs:this.langs,
+                        requireName:this.requireName,
+                        requireEmail:this.requireEmail,
+                        button:this.button,
+                        policy:this.policy,
+                        greeting:this.greeting,
+                        hotelLogo:this.hotelLogo,
+                        greetingsTime:this.greetingsTime,
+                        activeComponent:this.activeComponent,
+                        defaultComponent:this.activeComponent,
+                        backgroundColor:this.backgroundColor,
+                        littleTextColor:this.littleTextColor,
+
+                    }
                 })
                     .then(response => {
-                        if (this.logoUploaded === true) {
+
+                        console.log(response)
+                        /*if (this.logoUploaded === true) {
                             this.uploadImage(response.data)
                         } else {
                             this.hotelCreated = true;
                             setTimeout(() => {
                                 return this.$router.push({name: 'Hotels'})
                             }, 1000);
-                        }
+                        }*/
 
 
                     })
@@ -792,7 +866,6 @@
         float: left;
         margin: 10px;
     }
-
 
     .slider {
         -webkit-appearance: none;

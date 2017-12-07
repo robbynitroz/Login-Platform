@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Template;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 
 
@@ -58,6 +59,11 @@ class TemplateController extends Controller
         return ['Login', 'Email', 'Facebook'];
         //$data = Template::find(1);
         //var_export(json_decode($data->data, true));
+    }
+
+    public function newTemplate(Request $request)
+    {
+        return $request->all();
     }
 
 }

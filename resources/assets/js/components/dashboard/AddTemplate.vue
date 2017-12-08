@@ -16,8 +16,8 @@
                             <!--hotel-->
                             <b-form-fieldset label="Select hotel"
                                              description="which one of hotels this template belongs to ?">
-                                <select class="form-control custom-select">
-                                    <option v-for="(hotel, key) in hotels" :value="key">{{ hotel.name }}</option>
+                                <select v-model="hotelID" class="form-control custom-select">
+                                    <option v-for="(hotel, key) in hotels" :value="hotel.id">{{ hotel.name }}</option>
                                 </select>
                             </b-form-fieldset>
 
@@ -295,19 +295,21 @@
                                 <br>
 
                                 <template v-if="sayTime">
-                                <p> Greeting time text size- <span style="color: #bb0000"> {{ greetingsTime.size }} </span></p>
-                                <b-form-fieldset>
-                                    <b-input-group
-                                            left="<i class='fa fa-minus'></i>"
-                                            right="<i class='fa fa-plus'></i>"
-                                    >
-                                        <b-form-input type="range" min="1" max="50" v-model="getTimeSize"
-                                                      value="getTimeSize" class="slider"></b-form-input>
-                                    </b-input-group>
-                                </b-form-fieldset>
-                                <br>
+                                    <p> Greeting time text size- <span style="color: #bb0000"> {{ greetingsTime.size
+                                        }} </span></p>
+                                    <b-form-fieldset>
+                                        <b-input-group
+                                                left="<i class='fa fa-minus'></i>"
+                                                right="<i class='fa fa-plus'></i>"
+                                        >
+                                            <b-form-input type="range" min="1" max="50" v-model="getTimeSize"
+                                                          value="getTimeSize" class="slider"></b-form-input>
+                                        </b-input-group>
+                                    </b-form-fieldset>
+                                    <br>
                                 </template>
-                                <p> Terms (Policy) text and link size- <span style="color: #bb0000"> {{ policy.size }} </span></p>
+                                <p> Terms (Policy) text and link size- <span style="color: #bb0000"> {{ policy.size
+                                    }} </span></p>
                                 <b-form-fieldset>
                                     <b-input-group
                                             left="<i class='fa fa-minus'></i>"
@@ -343,15 +345,50 @@
                                         <c-switch type="text" variant="success" on="On" off="Off"
                                                   @change="changeNameState()" :checked="requireName"/>
                                     </b-card>
+
+                                    <b-card class="text-center fix-margin"
+                                            header="Scheduled template">
+                                        <c-switch type="text" variant="primary" on="On" off="Off"
+                                                  @change="scheduleSwitcher()" :checked="schedule"/>
+                                    </b-card>
+
+
                                     <!--/.col-->
                                 </div>
+
                                 <div class="clearfix"></div>
+
+                                <b-alert v-model="schedule" dismissible show variant="primary">
+                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                    Schedule function enabled for this template
+                                </b-alert>
                                 <br>
 
                                 <hr>
 
                                 <br>
 
+                                <template v-if="schedule">
+                                    <h4>Schedule time</h4>
+                                    <br>
+                                    <p>Format: <i> Day-Month-Year || Hours:Min:Secs </i></p>
+
+                                    <p>{{ timestamp(scheduleTime) }}</p>
+                                    <date-picker v-model="scheduleTime"
+                                                 type="datetime"
+                                                 range
+                                                 format="dd-MM-yyyy HH:mm:ss"
+                                                 placeholder="Select time and date"
+                                                 :shortcuts="shortcuts"
+                                                 lang="en"></date-picker>
+
+
+                                    <br>
+
+                                    <hr>
+                                </template>
+
+                                <br>
 
                                 <div slot="footer">
                                     <b-button
@@ -434,6 +471,7 @@
 <script>
     import {Sketch} from 'vue-color'
     import cSwitch from './additional-components/Switch.vue'
+    import DatePicker from 'vue2-datepicker'
 
     export default {
         name: 'AddTemplate',
@@ -445,6 +483,7 @@
                 forSection: '',
 
                 hotels: {},
+                hotelID: '',
                 methods: [],
                 texts: {
                     en: {
@@ -539,7 +578,23 @@
                         a: 1
                     },
 
-                }
+                },
+
+
+                schedule: false,
+                scheduleTime: '',
+                startTime: '',
+                endTime: '',
+
+                shortcuts: [
+                    {
+                        text: 'Today',
+                        start: new Date(),
+                        end: new Date()
+                    }
+                ]
+
+
             }
 
 
@@ -547,7 +602,8 @@
 
         components: {
             Sketch,
-            cSwitch
+            cSwitch,
+            DatePicker
         },
 
         mounted() {
@@ -583,6 +639,7 @@
             sayTime() {
                 return this.greetingsTime.on;
             },
+
 
             getGreatingSize: {
                 //getter
@@ -668,6 +725,15 @@
 
         methods: {
 
+
+            timestamp(time) {
+                if (typeof time == 'object') {
+                    this.startTime = time[0].getTime();
+                    this.endTime = time[1].getTime();
+                }
+            },
+
+
             colorSelected(section) {
                 this.colorPicker = false;
                 if (section == 'buttonBCK') {
@@ -704,6 +770,10 @@
 
             changeNameState() {
                 this.requireName = !this.requireName
+            },
+
+            scheduleSwitcher() {
+                this.schedule = !this.schedule
             },
 
             dependOnComponent(component) {
@@ -766,24 +836,26 @@
             save() {
 
 
-
                 axios.post('/template/add', {
-                    data:{
-                        texts:this.texts,
-                        langs:this.langs,
-                        requireName:this.requireName,
-                        requireEmail:this.requireEmail,
-                        button:this.button,
-                        policy:this.policy,
-                        greeting:this.greeting,
-                        hotelLogo:this.hotelLogo,
-                        greetingsTime:this.greetingsTime,
-                        activeComponent:this.activeComponent,
-                        defaultComponent:this.activeComponent,
-                        backgroundColor:this.backgroundColor,
-                        littleTextColor:this.littleTextColor,
+                    
+                    hotelID: this.hotelID,
+                    texts: this.texts,
+                    langs: this.langs,
+                    requireName: this.requireName,
+                    requireEmail: this.requireEmail,
+                    button: this.button,
+                    policy: this.policy,
+                    greeting: this.greeting,
+                    hotelLogo: this.hotelLogo,
+                    greetingsTime: this.greetingsTime,
+                    activeComponent: this.activeComponent,
+                    defaultComponent: this.activeComponent,
+                    backgroundColor: this.backgroundColor,
+                    littleTextColor: this.littleTextColor,
+                    schedule: this.schedule,
+                    startTime: this.startTime,
+                    endTime: this.endTime,
 
-                    }
                 })
                     .then(response => {
 

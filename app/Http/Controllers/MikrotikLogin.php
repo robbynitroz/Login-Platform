@@ -47,8 +47,6 @@ class MikrotikLogin extends Controller
     public function getData(Request $request)
     {
 
-
-
         if ($request->has('clientmac')) {
             $this->client_mac = $request->query('clientmac');
             $this->nas_info = (new NasController())->getNas(env('TEST_IP', $request->ip()));

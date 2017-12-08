@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Template;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
+use Carbon\Carbon;
 
 
 /**
@@ -63,7 +64,35 @@ class TemplateController extends Controller
 
     public function newTemplate(Request $request)
     {
-        return $request->all();
+
+        $newTemplate = new Template();
+        $newTemplate->hotel = (int) $request->hotelID;
+        $newTemplate->type = $request->defaultComponent;
+        $newTemplate->data = json_encode(
+            [
+                $request->texts,
+                $request->langs,
+                $request->requireName,
+                $request->requireEmail,
+                $request->button,
+                $request->policy,
+                $request->greeting,
+                $request->hotelLogo,
+                $request->greetingsTime,
+                $request->activeComponent,
+                $request->defaultComponent,
+                $request->backgroundColor,
+                $request->littleTextColor,
+            ]
+        );
+
+
+        if($request->schedule){
+            return Carbon::parse($request->scheduleTime[0])->format('dd-MM-yyyy HH:mm:ss');
+        }
+
+        $newTemplate->save();
+        return $newTemplate->id;
     }
 
 }

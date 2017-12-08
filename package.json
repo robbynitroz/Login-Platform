@@ -24,6 +24,7 @@
     "vue-color": "^2.4.3",
     "vue-router": "^3.0.1",
     "vue-template-compiler": "^2.5.9",
+    "vue2-datepicker": "^1.7.0",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

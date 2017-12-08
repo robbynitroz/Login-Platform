@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Template;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
-use Carbon\Carbon;
+
 
 
 /**
@@ -55,13 +55,23 @@ class TemplateController extends Controller
     }
 
 
+    /**
+     * Get necessary data for page
+     *
+     * @return array
+     */
     public function getLoginMethods()
     {
-        return ['Login', 'Email', 'Facebook'];
-        //$data = Template::find(1);
-        //var_export(json_decode($data->data, true));
+        $hotels = (new HotelController())->getHotels();
+        return ['methods'=>['Login', 'Email', 'Facebook'], 'hotels'=>$hotels];
     }
 
+    /**
+     * Create new template in DB
+     *
+     * @param Request $request
+     * @return mixed
+     */
     public function newTemplate(Request $request)
     {
 
@@ -86,9 +96,12 @@ class TemplateController extends Controller
             ]
         );
 
-
+        //if template is schedule
         if($request->schedule){
-            return Carbon::parse($request->scheduleTime[0])->format('dd-MM-yyyy HH:mm:ss');
+            $newTemplate->scheduled = 'yes';
+            $newTemplate->schedule_start_time= date("Y-m-d H:i:s", (int) substr($request->startTime, 0, 10));
+            $newTemplate->schedule_end_time= date("Y-m-d H:i:s", (int) substr($request->endTime, 0, 10));
+            $newTemplate->activated = 'yes';
         }
 
         $newTemplate->save();

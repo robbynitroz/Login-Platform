@@ -608,23 +608,16 @@
 
         mounted() {
 
-            axios.get('/hotels')
-                .then(response => {
-                    //this.loading = '';
-                    this.hotelsFetchComplete = true;
-                    this.hotels = response.data;
-                })
-                .catch(e => {
-                    //this.loading = '';
-
-                });
-
 
             axios.get('/template/methods')
                 .then(response => {
                     //this.loading = '';
+
+                    console.log(response.data.hotels);
+                    this.hotels = response.data.hotels;
+                    this.methods = response.data.methods;
                     this.methodsFetchComplete = true;
-                    this.methods = response.data;
+                    this.hotelsFetchComplete = true;
                 })
                 .catch(e => {
                     //this.loading = '';

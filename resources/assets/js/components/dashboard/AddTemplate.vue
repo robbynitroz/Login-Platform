@@ -398,6 +398,7 @@
                                         Save
                                     </b-button>
                                     <b-button
+                                            @click="save('preview')"
                                             type="button"
                                             variant="primary"><i
                                             class="fa fa-adjust"></i>
@@ -592,7 +593,9 @@
                         start: new Date(),
                         end: new Date()
                     }
-                ]
+                ],
+
+                preview:false,
 
 
             }
@@ -826,11 +829,10 @@
                 this.logoUploaded = true
             },
 
-            save() {
+            save(preview=false) {
 
 
                 axios.post('/template/add', {
-                    
                     hotelID: this.hotelID,
                     texts: this.texts,
                     langs: this.langs,

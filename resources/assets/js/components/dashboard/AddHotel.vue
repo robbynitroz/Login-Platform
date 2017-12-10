@@ -91,7 +91,9 @@
                                         class="fa fa-floppy-o"></i>
                                     Save
                                 </b-button>
-                                <b-button  variant="danger">
+                                <b-button
+                                        :to="{name:'Hotels'}"
+                                        variant="danger">
                                     <i class="fa fa-ban"></i> Discard
                                 </b-button>
                             </div>

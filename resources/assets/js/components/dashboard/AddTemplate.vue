@@ -404,7 +404,9 @@
                                             class="fa fa-adjust"></i>
                                         Preview
                                     </b-button>
-                                    <b-button variant="danger">
+                                    <b-button
+                                            :to="{name:'All templates'}"
+                                            variant="danger">
                                         <i class="fa fa-ban"></i> Discard
                                     </b-button>
                                 </div>
@@ -430,7 +432,7 @@
         </b-modal>
 
 
-        <b-modal centered v-model="hotelCreated" class="modal-success" size="sm" hide-footer title="Success">
+        <b-modal centered v-model="templateCreated" class="modal-success" size="sm" hide-footer title="Success">
             <div class="d-block text-center">
                 <h3>Template  successfully created </h3>
             </div>
@@ -561,7 +563,7 @@
 
 
                 critError: false,
-                hotelCreated: false,
+                templateCreated: false,
                 logoUploaded: false,
                 logo: '',
                 uploadButton: false,
@@ -614,17 +616,13 @@
 
             axios.get('/template/methods')
                 .then(response => {
-                    //this.loading = '';
-
-                    console.log(response.data.hotels);
                     this.hotels = response.data.hotels;
                     this.methods = response.data.methods;
                     this.methodsFetchComplete = true;
                     this.hotelsFetchComplete = true;
                 })
                 .catch(e => {
-                    //this.loading = '';
-
+                    this.critError = true;
                 });
 
         },
@@ -829,10 +827,15 @@
                 this.logoUploaded = true
             },
 
-            save(preview=false) {
+            save(preview='') {
 
+                if(preview==='preview'){
+                    var url='/template/preview'
+                } else {
+                    var url='/template/add'
+                }
 
-                axios.post('/template/add', {
+                axios.post(url, {
                     hotelID: this.hotelID,
                     texts: this.texts,
                     langs: this.langs,
@@ -853,21 +856,14 @@
 
                 })
                     .then(response => {
-
                         this.saveMedia(response.data);
-                        /*if (this.logoUploaded === true) {
-                            this.uploadImage(response.data)
-                        } else {
-                            this.hotelCreated = true;
-                            setTimeout(() => {
-                                return this.$router.push({name: 'Hotels'})
-                            }, 1000);
-                        }*/
                     })
                     .catch(e => {
                         this.critError = true;
                     });
             },
+
+
 
             saveMedia(id) {
 
@@ -878,12 +874,10 @@
                 axios.post('/template/media/' + id, data,
                 )
                     .then(response => {
-
-                        console.log(response);
-                        /*this.hotelCreated = true;
+                        this.templateCreated = true;
                         setTimeout(() => {
-                            return this.$router.push({name: 'Hotels'})
-                        }, 1000);*/
+                            return this.$router.push({name: 'Templates'})
+                        }, 1000);
                     })
                     .catch(e => {
                         this.critError = true;

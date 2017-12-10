@@ -77,7 +77,7 @@ export const routes = [
 
             {
                 path: '/dashboard/templates',
-                name: 'All login templates',
+                name: 'All templates',
 
 
             },

@@ -854,7 +854,7 @@
                 })
                     .then(response => {
 
-                        console.log(response)
+                        this.saveMedia(response.data);
                         /*if (this.logoUploaded === true) {
                             this.uploadImage(response.data)
                         } else {
@@ -863,26 +863,27 @@
                                 return this.$router.push({name: 'Hotels'})
                             }, 1000);
                         }*/
-
-
                     })
                     .catch(e => {
                         this.critError = true;
                     });
             },
 
-            uploadImage(id) {
+            saveMedia(id) {
 
                 var data = new FormData();
                 data.append('logo', document.getElementById('logo').files[0]);
+                data.append('background', document.getElementById('background').files[0]);
 
-                axios.post('/hotel/files/' + id, data,
+                axios.post('/template/media/' + id, data,
                 )
                     .then(response => {
-                        this.hotelCreated = true;
+
+                        console.log(response);
+                        /*this.hotelCreated = true;
                         setTimeout(() => {
                             return this.$router.push({name: 'Hotels'})
-                        }, 1000);
+                        }, 1000);*/
                     })
                     .catch(e => {
                         this.critError = true;
@@ -912,6 +913,7 @@
         top: 30px;
         right: 10px;
     }
+
 
     .form-control {
         margin-left: -1px;

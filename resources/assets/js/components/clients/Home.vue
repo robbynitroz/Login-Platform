@@ -1,9 +1,9 @@
 <template>
     <div class="container-fluid">
             <video class="background"  v-if="backgroundShowOrHideVideo" autoplay loop muted >
-                <source :src="'storage/'+media.src" :type="media.type">
+                <source :src="media.src">
             </video>
-            <img class="background" v-if="backgroundShowOrHidePicture" alt="image" :src="'storage/'+media.src"/>
+            <img class="background" v-if="backgroundShowOrHidePicture" alt="image" :src="media.src"/>
         <transition name="entry" appear mode="out-in">
             <component :is="activeComponent"></component>
         </transition>
@@ -18,25 +18,25 @@
     import {mapGetters} from 'vuex';
     import {windowSize} from '../../mixins/windowSize';
 
-    const appLogin = resolve => {
+    const Login = resolve => {
         require.ensure(['./Login.vue'], () => {
             resolve(require('./Login.vue'));
         });
     };
 
-    const appPolicy = resolve => {
+    const Policy = resolve => {
         require.ensure(['./Policy.vue'], () => {
             resolve(require('./Policy.vue'));
         });
     };
 
-    const appEmail = resolve => {
+    const Email = resolve => {
         require.ensure(['./Email.vue'], () => {
             resolve(require('./Email.vue'));
         });
     };
 
-    const appFacebook = resolve => {
+    const Facebook = resolve => {
         require.ensure(['./Facebook.vue'], () => {
             resolve(require('./Facebook.vue'));
         });
@@ -52,10 +52,10 @@
         },
 
         components: {
-            appLogin,
-            appPolicy,
-            appEmail,
-            appFacebook
+            Login,
+            Policy,
+            Email,
+            Facebook
         },
 
         mixins: [windowSize],
@@ -67,7 +67,7 @@
             backgroundShowOrHideVideo() {
 
 
-                if (this.windowWidth > 576 && this.media.type == 'video/mp4') {
+                if (this.windowWidth > 576 && this.media.type == 'mp4') {
                     return true
                 } else {
                     return false
@@ -79,7 +79,7 @@
             backgroundShowOrHidePicture() {
 
 
-                if (this.windowWidth > 576 && this.media.type == 'image/jpeg') {
+                if (this.windowWidth > 576 && this.media.type == 'jpg') {
                     return true
                 } else {
                     return false

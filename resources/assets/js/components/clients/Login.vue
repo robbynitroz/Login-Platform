@@ -150,7 +150,7 @@
             },
 
             changeToPolicy(){
-                this.$store.dispatch('updateActiveComponent', 'app-policy');
+                this.$store.dispatch('updateActiveComponent', 'policy');
             },
 
 

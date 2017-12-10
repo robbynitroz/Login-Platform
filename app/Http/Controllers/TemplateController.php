@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Template;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
-
+use Illuminate\Support\Facades\Storage;
 
 
 /**
@@ -63,7 +63,7 @@ class TemplateController extends Controller
     public function getLoginMethods()
     {
         $hotels = (new HotelController())->getHotels();
-        return ['methods'=>['Login', 'Email', 'Facebook'], 'hotels'=>$hotels];
+        return ['methods' => ['Login', 'Email', 'Facebook'], 'hotels' => $hotels];
     }
 
     /**
@@ -76,36 +76,105 @@ class TemplateController extends Controller
     {
 
         $newTemplate = new Template();
-        $newTemplate->hotel = (int) $request->hotelID;
+        $newTemplate->hotel = (int)$request->hotelID;
         $newTemplate->type = $request->defaultComponent;
         $newTemplate->data = json_encode(
             [
-                $request->texts,
-                $request->langs,
-                $request->requireName,
-                $request->requireEmail,
-                $request->button,
-                $request->policy,
-                $request->greeting,
-                $request->hotelLogo,
-                $request->greetingsTime,
-                $request->activeComponent,
-                $request->defaultComponent,
-                $request->backgroundColor,
-                $request->littleTextColor,
-            ]
+                'texts' => $request->texts,
+                'langs' => $request->langs,
+                'requireName' => $request->requireName,
+                'requireEmail' => $request->requireEmail,
+                'button' => $request->button,
+                'policy' => $request->policy,
+                'greeting' => $request->greeting,
+                'hotelLogo' => $request->hotelLogo,
+                'greetingsTime' => $request->greetingsTime,
+                'activeComponent' => $request->activeComponent,
+                'defaultComponent' => $request->defaultComponent,
+                'backgroundColor' => $request->backgroundColor,
+                'littleTextColor' => $request->littleTextColor,
+                'media' => ['src' => '', 'type' => ''],
+                'hotelLogo' => ''
+            ], JSON_FORCE_OBJECT
         );
 
         //if template is schedule
-        if($request->schedule){
+        if ($request->schedule) {
             $newTemplate->scheduled = 'yes';
-            $newTemplate->schedule_start_time= date("Y-m-d H:i:s", (int) substr($request->startTime, 0, 10));
-            $newTemplate->schedule_end_time= date("Y-m-d H:i:s", (int) substr($request->endTime, 0, 10));
+            $newTemplate->schedule_start_time = date("Y-m-d H:i:s", (int)substr($request->startTime, 0, 10));
+            $newTemplate->schedule_end_time = date("Y-m-d H:i:s", (int)substr($request->endTime, 0, 10));
             $newTemplate->activated = 'yes';
         }
 
         $newTemplate->save();
         return $newTemplate->id;
+    }
+
+
+    public function mediaFiles(Request $request)
+    {
+        if ($request->file('logo')->isValid() or $request->file('background')->isValid()) {
+            $request->validate([
+                'logo' => 'image:jpeg,jpg,png',
+                'background' => 'mimes:jpeg,jpg,bmp,png,mp4,mpeg4',
+            ]);
+
+            if ($request->logo) {
+                $hotelLogo = $request->logo->hashName();
+                $request->logo->store('public/images');
+            }
+
+            if ($request->background) {
+                $media = array();
+                $media['type'] = $request->background->getClientOriginalExtension();
+
+                if ($media['type'] == 'mp4' or $media['type'] == 'mpeg4') {
+                    $media['src'] = '/storage/videos/' . $request->background->hashName();
+                    $request->background->store('public/videos');
+                } else {
+                    $media['src'] = '/storage/images/' . $request->background->hashName();
+                    $request->background->store('public/images');
+                }
+            }
+
+            $this->saveFileNames($request->id, $hotelLogo, $media);
+        }
+        return 'success';
+    }
+
+
+    public function saveFileNames(int $id, string $hotelLogo, array $media):void
+    {
+
+        $templateModel = (Template::find($id));
+        $jsonData = $templateModel->data;
+        $data = json_decode($jsonData);
+
+        //Prepare old files if exist
+        $oldFiles = array();
+
+        if ($data->media->src != '') {
+            array_push($oldFiles, $data->media->src);
+        }
+
+        if ($data->hotelLogo != '') {
+            array_push($oldFiles, $data->hotelLogo);
+        }
+
+        //Delete old files if exist
+        $this->destroyFiles($oldFiles);
+
+        $data->media = $media;
+        $data->hotelLogo = $hotelLogo;
+        $templateModel->data = json_encode($data, JSON_FORCE_OBJECT);
+        $templateModel->save();
+
+    }
+
+
+    public function destroyFiles(array $files): void
+    {
+        Storage::delete($files);
     }
 
 }

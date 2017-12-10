@@ -16,16 +16,22 @@ Vue.use(VueRouter);
 
 const router = new VueRouter({
     mode: 'history',
-    routes,
 })
 
-
+const loginHome = resolve => {
+    require.ensure(['./components/clients/Home.vue'], () => {
+        resolve(require('./components/clients/Home.vue'));
+    });
+};
 
 
 new Vue({
     el: '#app',
     store,
     router,
+    components:{
+        loginHome
+    }
 });
 
 

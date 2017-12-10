@@ -856,7 +856,7 @@
 
                 })
                     .then(response => {
-                        this.saveMedia(response.data);
+                        this.saveMedia(response.data, preview);
                     })
                     .catch(e => {
                         this.critError = true;
@@ -865,19 +865,29 @@
 
 
 
-            saveMedia(id) {
+            saveMedia(id, preview) {
+                if(preview ==='preview'){
+                    var url='/template/media/preview?identity='+id;
+                } else {
+                    var url='/template/media/'+ id;
+                }
 
                 var data = new FormData();
                 data.append('logo', document.getElementById('logo').files[0]);
                 data.append('background', document.getElementById('background').files[0]);
 
-                axios.post('/template/media/' + id, data,
+                axios.post(url, data,
                 )
                     .then(response => {
-                        this.templateCreated = true;
-                        setTimeout(() => {
-                            return this.$router.push({name: 'Templates'})
-                        }, 1000);
+                       if(preview !=='preview' ) {
+                           this.templateCreated = true;
+                           setTimeout(() => {
+                               return this.$router.push({name: 'Templates'})
+                           }, 1000);
+                       }else {
+                           window.open('/preview/'+response.data);
+                       }
+
                     })
                     .catch(e => {
                         this.critError = true;

@@ -59,6 +59,12 @@ Route::post('/template/add', ['uses'=>'TemplateController@newTemplate', 'middlew
 Route::post('/template/media/{id}', ['uses'=>'TemplateController@mediaFiles', 'middleware'=>['web', 'auth']])->name('template_media');
 
 
+Route::post('/template/preview', ['uses'=>'TemplateController@preparePreview', 'middleware'=>['web', 'auth']])->name('prepare_preview');
+
+Route::get('/preview/{id}', ['uses'=>'TemplateController@preview', 'middleware'=>['web', 'auth']])->name('preview');
+
+
+
 
 //Route::get('/test', ['uses'=>'TemplateController@test', 'middleware'=>['web', 'auth']])->name('test');
 

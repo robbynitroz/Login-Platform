@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Template;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
@@ -119,6 +120,13 @@ class TemplateController extends Controller
                 'background' => 'mimes:jpeg,jpg,bmp,png,mp4,mpeg4',
             ]);
 
+            if ($request->id == 'preview') {
+                $videoPath = 'tmp';
+                $imagePath = $videoPath;
+            } else {
+                $videoPath = 'videos';
+                $imagePath = 'images';
+            }
             if ($request->logo) {
                 $hotelLogo = $request->logo->hashName();
                 $request->logo->store('public/images');
@@ -129,21 +137,25 @@ class TemplateController extends Controller
                 $media['type'] = $request->background->getClientOriginalExtension();
 
                 if ($media['type'] == 'mp4' or $media['type'] == 'mpeg4') {
-                    $media['src'] = '/storage/videos/' . $request->background->hashName();
-                    $request->background->store('public/videos');
+                    $media['src'] = '/storage/' . $videoPath . '/' . $request->background->hashName();
+                    $request->background->store('public/' . $videoPath);
                 } else {
-                    $media['src'] = '/storage/images/' . $request->background->hashName();
-                    $request->background->store('public/images');
+                    $media['src'] = '/storage/' . $imagePath . '/' . $request->background->hashName();
+                    $request->background->store('public/' . $imagePath);
                 }
             }
+            if ($videoPath !== 'tmp') {
+                $this->saveFileNames($request->id, $hotelLogo, $media);
+            } else {
+             return  $this->previewFiles((int)$request->identity, $hotelLogo, $media);
+            }
 
-            $this->saveFileNames($request->id, $hotelLogo, $media);
         }
         return 'success';
     }
 
 
-    public function saveFileNames(int $id, string $hotelLogo, array $media):void
+    public function saveFileNames(int $id, string $hotelLogo, array $media): void
     {
 
         $templateModel = (Template::find($id));
@@ -175,6 +187,72 @@ class TemplateController extends Controller
     public function destroyFiles(array $files): void
     {
         Storage::delete($files);
+    }
+
+    public function previewFiles(int $identity, string $hotelLogo, array $media)
+    {
+        $jsonData = Redis::get('data-' . $identity);
+        $data = json_decode($jsonData);
+
+        $data->media = $media;
+        $data->hotelLogo = $hotelLogo;
+        $newData = json_encode($data, JSON_FORCE_OBJECT);
+        Redis::set('data-' . $identity, $newData, 300);
+
+        return $identity;
+
+    }
+
+    public function preparePreview(Request $request)
+    {
+        $data = json_encode(
+            [
+                'texts' => $request->texts,
+                'langs' => $request->langs,
+                'requireName' => $request->requireName,
+                'requireEmail' => $request->requireEmail,
+                'button' => $request->button,
+                'policy' => $request->policy,
+                'greeting' => $request->greeting,
+                'hotelLogo' => $request->hotelLogo,
+                'greetingsTime' => $request->greetingsTime,
+                'activeComponent' => $request->activeComponent,
+                'defaultComponent' => $request->defaultComponent,
+                'backgroundColor' => $request->backgroundColor,
+                'littleTextColor' => $request->littleTextColor,
+                'media' => ['src' => '', 'type' => ''],
+                'hotelLogo' => ''
+            ], JSON_FORCE_OBJECT
+        );
+
+        $timestamp = Carbon::now()->timestamp;
+        Redis::set('data-' . $timestamp, $data, 300);
+
+        return $timestamp;
+
+    }
+
+    public function preview(Request $request)
+    {
+
+       $data=  Redis::get('data-' . $request->id);
+
+        return view('clients.login', [
+            'data' => $data,
+            'type' => 'preview',
+            'hotel' =>
+                [
+                    'id' => 'Preview',
+                    'name' => 'Preview',
+                    'url' => 'google.com',
+                    'facebook_url' => 'Preview',
+                ],
+            'ip_address' => $request->ip(),
+            'lang' => 'en',
+            'mac_address' => '',
+            'theme_color'=>str_replace('background:', '', ((json_decode($data))->backgroundColor))
+        ]);
+
     }
 
 }

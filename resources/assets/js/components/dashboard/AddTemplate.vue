@@ -333,7 +333,6 @@
                                                   @change="changeTimeGreeting()" :checked="greetingsTime.on"/>
                                     </b-card>
 
-
                                     <b-card v-if="dependOnComponent('emailOnly')" class="text-center fix-margin"
                                             header="Sign up via Email along with FB">
                                         <c-switch type="text" variant="success" on="On" off="Off"

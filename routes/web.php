@@ -51,6 +51,7 @@ Route::get('/hotel/{id}', ['uses'=>'HotelController@getHotelAdmin', 'middleware'
 Route::put('/hotel/{id}', ['uses'=>'HotelController@editHotel', 'middleware'=>['web', 'auth']])->name('edit_hotel');
 Route::post('/hotel/files/{id}', ['uses'=>'HotelController@editHotelFiles', 'middleware'=>['web', 'auth']])->name('edit_hotel_files');
 Route::delete('/hotel/{id}', ['uses'=>'HotelController@deleteHotel', 'middleware'=>['web', 'auth']])->name('delete_hotels');
+Route::get('/hotel/templates/{id}', ['uses'=>'HotelController@getHotelTemplates', 'middleware'=>['web', 'auth']])->name('hotel_templates');
 // Hotel routes end
 
 //Templates and login method routes

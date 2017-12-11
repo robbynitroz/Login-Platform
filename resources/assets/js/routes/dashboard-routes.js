@@ -43,6 +43,13 @@ const AddTemplate = resolve => {
 };
 
 
+const Templates = resolve => {
+    require.ensure(['../components/dashboard/Templates.vue'], () => {
+        resolve(require('../components/dashboard/Templates.vue'));
+    });
+};
+
+
 export const routes = [
     {
         path: '/dashboard',
@@ -78,8 +85,7 @@ export const routes = [
             {
                 path: '/dashboard/templates',
                 name: 'All templates',
-
-
+                component:Templates,
             },
 
             {

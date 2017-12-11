@@ -60,6 +60,18 @@ class HotelController extends Controller
 
 
     /**
+     * All releted templates
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function getHotelTemplates(Request $request)
+    {
+        return (Hotel::find($request->id))->templates;
+    }
+
+
+    /**
      * Delete hotels and related templates
      *
      * @param $id
@@ -134,4 +146,6 @@ class HotelController extends Controller
         $newHotel->save();
         return $newHotel->id;
     }
+
+
 }

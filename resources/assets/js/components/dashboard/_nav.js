@@ -62,12 +62,12 @@ export default {
             children: [
                 {
                     name: 'Add Router',
-                    url: '/dashboard/template/add',
+                    url: '/dashboard/router/add',
                     icon: 'icon-plus',
                 },
                 {
                     name: 'All routers',
-                    url: '/dashboard/templates',
+                    url: '/dashboard/routers',
                     icon: 'fa fa-sitemap'
                 }
             ]

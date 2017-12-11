@@ -112,6 +112,12 @@ class TemplateController extends Controller
     }
 
 
+    /**
+     * Manage templates media files
+     *
+     * @param Request $request
+     * @return int|string
+     */
     public function mediaFiles(Request $request)
     {
         if ($request->file('logo')->isValid() or $request->file('background')->isValid()) {
@@ -155,6 +161,13 @@ class TemplateController extends Controller
     }
 
 
+    /**
+     * Saves file names in MySQL DB
+     *
+     * @param int $id
+     * @param string $hotelLogo
+     * @param array $media
+     */
     public function saveFileNames(int $id, string $hotelLogo, array $media): void
     {
 
@@ -184,11 +197,24 @@ class TemplateController extends Controller
     }
 
 
+    /**
+     * Terminating files after changes
+     *
+     * @param array $files
+     */
     public function destroyFiles(array $files): void
     {
         Storage::delete($files);
     }
 
+    /**
+     * Preview files management
+     *
+     * @param int $identity
+     * @param string $hotelLogo
+     * @param array $media
+     * @return int
+     */
     public function previewFiles(int $identity, string $hotelLogo, array $media)
     {
         $jsonData = Redis::get('data-' . $identity);
@@ -198,11 +224,17 @@ class TemplateController extends Controller
         $data->hotelLogo = $hotelLogo;
         $newData = json_encode($data, JSON_FORCE_OBJECT);
         Redis::set('data-' . $identity, $newData, 300);
-
+        Redis::expire('data-' . $identity, 60);
         return $identity;
 
     }
 
+    /**
+     * Prepare data for preview page, stores data in Redis
+     *
+     * @param Request $request
+     * @return int
+     */
     public function preparePreview(Request $request)
     {
         $data = json_encode(
@@ -228,15 +260,25 @@ class TemplateController extends Controller
         $timestamp = Carbon::now()->timestamp;
         Redis::set('data-' . $timestamp, $data, 300);
 
+
         return $timestamp;
 
     }
 
+    /**
+     * Preview page
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
+     */
     public function preview(Request $request)
     {
 
        $data=  Redis::get('data-' . $request->id);
 
+       if(!$data){
+           return 'Sorry data expired';
+       }
         return view('clients.login', [
             'data' => $data,
             'type' => 'preview',

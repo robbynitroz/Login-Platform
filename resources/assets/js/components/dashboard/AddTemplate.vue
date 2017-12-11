@@ -882,7 +882,7 @@
                        if(preview !=='preview' ) {
                            this.templateCreated = true;
                            setTimeout(() => {
-                               return this.$router.push({name: 'Templates'})
+                               return this.$router.push({name: 'All templates'})
                            }, 1000);
                        }else {
                            window.open('/preview/'+response.data);

@@ -60,12 +60,14 @@
                     </button>
 
 
+                    <template v-if="requireEmail">
                     <button v-if="!showEmailMethod"
                             v-show="!showLikeButton"
                             @click="showEmail"
                             class="loginBtn loginBtn--google text-center">
                         {{ showEmailButtonText }}
                     </button>
+                    </template>
 
 
                 </div>
@@ -141,6 +143,7 @@
                 'greetingsTime',
                 'greeting',
                 'button',
+                'requireEmail'
 
 
             ]),

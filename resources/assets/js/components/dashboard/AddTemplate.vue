@@ -335,7 +335,7 @@
 
 
                                     <b-card v-if="dependOnComponent('emailOnly')" class="text-center fix-margin"
-                                            header="Require Email also">
+                                            header="Sign up via Email along with FB">
                                         <c-switch type="text" variant="success" on="On" off="Off"
                                                   @change="changeEmailState()" :checked="requireEmail"/>
                                     </b-card>

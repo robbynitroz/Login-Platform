@@ -37,10 +37,10 @@
                                 </p>
 
                                 <template v-if="template.scheduled == 'no'">
-                                <b-button @click="activateTemplate(template.id)" v-if="active(template.activated, template.scheduled)" type="edit" variant="success"><i class="fa fa-check-circle-o"></i> Activate</b-button>
+                                <b-button @click="confirmActivation(template.id)" v-if="active(template.activated, template.scheduled)" type="edit" variant="success"><i class="fa fa-check-circle-o"></i> Activate</b-button>
                                 </template>
                                 <b-button @click="editTemplate(template.id)"  type="edit" variant="primary"><i class="fa fa-pencil-square-o"></i> Edit</b-button>
-                                <b-button @click="deleteTemplate(template.id)" v-if="active(template.activated, template.scheduled)"  type="delete" variant="danger"><i class="fa fa-ban"></i> Delete</b-button>
+                                <b-button @click="confirmDelete(template.id)" v-if="active(template.activated, template.scheduled)"  variant="danger"><i class="fa fa-ban"></i> Delete</b-button>
                                 <b-button @click="previewTemplate(template.id)" variant="secondary"><i class="fa fa-play-circle"></i> Preview</b-button>
 
                                 <template v-if="template.scheduled !== 'yes'">
@@ -64,15 +64,15 @@
                     </b-row>
                 </b-card>
             </div><!--/.col-->
-            <b-modal centered title="Warning" class="modal-danger" v-model="dangerModal" @ok="confirmDelete()">
+            <b-modal centered title="Warning" class="modal-danger" v-model="dangerModal" @ok="deleteTemplate()">
                 You are going to delete template!  Are you sure ?
             </b-modal>
-            <b-modal centered title="Please confirm" class="modal-warning" v-model="activeModal" @ok="confirmActivation()">
+            <b-modal centered title="Please confirm" class="modal-warning" v-model="activeModal" @ok="activateTemplate()">
                 You are going to activate selected template!  Are you sure ?
             </b-modal>
             <b-modal centered ref="myModalRef" size="sm" hide-footer title="Information">
                 <div class="d-block text-center">
-                    <h3>{{   }}  successfully deleted </h3>
+                    <h3> Success !!! </h3>
                 </div>
                 <b-btn class="mt-3" variant="success" block @click="hideModal">OK</b-btn>
             </b-modal>
@@ -178,23 +178,49 @@
                 this.$router.push({ name: 'Edit Template', params: { id: id }})
             },
 
-            confirmDelete(){
-                //Delete action
-            },
-
-            deleteTemplate(id){
+            confirmDelete(id){
                 this.goDel=id;
                 this.dangerModal=true;
-
             },
 
-            confirmActivation(){
+            deleteTemplate(){
+                axios.delete('/template/'+this.goDel)
+                    .then(response => {
+                        if(response.data=='success'){
+                            this.$refs.myModalRef.show();
+                        };
+                        this.downloadTemplates(this.hotelID);
+                    })
+                    .catch(e => {
+                        //this.loading = '';
 
+                    });
             },
 
-            activateTemplate(id){
+            confirmActivation(id){
                 this.activeModal = true
                 this.goAct = id
+            },
+
+            activateTemplate(){
+
+                axios.post('/template/activate', {
+                    id:this.goAct,
+                    hotel:this.hotelID
+                })
+                    .then(response => {
+                        if(response.data=='success'){
+                            this.$refs.myModalRef.show();
+                        };
+                        this.downloadTemplates(this.hotelID);
+
+                    })
+                    .catch(e => {
+                        this.loading = false;
+                        this.critError = true;
+
+
+                    });
             },
 
             previewTemplate(id){
@@ -204,7 +230,6 @@
                     type:'alreadySaved'
                 })
                     .then(response => {
-                       console.log(response);
                          window.open('/preview/'+response.data);
                     })
                     .catch(e => {
@@ -219,11 +244,7 @@
                 this.$refs.myModalRef.hide()
             },
 
-            confirmDelete(id, name){
-                this.delHotel.id=id;
-                this.delHotel.name=name;
-                this.dangerModal=true
-            },
+
 
             deleteHotel(id){
 

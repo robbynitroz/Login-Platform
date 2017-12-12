@@ -355,4 +355,41 @@ class TemplateController extends Controller
 
     }
 
+    /**
+     * Activate template
+     *
+     * @param Request $request
+     * @return string
+     */
+    public function activate(Request $request)
+    {
+        if(!$request->id or !$request->hotel){
+            return 'fail';
+        }
+        $id = $request->id;
+        $hotel_id = $request->hotel;
+        //Deactivate old one
+        (new Template())->where('hotel', $hotel_id)->where('activated', 'yes')->where('scheduled', 'no')->update(['activated' => 'no']);
+        //Activate new one
+        (Template::find($id))->update(['activated' => 'yes']);
+        $this->deleteCachedTemplates($hotel_id);
+        return 'success';
+    }
+
+    /**
+     * Delete template
+     *
+     * @param Request $request
+     * @return string
+     */
+    public function delete(Request $request)
+    {
+        if(!$request->id){
+            return 'fail';
+        }
+        (Template::find($request->id))->delete();
+        return 'success';
+    }
+
+
 }

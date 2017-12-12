@@ -447,6 +447,10 @@
             Please contact your webmaster or support
         </b-modal>
 
+        <b-modal centered title="Dates are busy" class="modal-warning" v-model="datesExist" hide-footer>
+            Please check dates you have entered or schedule template to other time
+        </b-modal>
+
 
         <b-modal centered v-model="templateCreated" class="modal-success" size="sm" hide-footer title="Success">
             <div class="d-block text-center">
@@ -613,6 +617,7 @@
                 ],
 
                 preview:false,
+                datesExist:false,
 
 
             }
@@ -873,6 +878,10 @@
 
                 })
                     .then(response => {
+                        if(response.data == 'STOP'){
+                            this.datesExist = true;
+                            return 0;
+                        }
                         this.saveMedia(response.data, preview);
                     })
                     .catch(e => {

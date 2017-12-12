@@ -65,8 +65,11 @@ class HotelController extends Controller
      * @param Request $request
      * @return mixed
      */
-    public function getHotelTemplates(Request $request)
+    public function getHotelTemplates(Request $request, $id=false)
     {
+        if($id){
+            return (Hotel::find($id))->templates;
+        }
         return (Hotel::find($request->id))->templates;
     }
 

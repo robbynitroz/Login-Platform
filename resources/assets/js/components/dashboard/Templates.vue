@@ -160,7 +160,6 @@
                     .then(response => {
                         this.selected = true;
                         this.templates = response.data
-                        console.log(this.templates)
 
                     })
                     .catch(e => {

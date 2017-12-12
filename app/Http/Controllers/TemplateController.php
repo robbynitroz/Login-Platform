@@ -28,7 +28,7 @@ class TemplateController extends Controller
      */
     public function getTemplates(int $hotel_id)
     {
-        Redis::del('templates.' . $hotel_id);
+        //Redis::del('templates.' . $hotel_id);
         if (Redis::get('templates.' . $hotel_id) === null) {
             $this->user_templates = (new Template())->where('hotel', $hotel_id)->where('activated', 'yes')->get();
             Redis::set('templates.' . $hotel_id, json_encode($this->user_templates));
@@ -45,8 +45,8 @@ class TemplateController extends Controller
      */
     public function getTemplate(int $hotel_id, string $template_type = 'login')
     {
-        Redis::del("templates.reserved." . $hotel_id);
 
+        //Redis::del("templates.reserved." . $hotel_id);
         if (Redis::get('templates.reserved.' . $hotel_id) === null) {
             $this->user_templates = (new Template())->where('hotel', $hotel_id)->where('type',
                 'reserved')->get();
@@ -101,14 +101,42 @@ class TemplateController extends Controller
 
         //if template is schedule
         if ($request->schedule) {
+            $start_date = date("Y-m-d H:i:s", (int)substr($request->startTime, 0, 10));
+            $end_date = date("Y-m-d H:i:s", (int)substr($request->endTime, 0, 10));
+            if($this->checkIfBusy($request, $start_date, $end_date)){
+                return 'STOP';
+            }
             $newTemplate->scheduled = 'yes';
-            $newTemplate->schedule_start_time = date("Y-m-d H:i:s", (int)substr($request->startTime, 0, 10));
-            $newTemplate->schedule_end_time = date("Y-m-d H:i:s", (int)substr($request->endTime, 0, 10));
+            $newTemplate->schedule_start_time = $start_date;
+            $newTemplate->schedule_end_time = $end_date;
             $newTemplate->activated = 'yes';
         }
 
         $newTemplate->save();
         return $newTemplate->id;
+    }
+
+    /**
+     * Check if schedule template dates are busy
+     *
+     * @param $request
+     * @param $start_date
+     * @param $end_date
+     * @return bool
+     */
+    public function checkIfBusy($request, $start_date, $end_date)
+    {
+        $id= $request->hotelID;
+        $templates = (new HotelController())->getHotelTemplates($request, $id);
+        foreach ($templates as $template){
+            if(($template->schedule_start_time >= $start_date and $template->schedule_end_time <= $start_date)
+            or ($template->schedule_start_time <= $end_date and $template->schedule_end_time >= $end_date)
+                or ($template->schedule_start_time >= $start_date and $template->schedule_start_time <= $end_date)
+            ){
+               return true;
+            }
+        }
+        return false;
     }
 
 
@@ -193,7 +221,20 @@ class TemplateController extends Controller
         $data->hotelLogo = $hotelLogo;
         $templateModel->data = json_encode($data, JSON_FORCE_OBJECT);
         $templateModel->save();
+        $id = $templateModel->hotel;
+        $this->deleteCachedTemplates((int) $id);
+    }
 
+
+    /**
+     * Delete cached templates for updated or deleted hotel (REDIS)
+     *
+     * @param int $id
+     */
+    public function deleteCachedTemplates(int $id)
+    {
+        Redis::del('templates.' . $id);
+        Redis::del("templates.reserved." . $id);
     }
 
 

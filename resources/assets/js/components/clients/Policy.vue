@@ -10,7 +10,6 @@
                    @click="changeBackToDefault"
                 >
                     {{ texts[defaultLanguage].policyBackLinkText | capitalize }} </a>
-
                 <div class="clearfix"></div>
 
                 <div :style="{color:policy.color }" class="text-center middle" v-html="texts[defaultLanguage].policyText"></div>

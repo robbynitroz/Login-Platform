@@ -13,7 +13,7 @@
 
                 <div class="clearfix"></div>
 
-                <div class="text-center middle" v-html="texts[defaultLanguage].policyText"></div>
+                <div :style="{color:policy.color }" class="text-center middle" v-html="texts[defaultLanguage].policyText"></div>
 
                 <a :style="{ float:'right', fontSize:policy.size, margin:'3% 0 0 0', color:policy.color }" href="#"
                    @click="changeBackToDefault"

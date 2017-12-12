@@ -879,6 +879,7 @@
                 })
                     .then(response => {
                         if(response.data == 'STOP'){
+                            this.loading = false;
                             this.datesExist = true;
                             return 0;
                         }

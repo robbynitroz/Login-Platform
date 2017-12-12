@@ -50,6 +50,8 @@ const Templates = resolve => {
 };
 
 
+
+
 export const routes = [
     {
         path: '/dashboard',
@@ -96,8 +98,8 @@ export const routes = [
             },
 
             {
-                path: '/dashboard/template/edit/:hotel_id',
-                name: 'Login template by hotel',
+                path: '/dashboard/template/edit/:id',
+                name: 'Edit Template',
 
             },
 

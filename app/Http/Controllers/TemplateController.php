@@ -103,7 +103,7 @@ class TemplateController extends Controller
         if ($request->schedule) {
             $start_date = date("Y-m-d H:i:s", (int)substr($request->startTime, 0, 10));
             $end_date = date("Y-m-d H:i:s", (int)substr($request->endTime, 0, 10));
-            if($this->checkIfBusy($request, $start_date, $end_date)){
+            if ($this->checkIfBusy($request, $start_date, $end_date)) {
                 return 'STOP';
             }
             $newTemplate->scheduled = 'yes';
@@ -126,14 +126,14 @@ class TemplateController extends Controller
      */
     public function checkIfBusy($request, $start_date, $end_date)
     {
-        $id= $request->hotelID;
+        $id = $request->hotelID;
         $templates = (new HotelController())->getHotelTemplates($request, $id);
-        foreach ($templates as $template){
-            if(($template->schedule_start_time >= $start_date and $template->schedule_end_time <= $start_date)
-            or ($template->schedule_start_time <= $end_date and $template->schedule_end_time >= $end_date)
+        foreach ($templates as $template) {
+            if (($template->schedule_start_time >= $start_date and $template->schedule_end_time <= $start_date)
+                or ($template->schedule_start_time <= $end_date and $template->schedule_end_time >= $end_date)
                 or ($template->schedule_start_time >= $start_date and $template->schedule_start_time <= $end_date)
-            ){
-               return true;
+            ) {
+                return true;
             }
         }
         return false;
@@ -181,7 +181,7 @@ class TemplateController extends Controller
             if ($videoPath !== 'tmp') {
                 $this->saveFileNames($request->id, $hotelLogo, $media);
             } else {
-             return  $this->previewFiles((int)$request->identity, $hotelLogo, $media);
+                return $this->previewFiles((int)$request->identity, $hotelLogo, $media);
             }
 
         }
@@ -222,9 +222,18 @@ class TemplateController extends Controller
         $templateModel->data = json_encode($data, JSON_FORCE_OBJECT);
         $templateModel->save();
         $id = $templateModel->hotel;
-        $this->deleteCachedTemplates((int) $id);
+        $this->deleteCachedTemplates((int)$id);
     }
 
+    /**
+     * Terminating files after changes
+     *
+     * @param array $files
+     */
+    public function destroyFiles(array $files): void
+    {
+        Storage::delete($files);
+    }
 
     /**
      * Delete cached templates for updated or deleted hotel (REDIS)
@@ -235,17 +244,6 @@ class TemplateController extends Controller
     {
         Redis::del('templates.' . $id);
         Redis::del("templates.reserved." . $id);
-    }
-
-
-    /**
-     * Terminating files after changes
-     *
-     * @param array $files
-     */
-    public function destroyFiles(array $files): void
-    {
-        Storage::delete($files);
     }
 
     /**
@@ -278,6 +276,10 @@ class TemplateController extends Controller
      */
     public function preparePreview(Request $request)
     {
+
+        if ($request->type === 'alreadySaved') {
+            return $this->prepareSavedTemplate((int)$request->id);
+        }
         $data = json_encode(
             [
                 'texts' => $request->texts,
@@ -301,9 +303,24 @@ class TemplateController extends Controller
         $timestamp = Carbon::now()->timestamp;
         Redis::set('data-' . $timestamp, $data, 300);
 
+        return $timestamp;
+    }
+
+
+    /**
+     * Save template in Redis for preview
+     *
+     * @param int $id
+     * @return int
+     */
+    public function prepareSavedTemplate(int $id)
+    {
+        $template = Template::find($id);
+        $timestamp = Carbon::now()->timestamp;
+        Redis::set('data-' . $timestamp, $template->data, 300);
+        Redis::expire('data-' . $timestamp, 60);
 
         return $timestamp;
-
     }
 
     /**
@@ -315,11 +332,11 @@ class TemplateController extends Controller
     public function preview(Request $request)
     {
 
-       $data=  Redis::get('data-' . $request->id);
+        $data = Redis::get('data-' . $request->id);
 
-       if(!$data){
-           return 'Sorry data expired';
-       }
+        if (!$data) {
+            return 'Sorry data expired';
+        }
         return view('clients.login', [
             'data' => $data,
             'type' => 'preview',
@@ -333,7 +350,7 @@ class TemplateController extends Controller
             'ip_address' => $request->ip(),
             'lang' => 'en',
             'mac_address' => '',
-            'theme_color'=>str_replace('background:', '', ((json_decode($data))->backgroundColor))
+            'theme_color' => str_replace('background:', '', ((json_decode($data))->backgroundColor))
         ]);
 
     }

@@ -67,7 +67,7 @@ Route::get('/preview/{id}', ['uses'=>'TemplateController@preview', 'middleware'=
 
 
 
-//Route::get('/test', ['uses'=>'TemplateController@test', 'middleware'=>['web', 'auth']])->name('test');
+///template/previewRoute::get('/test', ['uses'=>'TemplateController@test', 'middleware'=>['web', 'auth']])->name('test');
 
 
 

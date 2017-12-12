@@ -36,8 +36,12 @@
                                     Updated: {{ dateTransform(template.updated_at) }}
                                 </p>
 
-                                <b-button   type="edit" variant="primary"><i class="fa fa-pencil-square-o"></i> Edit</b-button>
-                                <b-button v-if="active(template.activated, template.scheduled)"  type="delete" variant="danger"><i class="fa fa-ban"></i> Delete</b-button>
+                                <template v-if="template.scheduled == 'no'">
+                                <b-button @click="activateTemplate(template.id)" v-if="active(template.activated, template.scheduled)" type="edit" variant="success"><i class="fa fa-check-circle-o"></i> Activate</b-button>
+                                </template>
+                                <b-button @click="editTemplate(template.id)"  type="edit" variant="primary"><i class="fa fa-pencil-square-o"></i> Edit</b-button>
+                                <b-button @click="deleteTemplate(template.id)" v-if="active(template.activated, template.scheduled)"  type="delete" variant="danger"><i class="fa fa-ban"></i> Delete</b-button>
+                                <b-button @click="previewTemplate(template.id)" variant="secondary"><i class="fa fa-play-circle"></i> Preview</b-button>
 
                                 <template v-if="template.scheduled !== 'yes'">
                                 <b-col v-if="template.activated =='yes'" class="hotel-logo" cols="3">
@@ -60,12 +64,15 @@
                     </b-row>
                 </b-card>
             </div><!--/.col-->
-            <b-modal centered title="Warning" class="modal-danger" v-model="dangerModal" @ok="">
-                You are going to delete {{  }}.  Press OK if you are sure
+            <b-modal centered title="Warning" class="modal-danger" v-model="dangerModal" @ok="confirmDelete()">
+                You are going to delete template!  Are you sure ?
+            </b-modal>
+            <b-modal centered title="Please confirm" class="modal-warning" v-model="activeModal" @ok="confirmActivation()">
+                You are going to activate selected template!  Are you sure ?
             </b-modal>
             <b-modal centered ref="myModalRef" size="sm" hide-footer title="Information">
                 <div class="d-block text-center">
-                    <h3>{{  }}  successfully deleted </h3>
+                    <h3>{{   }}  successfully deleted </h3>
                 </div>
                 <b-btn class="mt-3" variant="success" block @click="hideModal">OK</b-btn>
             </b-modal>
@@ -99,10 +106,9 @@
                 fetchComplete:false,
                 dangerModal:false,
                 successDel:true,
-                delHotel:{
-                    id:'',
-                    name:'',
-                }
+                activeModal:false,
+                goDel:'',
+                goAct:''
 
             }
         },
@@ -167,9 +173,46 @@
                     });
             },
 
-            editHotel (id) {
+            editTemplate (id) {
 
-                //otelIDthis.$router.push({ name: 'Edit Hotel', params: { hotelID: id }})
+                this.$router.push({ name: 'Edit Template', params: { id: id }})
+            },
+
+            confirmDelete(){
+                //Delete action
+            },
+
+            deleteTemplate(id){
+                this.goDel=id;
+                this.dangerModal=true;
+
+            },
+
+            confirmActivation(){
+
+            },
+
+            activateTemplate(id){
+                this.activeModal = true
+                this.goAct = id
+            },
+
+            previewTemplate(id){
+
+                axios.post('/template/preview', {
+                    id:id,
+                    type:'alreadySaved'
+                })
+                    .then(response => {
+                       console.log(response);
+                         window.open('/preview/'+response.data);
+                    })
+                    .catch(e => {
+                        this.loading = false;
+                        this.critError = true;
+
+
+                    });
             },
 
             hideModal () {

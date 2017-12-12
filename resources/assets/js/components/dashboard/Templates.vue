@@ -30,21 +30,29 @@
                             <!--Hotel blocks-->
                             <b-card class="hotels" bg-variant="dark" text-variant="white" :title="template.type">
                                 <p class="card-text">
-                                    Created: {{ template.created_at }}
+                                    Created: {{ dateTransform(template.created_at) }}
+
+                                    <br>
+                                    Updated: {{ dateTransform(template.updated_at) }}
                                 </p>
-                                <p class="card-text">
-                                    Updated: {{ template.updated_at }}
-                                </p>
+
                                 <b-button   type="edit" variant="primary"><i class="fa fa-pencil-square-o"></i> Edit</b-button>
-                                <b-button  type="delete" variant="danger"><i class="fa fa-ban"></i> Delete</b-button>
+                                <b-button v-if="active(template.activated, template.scheduled)"  type="delete" variant="danger"><i class="fa fa-ban"></i> Delete</b-button>
 
-
+                                <template v-if="template.scheduled !== 'yes'">
                                 <b-col v-if="template.activated =='yes'" class="hotel-logo" cols="3">
                                     <b-badge pill variant="success">Activated</b-badge>
                                 </b-col>
-                                <b-col v-if="template.schedule_start_time != null" class="hotel-logo" cols="3">
+                                </template>
+
+                                <template v-if="template.scheduled == 'yes'">
+                                <b-col class="hotel-logo" cols="3">
                                     <b-badge pill variant="warning">Scheduled</b-badge>
+                                    <p class="schedule-dates">Start Date: {{ dateTransform(template.schedule_start_time,true) }} <br>  End Date: {{ dateTransform(template.schedule_end_time,true) }}</p>
                                 </b-col>
+
+                                </template>
+
                             </b-card>
                             </b-col>
                         </b-col>
@@ -123,6 +131,27 @@
         },
 
         methods: {
+
+            active(active, scheduled){
+                if(active =='yes' && scheduled =='no'){
+                    return false;
+                } else if(active =='yes' && scheduled == 'yes'){
+                    return true
+                } else {
+                    return true
+                }
+            },
+
+            dateTransform(date, showTime = false){
+                let d= new Date(date);
+                let options = {
+                     hour: "2-digit", minute: "2-digit"
+                };
+                if(showTime===true){
+                    return d.toLocaleDateString("en-GB", options);
+                }
+                return d.toLocaleDateString("en-GB");
+            },
 
 
             downloadTemplates(id){
@@ -207,5 +236,13 @@
 }
     .form-control{
         margin-left: -1px;
+    }
+
+.card-text{
+    margin-top:25px;
+}
+
+    .schedule-dates{
+        margin-left: -115px;
     }
 </style>

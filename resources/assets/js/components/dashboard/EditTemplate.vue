@@ -60,7 +60,7 @@
                                     <b-form-file
                                             id="logo"
                                             label="Logo input"
-                                            @change="imageChange"
+                                            @change="imageChange('logo')"
                                             required
                                     ></b-form-file>
                                 </b-form-fieldset>
@@ -75,7 +75,7 @@
                                     <b-form-file
                                             id="background"
                                             label="Packground picture"
-                                            @change="imageChange"
+                                            @change="imageChange('back')"
                                             required
                                     ></b-form-file>
                                 </b-form-fieldset>
@@ -522,6 +522,8 @@
                     ar: 'Arabic',
                 },
 
+                media:'',
+
                 button: '',
 
                 policy: '',
@@ -529,6 +531,7 @@
                 greeting: '',
 
                 hotelLogo: '',
+                backgiUploaded:false,
 
                 greetingsTime:'',
 
@@ -594,7 +597,7 @@
             RingLoader
         },
 
-        mounted() {
+        created() {
 
             axios.get('/template/' + this.$route.params.id)
                 .then(response => {
@@ -604,6 +607,7 @@
                     this.langs= data.langs
                     this.requireName= data.requireName
                     this.requireEmail= data.requireEmail
+                    this.media= data.media
                     this.button= data.button;
                     this.policy= data.policy
                     this.greeting= data.greeting
@@ -632,7 +636,7 @@
 
                 })
                 .catch(e => {
-                    //this.critError = true;
+                    this.critError = true;
                 });
 
 
@@ -790,7 +794,11 @@
             },
 
             scheduleSwitcher() {
-                this.schedule = !this.schedule
+                if(this.schedule == 'yes'){
+                    this.schedule = 'no'
+                } else {
+                    this.schedule = 'yes'
+                }
             },
 
             dependOnComponent(component) {
@@ -846,15 +854,23 @@
                 this.colors = val
             },
 
-            imageChange() {
-                this.logoUploaded = true
+            imageChange(type) {
+                if(type == 'logo'){
+                    this.logoUploaded = true
+                }
+                if(type == 'back'){
+                    this.backgiUploaded = true
+                }
+
             },
 
             edit(preview = '') {
 
                 //Exit
-                console.log(123)
-                return 0;
+                if(preview == ''){
+                    return 0;
+                }
+
                 this.loading = true;
                 if (preview === 'preview') {
                     var url = '/template/preview'
@@ -866,6 +882,7 @@
                     hotelID: this.hotelID,
                     texts: this.texts,
                     langs: this.langs,
+                    media:this.media,
                     requireName: this.requireName,
                     requireEmail: this.requireEmail,
                     button: this.button,
@@ -883,7 +900,11 @@
 
                 })
                     .then(response => {
-                        this.saveMedia(response.data, preview);
+                       // if(logoUploaded && backgiUploaded){
+                            window.open('/preview/' + response.data);
+                            return 1;
+                       // }
+                        //this.saveMedia(response.data, preview);
                     })
                     .catch(e => {
                         this.critError = true;

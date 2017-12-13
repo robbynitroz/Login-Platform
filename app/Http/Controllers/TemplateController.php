@@ -313,6 +313,7 @@ class TemplateController extends Controller
 
         $timestamp = Carbon::now()->timestamp;
         Redis::set('data-' . $timestamp, $data, 300);
+        Redis::expire('data-' . $timestamp, 60);
 
         return $timestamp;
     }

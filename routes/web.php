@@ -63,6 +63,7 @@ Route::post('/template/media/{id}', ['uses'=>'TemplateController@mediaFiles', 'm
 Route::post('/template/preview', ['uses'=>'TemplateController@preparePreview', 'middleware'=>['web', 'auth']])->name('prepare_preview');
 Route::post('/template/activate', ['uses'=>'TemplateController@activate', 'middleware'=>['web', 'auth']])->name('activate_template');
 Route::delete('/template/{id}', ['uses'=>'TemplateController@delete', 'middleware'=>['web', 'auth']])->name('delete_template');
+Route::get('/template/{id}', ['uses'=>'TemplateController@getTemplateById', 'middleware'=>['web', 'auth']])->name('get_template_by_id');
 
 Route::get('/preview/{id}', ['uses'=>'TemplateController@preview', 'middleware'=>['web', 'auth']])->name('preview');
 

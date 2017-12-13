@@ -49,6 +49,11 @@ const Templates = resolve => {
     });
 };
 
+const EditTemplate = resolve => {
+    require.ensure(['../components/dashboard/EditTemplate.vue'], () => {
+        resolve(require('../components/dashboard/EditTemplate.vue'));
+    });
+};
 
 
 
@@ -100,7 +105,7 @@ export const routes = [
             {
                 path: '/dashboard/template/edit/:id',
                 name: 'Edit Template',
-
+                component:EditTemplate
             },
 
             {

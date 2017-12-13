@@ -76,6 +76,10 @@
                 </div>
                 <b-btn class="mt-3" variant="success" block @click="hideModal">OK</b-btn>
             </b-modal>
+
+            <b-modal centered title="Critical error" class="modal-danger" v-model="critError" hide-footer>
+                Please contact your webmaster or support
+            </b-modal>
         </div><!--/.row-->
 
     </div>
@@ -108,7 +112,8 @@
                 successDel:true,
                 activeModal:false,
                 goDel:'',
-                goAct:''
+                goAct:'',
+                critError:false,
 
             }
         },
@@ -174,7 +179,6 @@
             },
 
             editTemplate (id) {
-
                 this.$router.push({ name: 'Edit Template', params: { id: id }})
             },
 
@@ -192,7 +196,7 @@
                         this.downloadTemplates(this.hotelID);
                     })
                     .catch(e => {
-                        //this.loading = '';
+                        this.critError = true;
 
                     });
             },
@@ -246,41 +250,8 @@
 
 
 
-            deleteHotel(id){
-
-                let config = {
-                    onUploadProgress: progressEvent => {
-
-                    }
-                };
-                axios.delete('/hotel/'+id,
-                    config)
-                    .then(response => {
-
-                        this.afterDelete()
 
 
-                    })
-                    .catch(e => {
-                        //this.loading = '';
-
-                    });
-            },
-
-            afterDelete(){
-
-                axios.get('/hotels')
-                    .then(response => {
-
-                        this.$refs.myModalRef.show();
-                        this.hotels= response.data;
-
-                    })
-                    .catch(e => {
-                        //this.loading = '';
-
-                    });
-            },
 
         }
     }

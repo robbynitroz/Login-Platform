@@ -37,6 +37,17 @@ class TemplateController extends Controller
     }
 
     /**
+     * Get template by ID
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function getTemplateById(Request $request)
+    {
+        return Template::find($request->id);
+    }
+
+    /**
      * Get specific template, usually used for users already authorized to use WiFi and shown after session timeout
      *
      * @param int $hotel_id

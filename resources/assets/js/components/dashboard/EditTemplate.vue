@@ -3,14 +3,13 @@
 
         <div class="animated fadeIn">
 
-
-            <div v-if="hotelsFetchComplete && methodsFetchComplete" class="row">
+            <div v-if="methodsFetchComplete" class="row">
 
                 <div class="col-md-12">
-                    <form enctype="multipart/form-data" @submit.prevent="save()">
+                    <form enctype="multipart/form-data" @submit.prevent="edit()">
                         <b-card>
                             <div slot="header">
-                                <strong>Add Template</strong>
+                                <strong>Edit template</strong>
                             </div>
 
                             <b-modal
@@ -25,8 +24,9 @@
                                     v-model="loading"
                                     centered title="Bootstrap-Vue">
                                 <div class="text-center center-block loading-modal">
-                                    <ring-loader :loading="loading" color="#00aced" ></ring-loader>
-                                <p style="color: #00aced; font-size: 2rem; font-weight: 900" class="my-4">{{ completed }}%</p>
+                                    <ring-loader :loading="loading" color="#00aced"></ring-loader>
+                                    <p style="color: #00aced; font-size: 2rem; font-weight: 900" class="my-4">{{
+                                        completed }}%</p>
                                 </div>
                             </b-modal>
 
@@ -44,11 +44,12 @@
                                 <select v-model="defaultComponent" class="form-control custom-select">
                                     <option v-for="method in methods" :value="method">{{ method }}</option>
                                 </select>
+
                             </b-form-fieldset>
 
                             <hr>
 
-                            <div v-if="changeStatus">
+                            <div>
                                 <h3>Required images</h3>
                                 <!--Hotel logo-->
                                 <b-form-fieldset
@@ -175,7 +176,8 @@
                                                     <div v-if='sayTime'>
                                                         <hr>
                                                         <p>
-                                                            Enter greeting for every time period || Note: You can leave default</p>
+                                                            Enter greeting for every time period || Note: You can leave
+                                                            default</p>
 
                                                         <!--morining-->
                                                         <b-form-fieldset>
@@ -242,8 +244,10 @@
                                 <div>
                                     <a href="" @click.prevent="storeColor('buttonBCK')">Button background color || </a>
                                     <a href="" @click.prevent="storeColor('buttonText')">Button text color || </a>
-                                    <a href="" @click.prevent="storeColor('buttonHoverText')">Button text color on hover || </a>
-                                    <a href="" @click.prevent="storeColor('buttonHoverBack')">Button background on hover || </a>
+                                    <a href="" @click.prevent="storeColor('buttonHoverText')">Button text color on hover
+                                        || </a>
+                                    <a href="" @click.prevent="storeColor('buttonHoverBack')">Button background on hover
+                                        || </a>
                                     <a href="" @click.prevent="storeColor('buttonBorder')">Button border || </a>
                                     <a href=""
                                        @click.prevent="storeColor('buttonBorderHover')">Button border on hover </a>
@@ -270,12 +274,12 @@
                                 <div>
                                     <a href=""
                                        @click.prevent="storeColor('policy')">
-                                        Terms aka Policy link and text color  || </a>
+                                        Terms aka Policy link and text color || </a>
                                     <a href=""
-                                       @click.prevent="storeColor('greeting')"> Greeting or text on the top  || </a>
+                                       @click.prevent="storeColor('greeting')"> Greeting or text on the top || </a>
                                     <a v-if="defaultComponent =='Login'" href=""
                                        @click.prevent="storeColor('littleTextColor')">
-                                        Little text under login button  </a>
+                                        Little text under login button </a>
 
                                 </div>
                                 <br>
@@ -284,7 +288,7 @@
                                 <h4> Background color </h4>
                                 <div>
                                     <a href="" @click.prevent="storeColor('background')">
-                                        Background color (transparency allowed)  </a>
+                                        Background color (transparency allowed) </a>
                                 </div>
                                 <br>
                                 <div class="demo-div" :style="backgroundColor"></div>
@@ -293,7 +297,7 @@
                                 <br>
 
 
-                                <h4> Text sizes  </h4>
+                                <h4> Text sizes </h4>
                                 <div>
 
                                 </div>
@@ -365,7 +369,7 @@
                                     <b-card class="text-center fix-margin"
                                             header="Scheduled template">
                                         <c-switch type="text" variant="primary" on="On" off="Off"
-                                                  @change="scheduleSwitcher()" :checked="schedule"/>
+                                                  @change="scheduleSwitcher()" :checked="scheduled"/>
                                     </b-card>
 
 
@@ -374,17 +378,19 @@
 
                                 <div class="clearfix"></div>
 
-                                <b-alert v-model="schedule" dismissible show variant="primary">
+                                <template v-if="schedule == 'yes'">
+                                <b-alert show dismissible show variant="primary">
                                     <i class="fa fa-info-circle" aria-hidden="true"></i>
                                     Schedule function enabled for this template
                                 </b-alert>
+                                </template>
                                 <br>
 
                                 <hr>
 
                                 <br>
 
-                                <template v-if="schedule">
+                                <template v-if="schedule =='yes'">
                                     <h4>Schedule time</h4>
                                     <br>
                                     <p>Format: <i> Day-Month-Year || Hours:Min:Secs </i></p>
@@ -397,33 +403,28 @@
                                                  placeholder="Select time and date"
                                                  :shortcuts="shortcuts"
                                                  lang="en"></date-picker>
-
-
                                     <br>
-
                                     <hr>
                                 </template>
-
                                 <br>
-
                                 <div slot="footer">
                                     <b-button
                                             type="submit"
                                             variant="success"><i
-                                            class="fa fa-floppy-o"></i>
-                                        Save
+                                            class="fa fa-pencil-square-o"></i>
+                                        Edit
                                     </b-button>
                                     <b-button
-                                            @click="save('preview')"
+                                            @click="edit('preview')"
                                             type="button"
                                             variant="primary"><i
-                                            class="fa fa-adjust"></i>
+                                            class="fa fa-wpexplorer"></i>
                                         Preview
                                     </b-button>
                                     <b-button
                                             :to="{name:'All templates'}"
                                             variant="danger">
-                                        <i class="fa fa-ban"></i> Discard
+                                        <i class="fa fa-times"></i> Cancel
                                     </b-button>
                                 </div>
                             </div>
@@ -450,7 +451,7 @@
 
         <b-modal centered v-model="templateCreated" class="modal-success" size="sm" hide-footer title="Success">
             <div class="d-block text-center">
-                <h3>Template  successfully created </h3>
+                <h3>Template successfully created </h3>
             </div>
         </b-modal>
 
@@ -498,33 +499,18 @@
 
                 colorPicker: false,
                 forSection: '',
-                completed:0,
-                loading:false,
+                completed: 0,
+                loading: false,
                 hotels: {},
                 hotelID: '',
                 methods: [],
-                texts: {
-                    en: {
-                        greetingText: '',
-                        emailText: '',
-                        buttonText: '',
-                        policyText: '',
-                        policyLinkText: '',
-                        policyBackLinkText: '',
-                        sayTimeEvening: 'Good evening!',
-                        sayTimeMorning: 'Good morning!',
-                        sayTimeAfternoon: 'Good afternoon!',
-                        littleText: 'connect and proceed to our webapp',
-                    }
-                },
+                texts:'',
 
                 requireName: false,
 
                 requireEmail: true,
 
-                langs: [
-                    'en',
-                ],
+                langs:'',
                 addLangs: {
                     en: 'English',
                     nl: "Dutch",
@@ -536,33 +522,15 @@
                     ar: 'Arabic',
                 },
 
-                button: {
-                    color: '#d3e0ff',
-                    colorBackd: '#1e2021',
-                    colorHover: '#ffffff',
-                    hoverState: false,
-                    borderColor: '#d3e0ff',
-                    colorBackdHover: '#000000',
-                    borderColorHover: '#ffffff',
-                },
+                button: '',
 
-                policy: {
-                    size: '1rem',
-                    color: '#d3e0ff',
-                },
+                policy: '',
 
-                greeting: {
-                    size: '2.0rem',
-                    color: '#ffffff',
-                },
+                greeting: '',
 
                 hotelLogo: '',
 
-                greetingsTime: {
-                    on: false,
-                    size: '2.4rem',
-                    color: 'white',
-                },
+                greetingsTime:'',
 
                 activeComponent: false,
                 defaultComponent: '', //Must be same as activeComponent
@@ -582,7 +550,6 @@
                 logoUploaded: false,
                 logo: '',
                 uploadButton: false,
-                hotelsFetchComplete: false,
                 methodsFetchComplete: false,
                 langWanring: false,
 
@@ -600,7 +567,7 @@
 
 
                 schedule: false,
-                scheduleTime: '',
+                scheduleTime: [ "2017-12-04T20:03:00.000Z", "2017-12-13T20:00:00.000Z" ],
                 startTime: '',
                 endTime: '',
 
@@ -612,7 +579,7 @@
                     }
                 ],
 
-                preview:false,
+                preview: false,
 
 
             }
@@ -629,17 +596,58 @@
 
         mounted() {
 
-
-            axios.get('/template/methods')
+            axios.get('/template/' + this.$route.params.id)
                 .then(response => {
-                    this.hotels = response.data.hotels;
-                    this.methods = response.data.methods;
+                   let data=  JSON.parse(response.data.data);
+                    this.hotelID = response.data.hotel
+                    this.texts= data.texts
+                    this.langs= data.langs
+                    this.requireName= data.requireName
+                    this.requireEmail= data.requireEmail
+                    this.button= data.button;
+                    this.policy= data.policy
+                    this.greeting= data.greeting
+                    this.greetingsTime= data.greetingsTime
+                    this.activeComponent= data.activeComponent
+                    this.activeComponent= data.activeComponent
+                    this.backgroundColor= data.backgroundColor
+                    this.littleTextColor= data.littleTextColor
+                    this.schedule= response.data.scheduled
+                    this.defaultComponent = response.data.type;
+
+                    if(response.data.scheduled!=null) {
+                        let st = new Date(response.data.schedule_start_time);
+                        let en = new Date(response.data.schedule_end_time);
+                        this.scheduleTime = [st, en];
+                    }
+
+
+                    //this.startTime= response.data.schedule_start_time
+                    //this.endTime= response.data.schedule_end_time
+
+                    //console.log(response.data.schedule_start_time);
+                    //console.log(new Date(response.data.schedule_start_time));
+
                     this.methodsFetchComplete = true;
-                    this.hotelsFetchComplete = true;
+
                 })
                 .catch(e => {
-                    this.critError = true;
+                    //this.critError = true;
                 });
+
+
+
+
+                axios.get('/template/methods')
+                    .then(response => {
+                       this.hotels = response.data.hotels;
+                        this.methods = response.data.methods;
+
+                    })
+                    .catch(e => {
+                        //this.critError = true;
+                    });
+
 
         },
 
@@ -710,14 +718,6 @@
                 return false;
             },
 
-            changeStatus() {
-                if (this.defaultComponent !== '') {
-                    this.activeComponent = this.defaultComponent;
-                    return true
-                }
-                return this.activeComponent
-            },
-
 
             buttonStyleObject() {
                 var modifier = '';
@@ -730,6 +730,13 @@
                     borderColor: this.button['borderColor' + modifier]
                 };
             },
+
+            scheduled(){
+                if(this.schedule =='yes'){
+                    return true
+                }
+                return false
+            }
 
         },
 
@@ -843,13 +850,16 @@
                 this.logoUploaded = true
             },
 
-            save(preview='') {
+            edit(preview = '') {
 
+                //Exit
+                console.log(123)
+                return 0;
                 this.loading = true;
-                if(preview==='preview'){
-                    var url='/template/preview'
+                if (preview === 'preview') {
+                    var url = '/template/preview'
                 } else {
-                    var url='/template/add'
+                    var url = '/template/add'
                 }
 
                 axios.post(url, {
@@ -882,12 +892,11 @@
             },
 
 
-
             saveMedia(id, preview) {
-                if(preview ==='preview'){
-                    var url='/template/media/preview?identity='+id;
+                if (preview === 'preview') {
+                    var url = '/template/media/preview?identity=' + id;
                 } else {
-                    var url='/template/media/'+ id;
+                    var url = '/template/media/' + id;
                 }
 
                 let config = {
@@ -906,14 +915,14 @@
                 )
                     .then(response => {
                         this.loading = false;
-                       if(preview !=='preview' ) {
-                           this.templateCreated = true;
-                           setTimeout(() => {
-                               return this.$router.push({name: 'All templates'})
-                           }, 1000);
-                       }else {
-                           window.open('/preview/'+response.data);
-                       }
+                        if (preview !== 'preview') {
+                            this.templateCreated = true;
+                            setTimeout(() => {
+                                return this.$router.push({name: 'All templates'})
+                            }, 1000);
+                        } else {
+                            window.open('/preview/' + response.data);
+                        }
 
                     })
                     .catch(e => {
@@ -946,7 +955,6 @@
         top: 30px;
         right: 10px;
     }
-
 
     .form-control {
         margin-left: -1px;
@@ -1000,11 +1008,12 @@
         cursor: pointer;
     }
 
-    .v-spinner{
-        margin-left:37%;
-        margin-top:5%
+    .v-spinner {
+        margin-left: 37%;
+        margin-top: 5%
     }
-    .loading-modal{
+
+    .loading-modal {
         background: #151b1e;
     }
 </style>

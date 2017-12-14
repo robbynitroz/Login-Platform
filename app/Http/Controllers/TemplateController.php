@@ -128,6 +128,12 @@ class TemplateController extends Controller
     }
 
 
+    /**
+     * Edit template
+     *
+     * @param Request $request
+     * @return string
+     */
     public function editTemplate(Request $request)
     {
         //return $request->all();
@@ -166,7 +172,7 @@ class TemplateController extends Controller
             $editTemplate->schedule_start_time = $start_date;
             $editTemplate->schedule_end_time = $end_date;
             $editTemplate->activated = 'yes';
-        }else if($request->scheduleChanged == 'yes'){
+        }else if($request->scheduleChanged == 'yes' and $request->schedule=='no'){
                 $editTemplate->scheduled = 'no';
                 $editTemplate->activated = 'no';
                 $editTemplate->schedule_start_time = null;
@@ -256,7 +262,7 @@ class TemplateController extends Controller
         }}
 
             if ($videoPath !== 'tmp') {
-                $this->saveFileNames($request->id, $hotelLogo, $media);
+                $this->saveFileNames((int)$request->id, $hotelLogo, $media);
             } else {
                 return $this->previewFiles((int)$request->identity, $hotelLogo, $media);
             }
@@ -283,19 +289,23 @@ class TemplateController extends Controller
         //Prepare old files if exist
         $oldFiles = array();
 
-        if ($data->media->src != '') {
-            array_push($oldFiles, $data->media->src);
+        if($hotelLogo !== ''){
+            if ($data->hotelLogo != '') {
+                array_push($oldFiles, $data->hotelLogo);
+            }
+            $data->hotelLogo = $hotelLogo;
         }
 
-        if ($data->hotelLogo != '') {
-            array_push($oldFiles, $data->hotelLogo);
+        if(!empty($media)) {
+            if ($data->media->src != '') {
+                array_push($oldFiles, $data->media->src);
+            }
+            $data->media = $media;
         }
 
         //Delete old files if exist
         $this->destroyFiles($oldFiles);
 
-        $data->media = $media;
-        $data->hotelLogo = $hotelLogo;
         $templateModel->data = json_encode($data, JSON_FORCE_OBJECT);
         $templateModel->save();
         $id = $templateModel->hotel;
@@ -480,7 +490,13 @@ class TemplateController extends Controller
         if(!$request->id){
             return 'fail';
         }
-        (Template::find($request->id))->delete();
+        $null_critical = Template::find($request->id);
+        $null_critical->activated='no';
+        $null_critical->scheduled='no';
+        $null_critical->schedule_start_time=null;
+        $null_critical->schedule_end_time=null;
+        $null_critical->save();
+        $null_critical->delete();
         return 'success';
     }
 

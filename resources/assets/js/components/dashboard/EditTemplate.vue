@@ -452,6 +452,16 @@
         <b-modal centered v-model="templateUpdated" class="modal-success" size="sm" hide-footer title="Success">
             <div class="d-block text-center">
                 <h3>Template successfully updated </h3>
+                <b-button
+                        :to="{name:'All templates'}"
+                        variant="primary">
+                    <i class="fa fa-chevron-left"></i> Go to all templates page
+                </b-button>
+                <b-button
+                        @click="templateUpdated=false"
+                        variant="primary">
+                    <i class="fa fa-window-close"></i> Stay
+                </b-button>
             </div>
         </b-modal>
 
@@ -908,7 +918,8 @@
                     media: this.media,
                     hotelLogo: this.hotelLogo,
                     templateID:this.$route.params.id,
-                    activeTemplate:this.activeComponent
+                    activeTemplate:this.activeComponent,
+                    scheduleChanged:this.scheduleChanged,
 
                 })
                     .then(response => {
@@ -918,10 +929,6 @@
                         } else if(!this.logoUploaded && !this.backgiUploaded && preview=='') {
                             this.loading = false;
                             this.templateUpdated = true;
-                            setTimeout(() => {
-                                return this.$router.push({name: 'All templates'})
-                            }, 1000);
-
                         } else if((this.logoUploaded || this.backgiUploaded)) {
                             this.saveMedia(response.data, preview);
                         }
@@ -958,9 +965,9 @@
                         if (preview !== 'preview') {
                             this.loading = false;
                             this.templateUpdated = true;
-                            setTimeout(() => {
+                            /*setTimeout(() => {
                                 return this.$router.push({name: 'All templates'})
-                            }, 1000);
+                            }, 1000);*/
                         } else {
                             window.open('/preview/' + response.data);
                         }

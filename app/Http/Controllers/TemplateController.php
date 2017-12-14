@@ -180,6 +180,8 @@ class TemplateController extends Controller
         }
 
         $editTemplate->save();
+        $id = $editTemplate->hotel;
+        $this->deleteCachedTemplates((int)$id);
         return $editTemplate->id;
     }
 

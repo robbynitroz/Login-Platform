@@ -54,14 +54,12 @@
                                 <!--Hotel logo-->
                                 <b-form-fieldset
                                         label="Logo input"
-                                        description="Upload Hotel logo || required"
-                                        required
+                                        description="Upload Hotel logo || leave empty if logo is same"
                                 >
                                     <b-form-file
                                             id="logo"
                                             label="Logo input"
                                             @change="imageChange('logo')"
-                                            required
                                     ></b-form-file>
                                 </b-form-fieldset>
 
@@ -69,14 +67,14 @@
                                 <!--Background picture or video-->
                                 <b-form-fieldset
                                         label="Template background"
-                                        description="Background picture or video || required"
-                                        required
+                                        description="Background picture or video || leave empty if background is same"
+
                                 >
                                     <b-form-file
                                             id="background"
                                             label="Packground picture"
                                             @change="imageChange('back')"
-                                            required
+
                                     ></b-form-file>
                                 </b-form-fieldset>
 
@@ -366,11 +364,13 @@
                                                   @change="changeNameState()" :checked="requireName"/>
                                     </b-card>
 
+                                    <template v-if="inAction">
                                     <b-card class="text-center fix-margin"
                                             header="Scheduled template">
                                         <c-switch type="text" variant="primary" on="On" off="Off"
                                                   @change="scheduleSwitcher()" :checked="scheduled"/>
                                     </b-card>
+                                    </template>
 
 
                                     <!--/.col-->
@@ -449,9 +449,9 @@
         </b-modal>
 
 
-        <b-modal centered v-model="templateCreated" class="modal-success" size="sm" hide-footer title="Success">
+        <b-modal centered v-model="templateUpdated" class="modal-success" size="sm" hide-footer title="Success">
             <div class="d-block text-center">
-                <h3>Template successfully created </h3>
+                <h3>Template successfully updated </h3>
             </div>
         </b-modal>
 
@@ -549,12 +549,13 @@
 
 
                 critError: false,
-                templateCreated: false,
+                templateUpdated: false,
                 logoUploaded: false,
                 logo: '',
                 uploadButton: false,
                 methodsFetchComplete: false,
                 langWanring: false,
+                activeTemplate:'no',
 
 
                 colors: {
@@ -569,11 +570,10 @@
                 },
 
 
-                schedule: false,
-                scheduleTime: ["2017-12-04T20:03:00.000Z", "2017-12-13T20:00:00.000Z"],
+                schedule: 'no',
+                scheduleTime:'',
                 startTime: '',
                 endTime: '',
-
                 shortcuts: [
                     {
                         text: 'Today',
@@ -581,13 +581,10 @@
                         end: new Date()
                     }
                 ],
-
+                scheduleChanged:false,
                 preview: false,
-
-
+                inAction:true,
             }
-
-
         },
 
         components: {
@@ -597,7 +594,14 @@
             RingLoader
         },
 
-        created() {
+        watch:{
+            defaultComponent:function (event) {
+            this.activeComponent = event;}
+        },
+
+
+
+        mounted() {
 
             axios.get('/template/' + this.$route.params.id)
                 .then(response => {
@@ -618,6 +622,14 @@
                     this.backgroundColor = data.backgroundColor;
                     this.littleTextColor = data.littleTextColor;
                     this.schedule = response.data.scheduled;
+                    this.activeTemplate = response.data.activated;
+                    if(response.data.scheduled ==='yes'){
+                        this.scheduleChanged = 'no'
+                    }
+
+                    if(response.data.activated ==='yes' && response.data.scheduled === 'no'){
+                        this.inAction=false;
+                    }
                     this.defaultComponent = response.data.type;
 
                     if (response.data.scheduled != null) {
@@ -795,6 +807,7 @@
             scheduleSwitcher() {
                 if (this.schedule == 'yes') {
                     this.schedule = 'no'
+                    this.scheduleChanged='yes'
                 } else {
                     this.schedule = 'yes'
                 }
@@ -865,17 +878,13 @@
 
             edit(preview = '') {
 
-                //Exit
-                if (preview == '') {
-                    return 0;
-                }
-
                 this.loading = true;
                 if (preview === 'preview') {
                     var url = '/template/preview'
                 } else {
-                    var url = '/template/add'
+                    var url = '/template/edit/' + this.$route.params.id;
                 }
+
 
                 axios.post(url, {
                     hotelID: this.hotelID,
@@ -897,13 +906,23 @@
                     startTime: this.startTime,
                     endTime: this.endTime,
                     media: this.media,
-                    hotelLogo: this.hotelLogo
+                    hotelLogo: this.hotelLogo,
+                    templateID:this.$route.params.id,
+                    activeTemplate:this.activeComponent
+
                 })
                     .then(response => {
-                        if (!this.logoUploaded && !this.backgiUploaded) {
+                        if (!this.logoUploaded && !this.backgiUploaded && preview=='preview') {
                             this.loading = false;
                             window.open('/preview/' + response.data);
-                        } else {
+                        } else if(!this.logoUploaded && !this.backgiUploaded && preview=='') {
+                            this.loading = false;
+                            this.templateUpdated = true;
+                            setTimeout(() => {
+                                return this.$router.push({name: 'All templates'})
+                            }, 1000);
+
+                        } else if((this.logoUploaded || this.backgiUploaded)) {
                             this.saveMedia(response.data, preview);
                         }
                     })
@@ -937,7 +956,8 @@
                     .then(response => {
                         this.loading = false;
                         if (preview !== 'preview') {
-                            this.templateCreated = true;
+                            this.loading = false;
+                            this.templateUpdated = true;
                             setTimeout(() => {
                                 return this.$router.push({name: 'All templates'})
                             }, 1000);

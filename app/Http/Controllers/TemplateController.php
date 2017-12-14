@@ -127,6 +127,56 @@ class TemplateController extends Controller
         return $newTemplate->id;
     }
 
+
+    public function editTemplate(Request $request)
+    {
+        //return $request->all();
+        $editTemplate =Template::find($request->id);
+        $editTemplate->hotel = (int)$request->hotelID;
+        $editTemplate->type = $request->activeTemplate;
+
+        $editTemplate->data = json_encode(
+            [
+                'texts' => $request->texts,
+                'langs' => $request->langs,
+                'requireName' => $request->requireName,
+                'requireEmail' => $request->requireEmail,
+                'button' => $request->button,
+                'policy' => $request->policy,
+                'greeting' => $request->greeting,
+                'hotelLogo' => $request->hotelLogo,
+                'greetingsTime' => $request->greetingsTime,
+                'activeComponent' => $request->activeComponent,
+                'defaultComponent' => $request->defaultComponent,
+                'backgroundColor' => $request->backgroundColor,
+                'littleTextColor' => $request->littleTextColor,
+                'media' => $request->media,
+                'hotelLogo' => $request->hotelLogo
+            ], JSON_FORCE_OBJECT
+        );
+
+        //if template is schedule
+        if ($request->schedule=='yes') {
+            $start_date = date("Y-m-d H:i:s", (int)substr($request->startTime, 0, 10));
+            $end_date = date("Y-m-d H:i:s", (int)substr($request->endTime, 0, 10));
+            if ($this->checkIfBusy($request, $start_date, $end_date)) {
+                return 'STOP';
+            }
+            $editTemplate->scheduled = 'yes';
+            $editTemplate->schedule_start_time = $start_date;
+            $editTemplate->schedule_end_time = $end_date;
+            $editTemplate->activated = 'yes';
+        }else if($request->scheduleChanged == 'yes'){
+                $editTemplate->scheduled = 'no';
+                $editTemplate->activated = 'no';
+                $editTemplate->schedule_start_time = null;
+                $editTemplate->schedule_end_time = null;
+        }
+
+        $editTemplate->save();
+        return $editTemplate->id;
+    }
+
     /**
      * Check if schedule template dates are busy
      *
@@ -138,14 +188,17 @@ class TemplateController extends Controller
     public function checkIfBusy($request, $start_date, $end_date)
     {
         $id = $request->hotelID;
+        $template_id = $request->templateID ?? $request->templateID ?? false;
         $templates = (new HotelController())->getHotelTemplates($request, $id);
         foreach ($templates as $template) {
+            if($template_id !== false and $template_id == $template->id){ continue; }
             if (($template->schedule_start_time >= $start_date and $template->schedule_end_time <= $start_date)
                 or ($template->schedule_start_time <= $end_date and $template->schedule_end_time >= $end_date)
                 or ($template->schedule_start_time >= $start_date and $template->schedule_start_time <= $end_date)
             ) {
                 return true;
             }
+
         }
         return false;
     }

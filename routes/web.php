@@ -57,13 +57,16 @@ Route::get('/hotel/templates/{id}', ['uses'=>'HotelController@getHotelTemplates'
 //Templates and login method routes
 Route::get('/template/methods', ['uses'=>'TemplateController@getLoginMethods', 'middleware'=>['web', 'auth']])->name('template_methods');
 Route::post('/template/add', ['uses'=>'TemplateController@newTemplate', 'middleware'=>['web', 'auth']])->name('create_template');
+Route::post('/template/edit/{id}', ['uses'=>'TemplateController@editTemplate', 'middleware'=>['web', 'auth']])->name('edit_template');
+Route::delete('/template/{id}', ['uses'=>'TemplateController@delete', 'middleware'=>['web', 'auth']])->name('delete_template');
+Route::get('/template/{id}', ['uses'=>'TemplateController@getTemplateById', 'middleware'=>['web', 'auth']])->name('get_template_by_id');
 Route::post('/template/media/{id}', ['uses'=>'TemplateController@mediaFiles', 'middleware'=>['web', 'auth']])->name('template_media');
 
 
 Route::post('/template/preview', ['uses'=>'TemplateController@preparePreview', 'middleware'=>['web', 'auth']])->name('prepare_preview');
 Route::post('/template/activate', ['uses'=>'TemplateController@activate', 'middleware'=>['web', 'auth']])->name('activate_template');
-Route::delete('/template/{id}', ['uses'=>'TemplateController@delete', 'middleware'=>['web', 'auth']])->name('delete_template');
-Route::get('/template/{id}', ['uses'=>'TemplateController@getTemplateById', 'middleware'=>['web', 'auth']])->name('get_template_by_id');
+
+
 
 Route::get('/preview/{id}', ['uses'=>'TemplateController@preview', 'middleware'=>['web', 'auth']])->name('preview');
 

@@ -159,43 +159,56 @@ class TemplateController extends Controller
      */
     public function mediaFiles(Request $request)
     {
-        if ($request->file('logo')->isValid() or $request->file('background')->isValid()) {
+
+        //Path setup
+        if ($request->id == 'preview') {
+            $videoPath = 'tmp';
+            $imagePath = $videoPath;
+        } else {
+            $videoPath = 'videos';
+            $imagePath = 'images';
+        }
+
+        $media = array();
+        $hotelLogo = '';
+
+        //Check if logo exist and validate
+        if($request->file('logo')){
+        if ($request->file('logo')->isValid()) {
             $request->validate([
-                'logo' => 'image:jpeg,jpg,png',
-                'background' => 'mimes:jpeg,jpg,bmp,png,mp4,mpeg4',
+                'logo' => 'image:jpeg,jpg,png'
+            ]);
+            $hotelLogo = $request->logo->hashName();
+            $request->logo->store('public/images');
+        }}
+
+        //Check if background files exist and validate
+        if($request->file('background')){
+        if ($request->file('background')->isValid()) {
+            $request->validate([
+                'background' => 'mimes:jpeg,jpg,bmp,png,mp4,mpeg4'
             ]);
 
-            if ($request->id == 'preview') {
-                $videoPath = 'tmp';
-                $imagePath = $videoPath;
+
+            $media['type'] = $request->background->getClientOriginalExtension();
+
+            if ($media['type'] == 'mp4' or $media['type'] == 'mpeg4') {
+                $media['src'] = '/storage/' . $videoPath . '/' . $request->background->hashName();
+                $request->background->store('public/' . $videoPath);
             } else {
-                $videoPath = 'videos';
-                $imagePath = 'images';
-            }
-            if ($request->logo) {
-                $hotelLogo = $request->logo->hashName();
-                $request->logo->store('public/images');
+                $media['src'] = '/storage/' . $imagePath . '/' . $request->background->hashName();
+                $request->background->store('public/' . $imagePath);
             }
 
-            if ($request->background) {
-                $media = array();
-                $media['type'] = $request->background->getClientOriginalExtension();
+        }}
 
-                if ($media['type'] == 'mp4' or $media['type'] == 'mpeg4') {
-                    $media['src'] = '/storage/' . $videoPath . '/' . $request->background->hashName();
-                    $request->background->store('public/' . $videoPath);
-                } else {
-                    $media['src'] = '/storage/' . $imagePath . '/' . $request->background->hashName();
-                    $request->background->store('public/' . $imagePath);
-                }
-            }
             if ($videoPath !== 'tmp') {
                 $this->saveFileNames($request->id, $hotelLogo, $media);
             } else {
                 return $this->previewFiles((int)$request->identity, $hotelLogo, $media);
             }
 
-        }
+
         return 'success';
     }
 
@@ -270,8 +283,12 @@ class TemplateController extends Controller
         $jsonData = Redis::get('data-' . $identity);
         $data = json_decode($jsonData);
 
-        $data->media = $media;
-        $data->hotelLogo = $hotelLogo;
+        if(!empty($media)){
+            $data->media = $media;
+        }
+        if($hotelLogo !== ''){
+            $data->hotelLogo = $hotelLogo;
+        }
         $newData = json_encode($data, JSON_FORCE_OBJECT);
         Redis::set('data-' . $identity, $newData, 300);
         Redis::expire('data-' . $identity, 60);
@@ -291,24 +308,35 @@ class TemplateController extends Controller
         if ($request->type === 'alreadySaved') {
             return $this->prepareSavedTemplate((int)$request->id);
         }
+
+        $data = [
+            'texts' => $request->texts,
+            'langs' => $request->langs,
+            'requireName' => $request->requireName,
+            'requireEmail' => $request->requireEmail,
+            'button' => $request->button,
+            'policy' => $request->policy,
+            'greeting' => $request->greeting,
+            'hotelLogo' => $request->hotelLogo,
+            'greetingsTime' => $request->greetingsTime,
+            'activeComponent' => $request->activeComponent,
+            'defaultComponent' => $request->defaultComponent,
+            'backgroundColor' => $request->backgroundColor,
+            'littleTextColor' => $request->littleTextColor,
+            'media' => ['src' => '', 'type' => ''],
+            'hotelLogo' => ''
+        ];
+
+        if($request->media){
+            $data['media']['src'] =$request->media['src'];
+            $data['media']['type'] =$request->media['type'];
+        }
+
+        if($request->hotelLogo){
+            $data['hotelLogo']=$request->hotelLogo;
+        }
         $data = json_encode(
-            [
-                'texts' => $request->texts,
-                'langs' => $request->langs,
-                'requireName' => $request->requireName,
-                'requireEmail' => $request->requireEmail,
-                'button' => $request->button,
-                'policy' => $request->policy,
-                'greeting' => $request->greeting,
-                'hotelLogo' => $request->hotelLogo,
-                'greetingsTime' => $request->greetingsTime,
-                'activeComponent' => $request->activeComponent,
-                'defaultComponent' => $request->defaultComponent,
-                'backgroundColor' => $request->backgroundColor,
-                'littleTextColor' => $request->littleTextColor,
-                'media' => ['src' => '', 'type' => ''],
-                'hotelLogo' => ''
-            ], JSON_FORCE_OBJECT
+           $data , JSON_FORCE_OBJECT
         );
 
         $timestamp = Carbon::now()->timestamp;

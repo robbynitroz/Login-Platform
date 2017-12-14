@@ -379,10 +379,10 @@
                                 <div class="clearfix"></div>
 
                                 <template v-if="schedule == 'yes'">
-                                <b-alert show dismissible show variant="primary">
-                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                    Schedule function enabled for this template
-                                </b-alert>
+                                    <b-alert show dismissible show variant="primary">
+                                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                        Schedule function enabled for this template
+                                    </b-alert>
                                 </template>
                                 <br>
 
@@ -504,13 +504,13 @@
                 hotels: {},
                 hotelID: '',
                 methods: [],
-                texts:'',
+                texts: '',
 
                 requireName: false,
 
                 requireEmail: true,
 
-                langs:'',
+                langs: '',
                 addLangs: {
                     en: 'English',
                     nl: "Dutch",
@@ -522,7 +522,7 @@
                     ar: 'Arabic',
                 },
 
-                media:'',
+                media: '',
 
                 button: '',
 
@@ -531,9 +531,9 @@
                 greeting: '',
 
                 hotelLogo: '',
-                backgiUploaded:false,
+                backgiUploaded: false,
 
-                greetingsTime:'',
+                greetingsTime: '',
 
                 activeComponent: false,
                 defaultComponent: '', //Must be same as activeComponent
@@ -570,7 +570,7 @@
 
 
                 schedule: false,
-                scheduleTime: [ "2017-12-04T20:03:00.000Z", "2017-12-13T20:00:00.000Z" ],
+                scheduleTime: ["2017-12-04T20:03:00.000Z", "2017-12-13T20:00:00.000Z"],
                 startTime: '',
                 endTime: '',
 
@@ -601,25 +601,26 @@
 
             axios.get('/template/' + this.$route.params.id)
                 .then(response => {
-                   let data=  JSON.parse(response.data.data);
-                    this.hotelID = response.data.hotel
-                    this.texts= data.texts
-                    this.langs= data.langs
-                    this.requireName= data.requireName
-                    this.requireEmail= data.requireEmail
-                    this.media= data.media
-                    this.button= data.button;
-                    this.policy= data.policy
-                    this.greeting= data.greeting
-                    this.greetingsTime= data.greetingsTime
-                    this.activeComponent= data.activeComponent
-                    this.activeComponent= data.activeComponent
-                    this.backgroundColor= data.backgroundColor
-                    this.littleTextColor= data.littleTextColor
-                    this.schedule= response.data.scheduled
+                    let data = JSON.parse(response.data.data);
+                    this.hotelID = response.data.hotel;
+                    this.texts = data.texts;
+                    this.langs = data.langs;
+                    this.requireName = data.requireName;
+                    this.requireEmail = data.requireEmail;
+                    this.media = data.media;
+                    this.button = data.button;
+                    this.hotelLogo = data.hotelLogo;
+                    this.policy = data.policy;
+                    this.greeting = data.greeting;
+                    this.greetingsTime = data.greetingsTime;
+                    this.activeComponent = data.activeComponent;
+                    this.activeComponent = data.activeComponent;
+                    this.backgroundColor = data.backgroundColor;
+                    this.littleTextColor = data.littleTextColor;
+                    this.schedule = response.data.scheduled;
                     this.defaultComponent = response.data.type;
 
-                    if(response.data.scheduled!=null) {
+                    if (response.data.scheduled != null) {
                         let st = new Date(response.data.schedule_start_time);
                         let en = new Date(response.data.schedule_end_time);
                         this.scheduleTime = [st, en];
@@ -640,17 +641,15 @@
                 });
 
 
+            axios.get('/template/methods')
+                .then(response => {
+                    this.hotels = response.data.hotels;
+                    this.methods = response.data.methods;
 
-
-                axios.get('/template/methods')
-                    .then(response => {
-                       this.hotels = response.data.hotels;
-                        this.methods = response.data.methods;
-
-                    })
-                    .catch(e => {
-                        //this.critError = true;
-                    });
+                })
+                .catch(e => {
+                    //this.critError = true;
+                });
 
 
         },
@@ -735,8 +734,8 @@
                 };
             },
 
-            scheduled(){
-                if(this.schedule =='yes'){
+            scheduled() {
+                if (this.schedule == 'yes') {
                     return true
                 }
                 return false
@@ -794,7 +793,7 @@
             },
 
             scheduleSwitcher() {
-                if(this.schedule == 'yes'){
+                if (this.schedule == 'yes') {
                     this.schedule = 'no'
                 } else {
                     this.schedule = 'yes'
@@ -855,10 +854,10 @@
             },
 
             imageChange(type) {
-                if(type == 'logo'){
+                if (type == 'logo') {
                     this.logoUploaded = true
                 }
-                if(type == 'back'){
+                if (type == 'back') {
                     this.backgiUploaded = true
                 }
 
@@ -867,7 +866,7 @@
             edit(preview = '') {
 
                 //Exit
-                if(preview == ''){
+                if (preview == '') {
                     return 0;
                 }
 
@@ -882,7 +881,7 @@
                     hotelID: this.hotelID,
                     texts: this.texts,
                     langs: this.langs,
-                    media:this.media,
+                    media: this.media,
                     requireName: this.requireName,
                     requireEmail: this.requireEmail,
                     button: this.button,
@@ -897,14 +896,16 @@
                     schedule: this.schedule,
                     startTime: this.startTime,
                     endTime: this.endTime,
-
+                    media: this.media,
+                    hotelLogo: this.hotelLogo
                 })
                     .then(response => {
-                       // if(logoUploaded && backgiUploaded){
+                        if (!this.logoUploaded && !this.backgiUploaded) {
+                            this.loading = false;
                             window.open('/preview/' + response.data);
-                            return 1;
-                       // }
-                        //this.saveMedia(response.data, preview);
+                        } else {
+                            this.saveMedia(response.data, preview);
+                        }
                     })
                     .catch(e => {
                         this.critError = true;
@@ -923,8 +924,6 @@
                 let config = {
                     onUploadProgress: progressEvent => {
                         this.completed = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
-                        // do whatever you like with the percentage complete
-                        // maybe dispatch an action that will update a progress bar or something
                     }
                 }
 
@@ -932,8 +931,9 @@
                 data.append('logo', document.getElementById('logo').files[0]);
                 data.append('background', document.getElementById('background').files[0]);
 
-                axios.post(url, data, config
-                )
+
+
+                axios.post(url, data, config)
                     .then(response => {
                         this.loading = false;
                         if (preview !== 'preview') {

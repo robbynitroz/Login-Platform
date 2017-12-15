@@ -1,6 +1,5 @@
 <template>
     <div class="wrapper">
-
         <div class="animated fadeIn">
             <div class="row">
                 <div class="col-md-12">
@@ -33,7 +32,7 @@
                                             <br>
                                            Description: {{ router.description }}
                                         </p>
-                                        <b-button @click=""  type="edit" variant="primary"><i class="fa fa-pencil-square-o"></i> Edit</b-button>
+                                        <b-button @click="editRouter(router.id)"  type="edit" variant="primary"><i class="fa fa-pencil-square-o"></i> Edit</b-button>
                                         <b-button @click="confirmDelete(router.id, router.nasname)" type="delete" variant="danger"><i class="fa fa-ban"></i> Delete</b-button>
 
                                         <b-col v-if="false" class="hotel-logo" cols="3">
@@ -131,7 +130,7 @@
         methods: {
 
             editRouter (id) {
-                this.$router.push({ name: 'Edit Hotel', params: { hotelID: id }})
+                this.$router.push({ name: 'Edit router', params: { routerID: id }})
             },
 
             actModal (action) {

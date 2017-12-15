@@ -63,6 +63,12 @@ const Routers = resolve => {
 };
 
 
+const EditRouter = resolve => {
+    require.ensure(['../components/dashboard/Routers.vue'], () => {
+        resolve(require('../components/dashboard/Routers.vue'));
+    });
+};
+
 export const routes = [
     {
         path: '/dashboard',
@@ -118,6 +124,13 @@ export const routes = [
                 path: '/dashboard/routers',
                 name: 'Routers',
                 component:Routers
+
+            },
+
+            {
+                path: '/dashboard/router/edit/:routerID',
+                name: 'Edit router',
+                component:EditRouter
 
             },
 

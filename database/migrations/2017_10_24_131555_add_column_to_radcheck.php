@@ -16,7 +16,7 @@ class AddColumnToRadcheck extends Migration
         Schema::table('radcheck', function (Blueprint $table) {
             //
             $table->integer('hotel_id')->unsigned()->nullable();
-            $table->char('router', 3)->default('no');
+            $table->char('router', 3)->default('yes');
             $table->foreign('hotel_id')->references('id')->on('hotels');
         });
     }

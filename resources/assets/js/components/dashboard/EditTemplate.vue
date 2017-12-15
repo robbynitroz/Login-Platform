@@ -794,7 +794,7 @@
                     this.backgroundColor = 'background:rgba(' +
                         this.colors.rgba.r + ',' + this.colors.rgba.g + ','
                         + this.colors.rgba.b + ',' + this.colors.rgba.a + ')'
-                } else if (section == 'termsColor') {
+                } else if (section == 'policy') {
                     this.policy.color = this.colors.hex
                 } else if (section == 'greeting') {
                     this.greeting.color = this.colors.hex

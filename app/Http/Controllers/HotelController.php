@@ -75,6 +75,18 @@ class HotelController extends Controller
 
 
     /**
+     * All releted routers
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function getHotelRouters(Request $request)
+    {
+        return (Hotel::find($request->id))->nas;
+    }
+
+
+    /**
      * Delete hotels and related templates
      *
      * @param $id

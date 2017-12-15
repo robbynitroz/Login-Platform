@@ -65,12 +65,14 @@ Route::post('/template/media/{id}', ['uses'=>'TemplateController@mediaFiles', 'm
 
 Route::post('/template/preview', ['uses'=>'TemplateController@preparePreview', 'middleware'=>['web', 'auth']])->name('prepare_preview');
 Route::post('/template/activate', ['uses'=>'TemplateController@activate', 'middleware'=>['web', 'auth']])->name('activate_template');
-
-
-
 Route::get('/preview/{id}', ['uses'=>'TemplateController@preview', 'middleware'=>['web', 'auth']])->name('preview');
 
 
+
+//Routers
+Route::get('/routers', ['uses'=>'NasController@getAllRouters', 'middleware'=>['web', 'auth']])->name('routers');
+Route::get('/routers/{hotel_id}', ['uses'=>'NasController@getHotelRouters', 'middleware'=>['web', 'auth']])->name('routers_by_hotel_id');
+Route::delete('/router/{id}', ['uses'=>'NasController@deleteRouter', 'middleware'=>['web', 'auth']])->name('delete_router');
 
 
 ///template/previewRoute::get('/test', ['uses'=>'TemplateController@test', 'middleware'=>['web', 'auth']])->name('test');

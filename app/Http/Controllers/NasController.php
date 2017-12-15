@@ -54,10 +54,25 @@ class NasController extends Controller
         return Nas::all();
     }
 
-    public function deleteRouter(Request $reqouest):void
+    /**
+     * Delete router
+     *
+     * @param Request $reqouest
+     */
+    public function deleteRouter(Request $request):void
     {
-        (Nas::find($reqouest->id))->forceDelete();
+        (Nas::find($request->id))->forceDelete();
     }
 
+    /**
+     * Get router by ID
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function getRouterByID(Request $request)
+    {
+        return Nas::find($request->id);
+    }
 
 }

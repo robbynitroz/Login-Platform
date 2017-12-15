@@ -64,8 +64,8 @@ const Routers = resolve => {
 
 
 const EditRouter = resolve => {
-    require.ensure(['../components/dashboard/Routers.vue'], () => {
-        resolve(require('../components/dashboard/Routers.vue'));
+    require.ensure(['../components/dashboard/EditRouter.vue'], () => {
+        resolve(require('../components/dashboard/EditRouter.vue'));
     });
 };
 

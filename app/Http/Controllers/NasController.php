@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Nas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Storage;
 
 
 /**
@@ -61,7 +62,10 @@ class NasController extends Controller
      */
     public function deleteRouter(Request $request):void
     {
-        (Nas::find($request->id))->forceDelete();
+        $router = Nas::find($request->id);
+        $secret = $router->secret;
+        Storage::disk('local')->delete('ccd/'.$secret);
+        $router->forceDelete();
     }
 
     /**

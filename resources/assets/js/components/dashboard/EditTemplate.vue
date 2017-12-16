@@ -648,13 +648,6 @@
                         this.scheduleTime = [st, en];
                     }
 
-
-                    //this.startTime= response.data.schedule_start_time
-                    //this.endTime= response.data.schedule_end_time
-
-                    //console.log(response.data.schedule_start_time);
-                    //console.log(new Date(response.data.schedule_start_time));
-
                     this.methodsFetchComplete = true;
 
                 })

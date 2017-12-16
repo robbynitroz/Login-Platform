@@ -71,8 +71,10 @@ Route::get('/preview/{id}', ['uses'=>'TemplateController@preview', 'middleware'=
 
 //Routers
 Route::get('/routers', ['uses'=>'NasController@getAllRouters', 'middleware'=>['web', 'auth']])->name('routers');
+Route::get('/router/{id}', ['uses'=>'NasController@getRouterByID', 'middleware'=>['web', 'auth']])->name('routers_by_id');
 Route::get('/routers/{hotel_id}', ['uses'=>'NasController@getHotelRouters', 'middleware'=>['web', 'auth']])->name('routers_by_hotel_id');
 Route::delete('/router/{id}', ['uses'=>'NasController@deleteRouter', 'middleware'=>['web', 'auth']])->name('delete_router');
+
 
 
 ///template/previewRoute::get('/test', ['uses'=>'TemplateController@test', 'middleware'=>['web', 'auth']])->name('test');

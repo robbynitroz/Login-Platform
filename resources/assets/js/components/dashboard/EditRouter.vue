@@ -6,7 +6,7 @@
             <div v-if="!isEmpty" class="row">
 
                 <div class="col-md-12">
-                    <form enctype="multipart/form-data" @submit.prevent="save()">
+                    <form enctype="multipart/form-data" @submit.prevent="edit()">
                         <b-card>
                             <div slot="header">
                                 <strong>{{ router.nasname }}</strong>
@@ -79,6 +79,7 @@
                                 <b-form-fieldset>
                                     <b-input-group left="<i class='fa fa-sign-in'></i>">
                                         <b-form-input type="text" v-model="router.mikrotik_username"
+                                                      required
                                                       placeholder="Login..."></b-form-input>
                                     </b-input-group>
                                 </b-form-fieldset>
@@ -89,7 +90,8 @@
                                              description="required">
                                 <b-form-fieldset>
                                     <b-input-group left="<i class='fa fa-key'></i>">
-                                        <b-form-input type="text" v-model="router.mikrotik_password"
+                                        <b-form-input type="password" v-model="router.mikrotik_password"
+                                                      required
                                                       placeholder="Password..."></b-form-input>
                                     </b-input-group>
                                 </b-form-fieldset>
@@ -102,7 +104,7 @@
                                         type="submit"
                                         variant="primary"><i
                                         class="fa fa-floppy-o"></i>
-                                    Save
+                                    Edit
                                 </b-button>
                                 <b-button :to="{name:'Routers'}" variant="secondary"><i class="fa fa-times"></i>
                                     Cancel
@@ -146,7 +148,7 @@
 
         <b-modal centered v-model="success" class="modal-success" size="sm" hide-footer title="Success">
             <div class="d-block text-center">
-                <h3>  successfully updated </h3>
+                <h3> {{ router.secret }} successfully updated </h3>
             </div>
         </b-modal>
 
@@ -234,22 +236,24 @@
                 }else {
                     return false
                 }
-            }
+            },
+
+
         },
 
         methods: {
 
-            save() {
+            edit() {
 
-                axios.put('/hotel/' + id, {
-                    hotel: this.hotel,
-                    timezone: this.timezones[this.hotel.timezone],
+                axios.put('/router/' + this.$route.params.routerID, {
+                    data:this.router
                 })
                     .then(response => {
-                        this.hotelUpdated = true;
+                        console.log(response);
+                        this.success = true;
                         setTimeout(() => {
-                            return this.$router.push({name: 'Hotels'})
-                        }, 1000);
+                            return this.$router.push({name: 'Routers'})
+                        }, 750);
                     })
                     .catch(e => {
                         this.critError = true;

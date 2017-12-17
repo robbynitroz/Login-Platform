@@ -56,15 +56,15 @@ class NasController extends Controller
     }
 
     /**
-     * Delete router
+     * Delete router and OVPN setting from filesystem
      *
      * @param Request $reqouest
      */
-    public function deleteRouter(Request $request):void
+    public function deleteRouter(Request $request): void
     {
         $router = Nas::find($request->id);
         $secret = $router->secret;
-        Storage::disk('local')->delete('ccd/'.$secret);
+        Storage::disk('local')->delete('ccd/' . $secret);
         $router->forceDelete();
     }
 
@@ -77,6 +77,28 @@ class NasController extends Controller
     public function getRouterByID(Request $request)
     {
         return Nas::find($request->id);
+    }
+
+
+    /**
+     * Edit router
+     *
+     * @param Request $request
+     * @return string
+     */
+    public function editRouter(Request $request)
+    {
+        $router = Nas::find($request->id);
+        $data = $request->data;
+        $router->description = $data['description'];
+        $router->shortname = $data['shortname'];
+        $router->hotel_id = $data['hotel_id'];
+        $router->mikrotik_password = $data['mikrotik_password'];
+        $router->mikrotik_username = $data['mikrotik_username'];
+        $router->wanmac = $data['wanmac'];
+        $router->save();
+
+        return 'success';
     }
 
 }

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class Nas
@@ -36,5 +37,16 @@ class Nas extends Model
     public function hotel()
     {
         return $this->belongsTo('App\Hotel', 'hotel_id', 'id');
+    }
+
+
+    /**
+     * Select all IP fields
+     *
+     * @return mixed
+     */
+    public static function allIPs()
+    {
+        return DB::select("SELECT secret FROM `nas`");
     }
 }

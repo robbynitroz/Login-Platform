@@ -69,6 +69,12 @@ const EditRouter = resolve => {
     });
 };
 
+const AddRouter = resolve => {
+    require.ensure(['../components/dashboard/AddRouter.vue'], () => {
+        resolve(require('../components/dashboard/AddRouter.vue'));
+    });
+};
+
 export const routes = [
     {
         path: '/dashboard',
@@ -137,7 +143,7 @@ export const routes = [
             {
                 path: '/dashboard/router/add',
                 name: 'Add router',
-
+                component:AddRouter
 
             },
 

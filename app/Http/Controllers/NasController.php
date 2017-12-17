@@ -101,4 +101,57 @@ class NasController extends Controller
         return 'success';
     }
 
+    /**
+     * Check router IP
+     *
+     * @param Request $request
+     * @return string
+     */
+    public function addRouter(Request $request)
+    {
+        $ids = (new Nas())->allIPs();
+        $result=array();
+        foreach ($ids as $id){
+            preg_match('~(?<=\.)[^.]*$~', $id->secret, $i);
+            $result[]=$i[0];
+        }
+        $new_IP='';
+        for ($i = 5; $i <= 255; $i++) {
+            if(!in_array((string)$i, $result, true)){
+                $new_IP= $i;
+                break;
+            }
+        }
+        if(is_int ($new_IP)){
+            return $this->newRouter($request, $new_IP);
+        }
+        return 'Special error';
+    }
+
+
+    /**
+     * Add new router
+     *
+     * @param Request $request
+     * @param $ip
+     * @return void
+     */
+    public function newRouter(Request $request, $ip):void
+    {
+        $new_router = new Nas();
+        $data = $request->data;
+        $new_ip = '192.168.253.'.$ip;
+        $new_router->nasname = $new_ip;
+        $new_router->secret = $new_ip;
+        $new_router->shortname = $data['shortname'];
+        $new_router->hotel_id = $data['hotel_id'];
+        $new_router->description = $data['description'];
+        $new_router->wanmac = $data['wanmac'];
+        $new_router->mikrotik_username = $data['mikrotik_username'];
+        $new_router->mikrotik_password = $data['mikrotik_password'];
+        $new_router->wifi = true;
+        $new_router->save();
+
+    }
+
 }

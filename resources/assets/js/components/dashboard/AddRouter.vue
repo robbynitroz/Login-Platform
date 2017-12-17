@@ -6,24 +6,20 @@
             <div v-if="!isEmpty" class="row">
 
                 <div class="col-md-12">
-                    <form enctype="multipart/form-data" @submit.prevent="edit()">
+                    <form enctype="multipart/form-data" @submit.prevent="save()">
                         <b-card>
                             <div slot="header">
-                                <strong>{{ router.nasname }}</strong>
+                                <strong>Add router</strong>
                             </div>
 
 
-                            <!--Router IP-->
-                            <b-form-fieldset label="Router IP address" description="Router IP address assigned by system || can't be changed ">
-                                <b-form-fieldset>
-                                    <b-input-group left="<i class='fa fa-link'></i>">
-                                        <b-form-input type="text" v-model="router.nasname"
-                                                      disabled
-                                                      readonly
-                                                      ></b-form-input>
-                                    </b-input-group>
-                                </b-form-fieldset>
-                            </b-form-fieldset>
+                            <!--hotel-->
+                            <p>Select hotel</p>
+                            <model-select :options="hotels"
+                                          v-model="router.hotel_id"
+                                          placeholder="select Hotel">
+                            </model-select>
+                            <br>
 
                             <!--Router shortname-->
                             <b-form-fieldset label="Shortname" description="Type something short">
@@ -48,16 +44,9 @@
                             </b-form-fieldset>
 
 
-                            <!--hotel-->
-                            <p>Select hotel</p>
-                            <model-select :options="hotels"
-                                          v-model="router.hotel_id"
-                                          placeholder="select Hotel">
-                            </model-select>
 
-                            <br>
 
-                            <!--desc-->
+                            <!--MAC-->
                             <b-form-fieldset label="WAN MAC address"
                                              description="not required">
                                 <b-form-fieldset>
@@ -104,13 +93,10 @@
                                         type="submit"
                                         variant="primary"><i
                                         class="fa fa-floppy-o"></i>
-                                    Edit
+                                   Save
                                 </b-button>
                                 <b-button :to="{name:'Routers'}" variant="secondary"><i class="fa fa-times"></i>
                                     Cancel
-                                </b-button>
-                                <b-button @click="confirmDelete(router.id, router.secret, 'delete')" variant="danger">
-                                    <i class="fa fa-ban"></i> Delete
                                 </b-button>
 
                             </div>
@@ -143,6 +129,11 @@
         <b-modal centered title="Critical error" class="modal-danger" v-model="critError" hide-footer>
             Please contact your webmaster or support
         </b-modal>
+
+        <b-modal centered title="Special error" class="modal-danger" v-model="specialError" hide-footer>
+            IP range exceeded !!! PLEASE CONTACT SYS ADMIN AND DEVELOPER!!!
+        </b-modal>
+
         <b-modal centered ref="myModalRef" size="sm" hide-footer title="Information">
             <div class="d-block text-center">
                 <h3>{{ delRouter.ip }}  successfully deleted </h3>
@@ -152,7 +143,7 @@
 
         <b-modal centered v-model="success" class="modal-success" size="sm" hide-footer title="Success">
             <div class="d-block text-center">
-                <h3> {{ router.secret }} successfully updated </h3>
+                <h3>Router successfully created </h3>
             </div>
         </b-modal>
 
@@ -170,14 +161,18 @@
         components: {
             ModelSelect,
         },
-        data: function () {
+        data() {
             return {
 
-                fetchComplite: {
-                    first:false,
-                    second:false,
+                fetchComplite: false,
+                router:{
+                    shortname:'',
+                    description:'',
+                    wanmac:'',
+                    hotel_id:'',
+                    mikrotik_username:'',
+                    mikrotik_password:''
                 },
-                router:false,
                 hotels:[],
                 critError: false,
                 isEmpty: true,
@@ -191,41 +186,19 @@
                     ip: '',
                     action: ''
                 },
+                specialError:false,
 
             }
         },
 
         mounted() {
-            let config = {
-                onUploadProgress: progressEvent => {
-
-                }
-            };
-            axios.get('/router/' + this.$route.params.routerID,
-                config)
-                .then(response => {
-
-                    if (response.data.id) {
-                        this.isEmpty = false;
-                        this.router= response.data;
-                    } else {
-                        this.isEmpty= true;
-                    }
-                    this.fetchComplite.first = true;
-                })
-                .catch(e => {
-                    this.critError = true;
-
-                });
-
-
-
             axios.get('/template/methods')
                 .then(response => {
                     response.data.hotels.forEach(element =>{
                         this.hotels.push( { value:element.id, text:element.name })
                     });
-                    this.fetchComplite.second = true;
+                    this.fetchComplite = true;
+                    this.isEmpty = false
                 })
                 .catch(e => {
                     this.critError = true;
@@ -236,7 +209,7 @@
         computed: {
 
             allRight(){
-                if(this.fetchComplite.first == true && this.fetchComplite.second == true){
+                if(this.fetchComplite == true){
                     return true;
                 }else {
                     return false
@@ -248,61 +221,34 @@
 
         methods: {
 
-            edit() {
+            save() {
 
                 if(this.router.hotel_id == null || this.router.hotel_id == ''){
                     this.requiredID= true;
                     return;
                 }
-                axios.put('/router/' + this.$route.params.routerID, {
+                axios.post('/router/add', {
                     data:this.router
                 })
                     .then(response => {
-                        console.log(response);
+                        console.log(response)
+                        /*if(response.data == 'Special error'){
+                            this.specialError = true;
+                            return;
+                        }
                         this.success = true;
                         setTimeout(() => {
                             return this.$router.push({name: 'Routers'})
-                        }, 750);
+                        }, 1000);*/
                     })
                     .catch(e => {
                         this.critError = true;
                     });
             },
-
 
 
             hideModal() {
                 this.$refs.myModalRef.hide()
-            },
-
-            confirmDelete(id, ip, action) {
-                this.delRouter.id = id;
-                this.delRouter.ip = ip;
-                this.dangerModal = true
-            },
-
-            deleteRouter(id){
-                let config = {
-                    onUploadProgress: progressEvent => {
-
-                    }
-                };
-                axios.delete('/router/'+id,
-                    config)
-                    .then(response => {
-                        this.afterDelete();
-                        setTimeout(() => {
-                            return this.$router.push({name: 'Routers'})
-                        }, 750);
-                    })
-                    .catch(e => {
-                        this.critError = true;
-                    });
-            },
-
-            afterDelete() {
-                this.$refs.myModalRef.show();
-
             },
 
         }

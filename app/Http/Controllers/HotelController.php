@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Hotel;
+use App\Nas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 
@@ -96,7 +97,9 @@ class HotelController extends Controller
     {
         Redis::del('hotel.' . $id);
         $templates = (Hotel::find($id))->templates()->delete();
+        (new NasController())->deleteHotelRouters((int) $id);
         $hotel = (Hotel::find($id))->delete();
+
         return 'Success';
     }
 

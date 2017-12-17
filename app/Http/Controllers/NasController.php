@@ -64,8 +64,28 @@ class NasController extends Controller
     {
         $router = Nas::find($request->id);
         $secret = $router->secret;
+        Redis::del("Nas." . $secret);
         Storage::disk('local')->delete('ccd/' . $secret);
         $router->forceDelete();
+    }
+
+    /**
+     * Delete all routers releted to Hotel (by id)
+     *
+     * @param int $id
+     * @return string
+     */
+    public function deleteHotelRouters(int $id)
+    {
+        $routers = (new Nas())->where('hotel_id', $id)->get();
+        foreach ($routers as $router){
+            $ids[]=$router['id'];
+            Redis::del("Nas." . $router['nasname']);
+            Storage::disk('local')->delete('ccd/' . $router['nasname']);
+        }
+
+        (new Nas())->where('hotel_id', $id)->forceDelete();
+        return 'Success';
     }
 
     /**
@@ -109,10 +129,10 @@ class NasController extends Controller
      */
     public function addRouter(Request $request)
     {
-        $ids = (new Nas())->allIPs();
+        $ids = Nas::allIPs();
         $result=array();
         foreach ($ids as $id){
-            preg_match('~(?<=\.)[^.]*$~', $id->secret, $i);
+            preg_match('~(?<=\.)[^.]*$~', $id->nasname, $i);
             $result[]=$i[0];
         }
         $new_IP='';
@@ -141,6 +161,7 @@ class NasController extends Controller
         $new_router = new Nas();
         $data = $request->data;
         $new_ip = '192.168.253.'.$ip;
+        Storage::disk('local')->put('ccd/' . $new_ip, "ifconfig-push $new_ip 255.255.255.0");
         $new_router->nasname = $new_ip;
         $new_router->secret = $new_ip;
         $new_router->shortname = $data['shortname'];
@@ -151,7 +172,6 @@ class NasController extends Controller
         $new_router->mikrotik_password = $data['mikrotik_password'];
         $new_router->wifi = true;
         $new_router->save();
-
     }
 
 }

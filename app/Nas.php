@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Class Nas
  * @package App
@@ -47,6 +47,11 @@ class Nas extends Model
      */
     public static function allIPs()
     {
-        return DB::select("SELECT secret FROM `nas`");
+        return DB::select("SELECT nasname FROM `nas`");
+    }
+
+    public function allIPsByHotel(int $id)
+    {
+        return DB::select("SELECT nasname FROM `nas` WHERE  `hotel_id`== :id", ['id'=>$id]);
     }
 }

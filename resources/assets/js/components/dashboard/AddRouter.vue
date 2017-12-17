@@ -231,15 +231,14 @@
                     data:this.router
                 })
                     .then(response => {
-                        console.log(response)
-                        /*if(response.data == 'Special error'){
+                        if(response.data == 'Special error'){
                             this.specialError = true;
                             return;
                         }
                         this.success = true;
                         setTimeout(() => {
                             return this.$router.push({name: 'Routers'})
-                        }, 1000);*/
+                        }, 1000);
                     })
                     .catch(e => {
                         this.critError = true;

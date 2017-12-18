@@ -78,6 +78,9 @@ Route::delete('/router/{id}', ['uses'=>'NasController@deleteRouter', 'middleware
 Route::put('/router/{id}', ['uses'=>'NasController@editRouter', 'middleware'=>['web', 'auth']])->name('edit_router');
 
 
+//Special URLs
+Route::get('/mikrotik/timeout', ['uses'=>'MikrotikLogin@getTimeOut', 'middleware'=>['web', 'auth']])->name('mikrotik_timeout');
+
 
 ///template/previewRoute::get('/test', ['uses'=>'TemplateController@test', 'middleware'=>['web', 'auth']])->name('test');
 

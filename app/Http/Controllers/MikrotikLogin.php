@@ -50,7 +50,7 @@ class MikrotikLogin extends Controller
         if ($request->has('clientmac')) {
             $this->client_mac = $request->query('clientmac');
             $this->nas_info = (new NasController())->getNas(env('TEST_IP', $request->ip()));
-            if(empty(json_decode($this->nas_info))){
+            if (empty(json_decode($this->nas_info))) {
                 return redirect()->route('base_URL');
             }
             $hotel_id = (json_decode($this->nas_info)[0])->hotel_id;
@@ -122,7 +122,7 @@ class MikrotikLogin extends Controller
             'ip_address' => $request->ip(),
             'lang' => $lang,
             'mac_address' => $this->client_mac,
-            'theme_color'=>str_replace('background:', '', ((json_decode($template->data))->backgroundColor))
+            'theme_color' => str_replace('background:', '', ((json_decode($template->data))->backgroundColor))
         ]);
     }
 
@@ -156,6 +156,22 @@ class MikrotikLogin extends Controller
         }
 
         return $this->serveLoginTemplate($main_template[0], $hotels, $request);
+    }
+
+
+    /**
+     * Mikrotik timeout
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function getTimeOut(Request $request)
+    {
+        $router = (new NasController())->getNas('192.168.253.5');
+        $hotel_id = (json_decode($router, true));
+        $hotel_id = $hotel_id[0]['hotel_id'];
+        $hotel = (new HotelController())->getHotel($hotel_id);
+        return json_decode($hotel)->session_timeout;
     }
 
 }

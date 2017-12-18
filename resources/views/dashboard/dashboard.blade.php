@@ -35,6 +35,6 @@
 <!-- Scripts -->
 <script src="{{ asset('js/dashboard/dashboard.js') }}"></script>
 <!-- Styles -->
-<link href="{{ asset('css/dashboard/dashboard.css') }}" rel="stylesheet">
+{{--<link href="{{ asset('css/dashboard/dashboard.css') }}" rel="stylesheet">--}}
 </body>
 </html>

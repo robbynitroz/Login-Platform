@@ -18,7 +18,10 @@ Route::get('/', function (){
 })->name('base_URL');
 
 //Clients | MikroTik Users auth page
-Route::get('/clients', ['uses' => 'MikrotikLogin@getData', 'middleware' => 'web'])->name('mikrotik_login');
+Route::get('/guest', ['uses' => 'MikrotikLogin@getData', 'middleware' => 'web'])->name('mikrotik_login');
+Route::get('/guest/api.php', function (){
+    return redirect('/mikrotik/timeout');
+})->name('mikrotik_timeout_redirect');
 
 
 

@@ -162,7 +162,7 @@ class NasController extends Controller
         $data = $request->data;
         $new_ip = '192.168.253.'.$ip;
         Storage::disk('local')->put('ccd/' . $new_ip, "ifconfig-push $new_ip 255.255.255.0");
-        chmod ( base_path() .'/storage/app/ccd'. $new_ip ,777);
+        chmod ( base_path() .'/storage/app/ccd/'. $new_ip ,777);
         $new_router->nasname = $new_ip;
         $new_router->secret = $new_ip;
         $new_router->shortname = $data['shortname'];

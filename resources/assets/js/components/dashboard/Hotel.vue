@@ -638,7 +638,7 @@
                         this.hotel.logo = response.data.logo;
                         this.hotel.main_url = response.data.main_url;
                         this.hotel.timezone = response.data.timezone;
-                        this.session_timeout = response.data.session_timeout
+                        this.hotel.session_timeout = response.data.session_timeout
 
 
                     } else {

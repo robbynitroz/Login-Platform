@@ -25,6 +25,7 @@ Route::get('/guest/api.php', function (){
 
 
 
+
 //Mikrotik Auth URNs
 Route::prefix('/auth')->group(function () {
     //By Email

@@ -167,7 +167,7 @@ class MikrotikLogin extends Controller
      */
     public function getTimeOut(Request $request)
     {
-        $router = (new NasController())->getNas('192.168.253.5');
+        $router = (new NasController())->getNas($request->ip());
         $hotel_id = (json_decode($router, true));
         $hotel_id = $hotel_id[0]['hotel_id'];
         $hotel = (new HotelController())->getHotel($hotel_id);

@@ -179,8 +179,15 @@ class MikrotikLogin extends Controller
     {
 
         $util = new RouterOS\Util(
-            $client = new RouterOS\Client('', '', '')
+            $client = new RouterOS\Client('192.168.253.5', 'admin', '@pp3lb00m')
         );
+
+        $util->setMenu('/ip arp');
+        foreach ($util->getAll() as $item) {
+            echo 'IP: ', $item->getProperty('address'),
+            ' MAC: ', $item->getProperty('mac-address'),
+            "\n";
+        }
 
     }
 

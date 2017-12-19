@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use PEAR2\Net\RouterOS;
 
 
 /**
@@ -176,23 +177,10 @@ class MikrotikLogin extends Controller
 
     public function mikrotikTestConnect()
     {
-        $API = new RouteOS();
 
-        $API->debug = true;
-
-        if ($API->connect('', '', '')) {
-
-            $API->write('/interface/getall');
-
-            $READ = $API->read(false);
-            $ARRAY = $API->parse_response($READ);
-
-            print_r($ARRAY);
-
-            $API->disconnect();
-
-        }
-
+        $util = new RouterOS\Util(
+            $client = new RouterOS\Client('', '', '')
+        );
 
     }
 

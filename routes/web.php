@@ -85,7 +85,7 @@ Route::put('/router/{id}', ['uses'=>'NasController@editRouter', 'middleware'=>['
 //Special URLs
 Route::get('/mikrotik/timeout', ['uses'=>'MikrotikLogin@getTimeOut', 'middleware'=>['web', 'auth']])->name('mikrotik_timeout');
 
-Route::get('/mikrotik/timeout', ['uses'=>'MikrotikLogin@mikrotikTestConnect', 'middleware'=>['web', 'auth']])->name('test');
+Route::get('/mikrotik/connect', ['uses'=>'MikrotikLogin@mikrotikTestConnect', 'middleware'=>['web', 'auth']])->name('test');
 
 ///template/previewRoute::get('/test', ['uses'=>'TemplateController@test', 'middleware'=>['web', 'auth']])->name('test');
 

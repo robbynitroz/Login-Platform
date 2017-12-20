@@ -179,15 +179,17 @@ class MikrotikLogin extends Controller
     {
 
         $util = new RouterOS\Util(
-            $client = new RouterOS\Client('192.168.253.5', 'admin', '@pp3lb00m')
+            $client = new RouterOS\Client('', '', '')
         );
 
-        $util->setMenu('/ip arp');
-        foreach ($util->getAll() as $item) {
-            echo 'IP: ', $item->getProperty('address'),
-            ' MAC: ', $item->getProperty('mac-address'),
-            "\n";
+        $response= $util->setMenu('/ip hotspot active')->getAll();
+
+        foreach ($response as $sh){
+            dd($sh);
         }
+        /*foreach ($response as $all){
+
+        }*/
 
     }
 

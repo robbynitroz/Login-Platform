@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Email;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class EmailController
@@ -37,4 +39,31 @@ class EmailController extends Controller
         return;
 
     }
+
+
+    /**
+     * Generates email list for hotel management
+     *
+     *@return void
+     */
+    public function generateEmailList():void
+    {
+        $last_numb = json_decode(SettingController::getEmailSchedule())->last_id;
+        $emails = DB::table('emails')
+            ->join('hotels', 'emails.hotel_id', '=', 'hotels.id')
+            ->select('hotels.name', 'emails.email', 'emails.id')->where('emails.id', '>', $last_numb)
+            ->get();
+        $result = array();
+        foreach ($emails as $email) {
+            $result[$email->name][] = $email->email;
+            $new_las_id = $email->id;
+        }
+        if(isset($new_las_id)){
+            (new SettingController())->storeEmailScheduleLastID($new_las_id);
+        }
+        foreach ($result as $key => $value) {
+            Storage::disk('local')->put('ftp/' . $key . '/email.txt', json_encode($value));
+        }
+    }
+
 }

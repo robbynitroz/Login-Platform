@@ -25,7 +25,7 @@ class Template extends Model
     /**
      * @var array
      */
-    protected $fillable = ['hotel', 'activated', 'data', 'scheduled', 'schedule_start_time', 'schedule_end_time'];
+    protected $fillable = ['hotel', 'activated', 'type', 'data', 'scheduled', 'schedule_start_time', 'schedule_end_time'];
     /**
      * @var array
      */

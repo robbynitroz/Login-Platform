@@ -57,7 +57,6 @@ class TemplateController extends Controller
     public function getTemplate(int $hotel_id, string $template_type = 'login')
     {
 
-        //Redis::del("templates.reserved." . $hotel_id);
         if (Redis::get('templates.reserved.' . $hotel_id) === null) {
             $this->user_templates = (new Template())->where('hotel', $hotel_id)->where('type',
                 'reserved')->get();
@@ -502,5 +501,42 @@ class TemplateController extends Controller
         return 'success';
     }
 
+
+    /**
+     * Store new reserved template
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function setReserved(Request $request):void
+    {
+            $new_reserved = array();
+            $source_template=Template::findOrFail($request->id);
+            $new_reserved['hotel'] = $source_template->hotel;
+            $new_reserved['type'] =  'reserved';
+            $new_reserved['data'] =  $source_template->data;
+            $this->unsetOldReserved($request, $new_reserved['hotel']);
+            Template::create($new_reserved);
+            Redis::del("templates.reserved." . $new_reserved['hotel']);
+    }
+
+
+    /**
+     * Delete old reserved template
+     *
+     * @param Request $request
+     * @param int $id
+     * @return void
+     */
+    public function unsetOldReserved(Request $request, int $id = 0):void
+    {
+        if($id !==0){
+            $hotel_id = $id;
+        }else{
+            $hotel_id = $request->id;
+        }
+        (new Template())->where('hotel', $hotel_id)->where('type', 'reserved')->forcedelete();
+        Redis::del("templates.reserved." . $hotel_id);
+    }
 
 }

@@ -66,6 +66,9 @@ Route::delete('/template/{id}', ['uses'=>'TemplateController@delete', 'middlewar
 Route::get('/template/{id}', ['uses'=>'TemplateController@getTemplateById', 'middleware'=>['web', 'auth']])->name('get_template_by_id');
 Route::post('/template/media/{id}', ['uses'=>'TemplateController@mediaFiles', 'middleware'=>['web', 'auth']])->name('template_media');
 
+//Reserved templates
+Route::post('/template/set-reserved', ['uses'=>'TemplateController@setReserved', 'middleware'=>['web', 'auth']])->name('set_reserved_template');
+Route::delete('/template/reserved/{id}', ['uses'=>'TemplateController@unsetOldReserved', 'middleware'=>['web', 'auth']])->name('delete_reserved_template');
 
 Route::post('/template/preview', ['uses'=>'TemplateController@preparePreview', 'middleware'=>['web', 'auth']])->name('prepare_preview');
 Route::post('/template/activate', ['uses'=>'TemplateController@activate', 'middleware'=>['web', 'auth']])->name('activate_template');

@@ -13,7 +13,6 @@
 
                             <model-select :options="hotels"
                                           v-model="hotelID"
-
                                           placeholder="select Hotel">
                             </model-select>
                         </b-col>
@@ -36,11 +35,18 @@
                                     Updated: {{ dateTransform(template.updated_at) }}
                                 </p>
 
+                                <template v-if="template.type !== 'reserved'">
                                 <template v-if="template.scheduled == 'no'">
                                 <b-button @click="confirmActivation(template.id)" v-if="active(template.activated, template.scheduled)" type="edit" variant="success"><i class="fa fa-check-circle-o"></i> Activate</b-button>
                                 </template>
                                 <b-button @click="editTemplate(template.id)"  type="edit" variant="primary"><i class="fa fa-pencil-square-o"></i> Edit</b-button>
                                 <b-button @click="confirmDelete(template.id)" v-if="active(template.activated, template.scheduled)"  variant="danger"><i class="fa fa-ban"></i> Delete</b-button>
+                                </template>
+                                <template v-else>
+                                    <b-button @click="confirmDeleteReserved(template.hotel)" variant="danger"><i class="fa fa-ban"></i> Delete </b-button>
+                                </template>
+
+                                <b-button @click="setReserved(template.id)" v-if="template.type === 'Login'"  variant="outline-warning"><i class="fa fa-life-ring"></i> Reserved </b-button>
                                 <b-button @click="previewTemplate(template.id)" variant="secondary"><i class="fa fa-play-circle"></i> Preview</b-button>
 
                                 <template v-if="template.scheduled !== 'yes'">
@@ -67,8 +73,15 @@
             <b-modal centered title="Warning" class="modal-danger" v-model="dangerModal" @ok="deleteTemplate()">
                 You are going to delete template!  Are you sure ?
             </b-modal>
+            <b-modal centered title="Warning" class="modal-danger" v-model="dangerModalReserved" @ok="deleteReserved()">
+                You are going to disable reserved template: Auto login will be enabled after guest first sign up.
+                Are you sure ?
+            </b-modal>
             <b-modal centered title="Please confirm" class="modal-warning" v-model="activeModal" @ok="activateTemplate()">
                 You are going to activate selected template!  Are you sure ?
+            </b-modal>
+            <b-modal centered title="Please confirm" class="modal-warning" v-model="reservedModal" @ok="setNewRes()">
+                You are going to activate new "Reserved" template!  Are you sure ?
             </b-modal>
             <b-modal centered ref="myModalRef" size="sm" hide-footer title="Information">
                 <div class="d-block text-center">
@@ -109,11 +122,14 @@
                 selected:false,
                 fetchComplete:false,
                 dangerModal:false,
+                dangerModalReserved:false,
                 successDel:true,
                 activeModal:false,
                 goDel:'',
                 goAct:'',
                 critError:false,
+                reservedModal:false,
+                newReserved:'',
 
             }
         },
@@ -187,8 +203,28 @@
                 this.dangerModal=true;
             },
 
+            confirmDeleteReserved(id){
+                this.goDel=id;
+                this.dangerModalReserved=true;
+            },
+
             deleteTemplate(){
                 axios.delete('/template/'+this.goDel)
+                    .then(response => {
+                        if(response.data=='success'){
+                            this.$refs.myModalRef.show();
+                        };
+                        this.downloadTemplates(this.hotelID);
+                    })
+                    .catch(e => {
+                        this.critError = true;
+
+                    });
+            },
+
+
+            deleteReserved(){
+                axios.delete('/template/reserved/'+this.goDel)
                     .then(response => {
                         if(response.data=='success'){
                             this.$refs.myModalRef.show();
@@ -205,6 +241,30 @@
                 this.activeModal = true
                 this.goAct = id
             },
+            setReserved(id){
+                this.reservedModal = true
+                this.newReserved = id;
+            },
+
+
+            setNewRes(){
+                axios.post('/template/set-reserved', {
+                    id:this.newReserved
+                })
+                    .then(response => {
+                        if(response.data=='success'){
+                            this.$refs.myModalRef.show();
+                        };
+                        this.downloadTemplates(this.hotelID);
+
+                    })
+                    .catch(e => {
+                        this.loading = false;
+                        this.critError = true;
+
+                    });
+            },
+
 
             activateTemplate(){
 

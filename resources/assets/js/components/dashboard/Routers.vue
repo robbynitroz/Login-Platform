@@ -15,7 +15,13 @@
                                               placeholder="select Hotel">
                                 </model-select>
 
+
                             </b-col>
+                            <b-col lg="6">
+                                <h5>Refresh user list</h5>
+                                <b-button  @click="refreshUsers()" type="edit" variant="primary"><i class="fa fa-repeat"></i> Refresh</b-button>
+                            </b-col>
+
                             <div class="clearfix"></div>
                             <br/>
 
@@ -35,10 +41,11 @@
                                         <b-button @click="editRouter(router.id)"  type="edit" variant="primary"><i class="fa fa-pencil-square-o"></i> Edit</b-button>
                                         <b-button @click="confirmDelete(router.id, router.nasname)" type="delete" variant="danger"><i class="fa fa-ban"></i> Delete</b-button>
 
-                                        <b-col v-if="false" class="hotel-logo" cols="3">
+                                            <b-col  class="hotel-logo" cols="3">
+                                                <b-badge pill variant="success">Activated</b-badge>
+                                                <b-badge pill variant="success">5 users</b-badge>
+                                            </b-col>
 
-
-                                        </b-col>
                                     </b-card>
                                 </b-col>
                             </b-col>
@@ -176,6 +183,27 @@
                     });
             },
 
+            refreshUsers(){
+                if(this.filter !== ''){
+                    //for one hotel routers
+
+
+                }else{
+                    //for all routers
+
+
+                }
+
+                axios.get('/routers')
+                    .then(response => {
+                        this.routers = response.data
+                        this.fetchComplete = true
+                    })
+                    .catch(e => {
+                        this.critError = true;
+                    });
+            },
+
         }
     }
 
@@ -194,4 +222,5 @@
     .form-control{
         margin-left: -1px;
     }
+
 </style>

@@ -91,7 +91,7 @@ Route::get('/mikrotik/timeout', ['uses'=>'MikrotikLogin@getTimeOut', 'middleware
 Route::get('/mikrotik/connect', ['uses'=>'MikrotikLogin@mikrotikTestConnect', 'middleware'=>['web', 'auth']])->name('test');
 
 
-Route::get('/test', ['uses'=>'EmailController@generateEmailList', 'middleware'=>['web', 'auth']])->name('test2');
+Route::get('/test', ['uses'=>'MikrotikLogin@mikrotikTestConnect', 'middleware'=>['web', 'auth']])->name('test2');
 
 ///template/previewRoute::get('/test', ['uses'=>'TemplateController@test', 'middleware'=>['web', 'auth']])->name('test');
 

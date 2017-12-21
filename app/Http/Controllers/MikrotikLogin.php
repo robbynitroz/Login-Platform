@@ -178,19 +178,11 @@ class MikrotikLogin extends Controller
     public function mikrotikTestConnect()
     {
 
-        $util = new RouterOS\Util(
-            $client = new RouterOS\Client('', '', '')
+       /* $util = new RouterOS\Util(
+            $client = new RouterOS\Client('192.168.253.5', 'admin', '@pp3lb00m')
         );
-
-        $response= $util->setMenu('/ip hotspot active')->getAll();
-
-        foreach ($response as $sh){
-            dd($sh);
-        }
-        /*foreach ($response as $all){
-
-        }*/
-
+        $response= $util->setMenu('/ip hotspot active')->count();
+           dump($response);*/
     }
 
 }

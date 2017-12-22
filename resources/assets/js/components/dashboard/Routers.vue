@@ -112,7 +112,6 @@
         },
 
         mounted(){
-
             axios.get('/template/methods')
                 .then(response => {
                     response.data.hotels.forEach(element =>{

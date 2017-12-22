@@ -19,7 +19,9 @@
                             </b-col>
                             <b-col lg="6">
                                 <h5>Refresh user list</h5>
-                                <b-button  @click="refreshUsers()" type="edit" variant="primary"><i class="fa fa-repeat"></i> Refresh</b-button>
+                                <b-button  @click="refreshUsers()" type="edit" variant="primary">
+                                    <span v-if="spinner" class="spinner-refresh"><clip-loader :loading="loading" size="16px" color="#fff" ></clip-loader></span>
+                                    <i v-else class="fa fa-repeat"></i> Refresh</b-button>
                             </b-col>
 
                             <div class="clearfix"></div>
@@ -79,12 +81,13 @@
 
 <script>
     import { ModelSelect } from 'vue-search-select'
-
+    import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 
     export default {
         name: 'Hotels',
         components: {
-            ModelSelect
+            ModelSelect,
+            ClipLoader
         },
         data: function () {
             return {
@@ -102,7 +105,8 @@
                 },
                 critError:false,
                 status:'',
-                statusChanged:false
+                statusChanged:false,
+                spinner:false
 
             }
         },
@@ -193,10 +197,12 @@
 
             refreshUsers(){
 
+                this.spinner = true;
                 axios.get('/mikrotik/status/' + this.filter)
                     .then(response => {
                         this.status = response.data
                         this.statusChanged = true;
+                        this.spinner = false
                     })
                     .catch(e => {
                         this.critError = true;
@@ -220,6 +226,10 @@
     }
     .form-control{
         margin-left: -1px;
+    }
+    .spinner-refresh{
+        float: left;
+        margin-top: 2px;
     }
 
 </style>

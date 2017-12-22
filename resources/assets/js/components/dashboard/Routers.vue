@@ -3,7 +3,7 @@
         <div class="animated fadeIn">
             <div class="row">
                 <div class="col-md-12">
-                    <b-card header="Hotels">
+                    <b-card header="Routers">
                         <br/>
                         <b-row>
                             <b-col lg="6" class="mb-3">
@@ -41,10 +41,16 @@
                                         <b-button @click="editRouter(router.id)"  type="edit" variant="primary"><i class="fa fa-pencil-square-o"></i> Edit</b-button>
                                         <b-button @click="confirmDelete(router.id, router.nasname)" type="delete" variant="danger"><i class="fa fa-ban"></i> Delete</b-button>
 
-                                            <b-col  class="hotel-logo" cols="3">
-                                                <b-badge pill variant="success">Activated</b-badge>
-                                                <b-badge pill variant="success">5 users</b-badge>
+                                            <b-col v-if="statusChanged" class="hotel-logo" cols="3">
+                                                <template v-if="status[router.nasname].online =='yes'">
+                                                    <b-badge pill variant="success">Online</b-badge>
+                                                    <b-badge pill variant="success">{{ status[router.nasname].users }}</b-badge>
+                                                </template>
+                                                <b-badge v-else pill variant="danger"> Offline </b-badge>
                                             </b-col>
+                                        <b-col v-else class="hotel-logo" cols="3">
+                                            <b-badge pill variant="warning"> NA </b-badge>
+                                        </b-col>
 
                                     </b-card>
                                 </b-col>
@@ -95,6 +101,8 @@
                     ip:'',
                 },
                 critError:false,
+                status:'',
+                statusChanged:false
 
             }
         },
@@ -184,20 +192,11 @@
             },
 
             refreshUsers(){
-                if(this.filter !== ''){
-                    //for one hotel routers
 
-
-                }else{
-                    //for all routers
-
-
-                }
-
-                axios.get('/routers')
+                axios.get('/mikrotik/status/' + this.filter)
                     .then(response => {
-                        this.routers = response.data
-                        this.fetchComplete = true
+                        this.status = response.data
+                        this.statusChanged = true;
                     })
                     .catch(e => {
                         this.critError = true;

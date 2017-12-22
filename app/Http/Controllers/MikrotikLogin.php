@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use PEAR2\Net\RouterOS;
 
 
 /**
@@ -173,16 +172,6 @@ class MikrotikLogin extends Controller
         $hotel_id = $hotel_id[0]['hotel_id'];
         $hotel = (new HotelController())->getHotel($hotel_id);
         return json_decode($hotel)->session_timeout;
-    }
-
-    public function mikrotikTestConnect()
-    {
-
-       /* $util = new RouterOS\Util(
-            $client = new RouterOS\Client('192.168.253.5', 'admin', '@pp3lb00m')
-        );
-        $response= $util->setMenu('/ip hotspot active')->count();
-           dump($response);*/
     }
 
 }

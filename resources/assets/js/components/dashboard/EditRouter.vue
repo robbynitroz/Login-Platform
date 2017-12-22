@@ -78,8 +78,7 @@
                                              description="required">
                                 <b-form-fieldset>
                                     <b-input-group left="<i class='fa fa-sign-in'></i>">
-                                        <b-form-input type="text" v-model="router.mikrotik_username"
-                                                      required
+                                        <b-form-input type="text" v-model="mikrotik_username"
                                                       placeholder="Login..."></b-form-input>
                                     </b-input-group>
                                 </b-form-fieldset>
@@ -90,8 +89,7 @@
                                              description="required">
                                 <b-form-fieldset>
                                     <b-input-group left="<i class='fa fa-key'></i>">
-                                        <b-form-input type="password" v-model="router.mikrotik_password"
-                                                      required
+                                        <b-form-input type="password" v-model="mikrotik_password"
                                                       placeholder="Password..."></b-form-input>
                                     </b-input-group>
                                 </b-form-fieldset>
@@ -191,6 +189,8 @@
                     ip: '',
                     action: ''
                 },
+                mikrotik_password:'',
+                mikrotik_username:'',
 
             }
         },
@@ -255,11 +255,13 @@
                     return;
                 }
                 axios.put('/router/' + this.$route.params.routerID, {
-                    data:this.router
+                    data:this.router,
+                    mikrotik_username:this.mikrotik_username,
+                    mikrotik_password:this.mikrotik_password
                 })
                     .then(response => {
-                        console.log(response);
-                        this.success = true;
+                      //  console.log(response);
+                       this.success = true;
                         setTimeout(() => {
                             return this.$router.push({name: 'Routers'})
                         }, 750);

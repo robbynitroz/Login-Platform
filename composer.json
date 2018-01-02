@@ -9,10 +9,11 @@
         "doctrine/dbal": "^2.6",
         "fideloper/proxy": "~3.3",
         "guzzlehttp/guzzle": "^6.3",
+        "intervention/image": "^2.4",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
         "pear2/net_routeros": "*@dev",
-        "pear2/net_transmitter":"*@dev"
+        "pear2/net_transmitter": "*@dev"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

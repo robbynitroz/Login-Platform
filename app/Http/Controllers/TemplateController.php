@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 
 /**
@@ -229,8 +230,8 @@ class TemplateController extends Controller
             $imagePath = 'images';
         }
 
-        $media = array();
         $hotelLogo = '';
+        $media = array();
 
         //Check if logo exist and validate
         if($request->file('logo')){
@@ -239,7 +240,8 @@ class TemplateController extends Controller
                 'logo' => 'image:jpeg,jpg,png'
             ]);
             $hotelLogo = $request->logo->hashName();
-            $request->logo->store('public/images');
+            $request->logo->store('public/'.$imagePath);
+            $this->optimizeImages('app/public/'.$imagePath.'/'.$hotelLogo);
         }}
 
         //Check if background files exist and validate
@@ -274,6 +276,31 @@ class TemplateController extends Controller
 
 
     /**
+     * Optimize logo size to be not more then 390 px
+     *
+     * @param string $image
+     * @return void
+     */
+    public function optimizeImages(string $image):void
+    {
+        $path = storage_path();
+        $path .= '/'.$image;
+        $img = Image::make($path);
+        // resize the image to a width of 600 and constrain aspect ratio (auto height)
+
+        if($img->width() > 390) {
+            $img->resize(390, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            $img->save($path, 90);
+        }else{
+            return;
+        }
+        // save file as jpg with medium quality (90)
+    }
+
+
+    /**
      * Saves file names in MySQL DB
      *
      * @param int $id
@@ -294,7 +321,7 @@ class TemplateController extends Controller
             if ($data->hotelLogo != '') {
                 array_push($oldFiles, $data->hotelLogo);
             }
-            $data->hotelLogo = $hotelLogo;
+            $data->hotelLogo = '/storage/images/'.$hotelLogo;
         }
 
         if(!empty($media)) {
@@ -351,7 +378,7 @@ class TemplateController extends Controller
             $data->media = $media;
         }
         if($hotelLogo !== ''){
-            $data->hotelLogo = $hotelLogo;
+            $data->hotelLogo = '/storage/tmp/'.$hotelLogo;
         }
         $newData = json_encode($data, JSON_FORCE_OBJECT);
         Redis::set('data-' . $identity, $newData, 300);

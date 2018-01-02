@@ -15,6 +15,7 @@
 
                 <h1 v-if="greetingsTime.on" :style="{ color:greetingsTime.color, fontSize:greetingsTime.size}"
                     class="text-center greetings"> {{ sayTime }}</h1>
+                <div v-else class="clearfix greetings"></div>
 
                 <h2 class="text-center message"
                     :style="{ color:greeting.color, fontSize:greeting.size, wordWrap:'break-word'}">

@@ -10,7 +10,7 @@ const getters = {
         return state.backgroundColor;
     },
     hotelLogo: state => {
-        return '/storage/images/'+state.hotelLogo;
+        return state.hotelLogo;
     },
     policy: state => {
         return state.policy;

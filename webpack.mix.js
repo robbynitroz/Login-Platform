@@ -17,7 +17,7 @@ mix.options({
     processCssUrls: true,
     //uglify: {},
     purifyCss: true,
-//purifyCss: {},
+    //purifyCss: {},
     postCss: [require('autoprefixer')],
     clearConsole: false
 });

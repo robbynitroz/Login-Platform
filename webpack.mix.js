@@ -11,7 +11,6 @@ let mix = require('laravel-mix');
  |
  */
 
-
 mix.options({
     extractVueStyles: 'public/css/styles.css',
     processCssUrls: true,

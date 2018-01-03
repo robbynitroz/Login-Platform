@@ -12,11 +12,16 @@
                         <img class="logo-back" alt="guestcompass_logo-back" src="/storage/images/logo-layer1.png">
                     </div>
 
-
                     <transition name="animated">
-                    <div v-show="welcome" style="color: white"  class="col-sm-6 offset-sm-3 text-center" ><h1 class="animated" >{{ welcome }}</h1> </div>
+                    <div v-show="welcome" style="color: white"  class="col-sm-6 offset-sm-3 text-center" ><h1 class="animated" >{{ welcome }}</h1>
+                        <transition name="entry" appear mode="out-in">
+                            <div v-if="links" class="links">
+                                <router-link class="left-fl" to="/login"> Login </router-link>
+                                <a class="right-fl" href="http://guestcompass.nl/wifi-platform/" target="_blank"> About project </a>
+                            </div>
+                        </transition>
+                    </div>
                     </transition>
-
 
                     <div class="clearfix"></div>
 
@@ -35,7 +40,8 @@
         data() {
             return {
                 loading: 'compass',
-                welcome:false
+                welcome:false,
+                links:false,
 
             }
         },
@@ -47,13 +53,20 @@
             setTimeout(()=>{
                 this.loading=''
                 this.welcome='GuestCompass'
+                this.triggerSecond()
 
             }, 1500)
+
 
         },
 
         methods: {
 
+            triggerSecond(){
+                setTimeout(()=>{
+                    this.links = true;
+                }, 600)
+            },
 
             changeLoaderStatus(){
                 this.loading = 'compass'
@@ -202,5 +215,59 @@
     @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
     @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
     @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+
+    /*Links transition*/
+
+    .entry-enter {
+
+        opacity: 0;
+    }
+
+    .entry-enter-active {
+        transition: opacity 0.6s;
+
+    }
+
+    .entry-leave {
+        opacity: 1;
+
+    }
+
+    .entry-leave-active {
+        transition: opacity 0.6s;
+        opacity: 0;
+
+    }
+
+    @media screen and (max-width: 576px) {
+        .container-fluid {
+            padding: 0;
+        }
+
+    }
+
+    /*End link transition*/
+
+
+
+    .links{
+        margin-top: 10px;
+    }
+
+    .left-fl{
+        float: left;
+        padding: 0 0 0 22%;
+    }
+    .right-fl{
+        float: right;
+        padding: 0 22% 0 0;
+    }
+    .right-fl, .left-fl{
+        color: #ffffff;
+        font-style: italic;
+    }
+
+
 
 </style>

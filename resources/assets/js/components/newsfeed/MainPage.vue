@@ -11,6 +11,8 @@
                     longer.
                 </p>
             </b-card>
+
+
             <b-card header="Quote">
                 <blockquote class="blockquote mb-0">
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>

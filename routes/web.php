@@ -12,6 +12,17 @@
 */
 
 
+//Newsfeed
+$newsfeed = function(){
+    Route::get('/{user?}/{hotel_name?}', ['uses'=>'Newsfeed\Newsfeed@index', 'middleware'=>['web']])->name('newsfeed');
+};
+
+Route::group(['domain' => 'cmsfront.loc'], $newsfeed);
+Route::group(['domain' => 'cmsfrontdev.guestcompass.nl'], $newsfeed);
+Route::group(['domain' => 'cmsfront.guestcompass.nl'], $newsfeed);
+
+
+
 //Main URN
 Route::get('/', function (){
     return view('auth.auth');
@@ -94,14 +105,7 @@ Route::get('/mikrotik/status/{id?}', ['uses'=>'NasController@mikrotikStatus', 'm
 
 
 
-//Newsfeed
-$newsfeed = function(){
-    Route::get('/user/{hotel_name?}', ['uses'=>'Newsfeed\Newsfeed@index', 'middleware'=>['web']])->name('newsfeed');
-};
 
-Route::group(['domain' => 'cmsfront.loc'], $newsfeed);
-Route::group(['domain' => 'cmsfrontdev.guestcompass.nl'], $newsfeed);
-Route::group(['domain' => 'cmsfront.guestcompass.nl'], $newsfeed);
 
 
 

@@ -93,7 +93,7 @@ Route::get('/mikrotik/status/{id?}', ['uses'=>'NasController@mikrotikStatus', 'm
 
 
 //Newsfeed
-Route::group(['domain' => ['cmsfrontdev.guestcompass.nl', 'cmsfront.guestcompass.nl']], function(){
+Route::group(['domain' => 'cmsfrontdev.guestcompass.nl'], function(){
     Route::get('/', ['uses'=>'Newsfeed\Newsfeed@index', 'middleware'=>['web']])->name('newsfeed');
 });
 

@@ -92,3 +92,7 @@ Route::get('/mikrotik/status/{id?}', ['uses'=>'NasController@mikrotikStatus', 'm
 
 
 
+//Newsfeed
+
+Route::get('/newsfeed', ['uses'=>'Newsfeed\Newsfeed@index', 'middleware'=>['web']])->name('newsfeed');
+

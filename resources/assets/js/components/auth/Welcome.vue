@@ -88,8 +88,6 @@
     @import "~bootstrap/dist/css/bootstrap.css";
     @import "~font-awesome/css/font-awesome.css";
 
-
-
     .vertical-center {
         min-height: 100%; /* Fallback for vh unit */
         min-height: 100vh;
@@ -246,10 +244,7 @@
         }
 
     }
-
     /*End link transition*/
-
-
 
     .links{
         margin-top: 10px;
@@ -257,17 +252,15 @@
 
     .left-fl{
         float: left;
-        padding: 0 0 0 22%;
+        margin: 0 0 0 22%;
     }
     .right-fl{
         float: right;
-        padding: 0 22% 0 0;
+        margin: 0 22% 0 0;
     }
     .right-fl, .left-fl{
         color: #ffffff;
         font-style: italic;
     }
-
-
 
 </style>

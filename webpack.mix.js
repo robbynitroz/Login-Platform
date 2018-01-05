@@ -35,4 +35,9 @@ mix.js('resources/assets/js/auth.js', 'public/js/login')
 
 mix.js('resources/assets/js/dashboard.js', 'public/js/dashboard');
 
+//NewsFeed
+mix.js('resources/assets/js/newsfeed.js', 'public/js/newsfeed').sass(
+    'resources/assets/sass/newsfeed.scss', 'public/css/newsfeed'
+);
+
 

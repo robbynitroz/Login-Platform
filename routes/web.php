@@ -17,9 +17,13 @@ $newsfeed = function(){
     Route::get('/{user?}/{hotel_name?}', ['uses'=>'Newsfeed\Newsfeed@index', 'middleware'=>['web']])->name('newsfeed');
 };
 
+$newsfeed2 = function (){
+    dd('Under construction');
+};
+
 Route::group(['domain' => 'cmsfront.loc'], $newsfeed);
 Route::group(['domain' => 'cmsfrontdev.guestcompass.nl'], $newsfeed);
-Route::group(['domain' => 'cmsfront.guestcompass.nl'], $newsfeed);
+Route::group(['domain' => 'cmsfront.guestcompass.nl'], $newsfeed2);
 
 
 

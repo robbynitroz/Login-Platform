@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="manifest" type="text/plain" href="/manifest.json">
-    <title>{{ $hotel_name or 'NewsFeed' }}</title>
+    <title>NewsFeed</title>
 </head>
 <body>
 <div id="app">

@@ -48,20 +48,27 @@
                         <div class="clearfix"></div>
                         <br/>
                     </b-row>
+
                 </b-card>
 
-                <b-card header="Publish">
+
+                <b-card header="Publish"
+
+                >
                     <b-button class="draft-button" variant="outline-secondary">Save as draft</b-button>
                     <b-button class="preview-button" variant="outline-secondary">Preview</b-button>
                     <br/>
 
-                    <b-row>
-                        <div class="clearfix"></div>
                         <br/>
-                        <b-col>
-                            123
+                        <b-col sm="12">
+                            <p> <i class="fa fa-paper-plane" aria-hidden="true"> </i>  Published: <span :style="{ color:publish.color }">  {{ publish.status}}</span> </p>
                         </b-col>
-                    </b-row>
+
+                    <b-col class="publish-footer">
+                        <br>
+                    <b-button class="cancel-button draft-button" variant="link">Discard</b-button>
+                    <b-button type="submit" class="preview-button" variant="success">Save</b-button>
+                    </b-col>
                 </b-card>
 
 
@@ -101,12 +108,27 @@
                 },
                 belongsTo:[],
                 content: '',
+                publish:{
+                    status:'no',
+                    color:'red',
+                },
+
 
             }
         },
         components: {
             quillEditor,
             InputTag
+        },
+
+        computed:{
+
+        },
+
+        methods:{
+            back(){
+                console.log('Back')
+            }
         }
     }
 </script>
@@ -136,5 +158,24 @@
         float: left;
     }
 
+    .save-button{
+        float: right;
+        border-radius: 5px;
+        font-weight: 600;
+    }
+    .publish-footer{
+        border-top:1px solid #c2cfd6 ;
+    }
+    .cancel-button{
+        color: #ff463d;
+    }
+    .cancel-button:hover{
+        color: red;
+    }
+
+    .ql-editor{
+        min-height: 400px;
+    }
 </style>
+
 

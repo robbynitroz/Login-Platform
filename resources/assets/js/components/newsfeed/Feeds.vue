@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="notEmpty">
         <b-card-group columns>
             <template v-for="feed in feeds">
                 <b-card
@@ -20,7 +20,7 @@
         name: "Feeds",
         data() {
             return {
-                feeds: [],
+                feeds: {},
                 error: false,
             }
         },
@@ -35,6 +35,20 @@
                     this.error = true;
                 });
         },
+
+        computed:{
+            notEmpty(){
+
+                if(this.feeds.length >= 1 && (typeof this.feeds) === 'object'){
+                    return true
+                }
+                return false
+            },
+        },
+
+        methods:{
+
+        }
 
     }
 </script>

@@ -75,6 +75,12 @@ const AddRouter = resolve => {
     });
 };
 
+const AddNewsFeed = resolve => {
+    require.ensure(['../components/dashboard/AddNewsFeed.vue'], () => {
+        resolve(require('../components/dashboard/AddNewsFeed.vue'));
+    });
+};
+
 export const routes = [
     {
         path: '/dashboard',
@@ -148,6 +154,20 @@ export const routes = [
             },
 
             {
+                path: '/dashboard/newsfeed/all',
+                name: 'All news feed groups',
+
+            },
+
+            {
+                path: '/dashboard/newsfeed/add',
+                name: 'Add newsfeed feed group',
+                component:AddNewsFeed
+
+            },
+
+
+            {
                 path: '/dashboard/settings/account',
                 name: 'User account',
 
@@ -170,6 +190,8 @@ export const routes = [
                 name: 'System configurations',
 
             },
+
+
 
         ]
 

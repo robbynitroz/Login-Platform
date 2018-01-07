@@ -72,6 +72,36 @@ export default {
                 }
             ]
         },
+
+
+        {
+            divider: true
+        },
+        {
+            title: true,
+            name: 'News Feeds'
+        },
+
+
+        {
+            name: 'News Feeds',
+            url: '/dashboard/newsfeed',
+            icon: 'icon-feed',
+            children: [
+                {
+                    name: 'All groups',
+                    url: '/dashboard/newsfeed/all',
+                    icon: 'fa fa-rss-square'
+                },
+
+                {
+                    name: 'Create a new group',
+                    url: '/dashboard/newsfeed/add',
+                    icon: 'icon-pencil'
+                },
+            ]
+        },
+
         {
             divider: true
         },
@@ -79,6 +109,8 @@ export default {
             title: true,
             name: 'Settings'
         },
+
+
         {
             name: 'Settings',
             url: '/dashboard/settings',

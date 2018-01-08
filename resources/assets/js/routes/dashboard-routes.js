@@ -92,6 +92,11 @@ const AddGroup = resolve => {
         resolve(require('../components/dashboard/AddGroup.vue'));
     });
 };
+const EditGroup = resolve => {
+    require.ensure(['../components/dashboard/EditGroup.vue'], () => {
+        resolve(require('../components/dashboard/EditGroup.vue'));
+    });
+};
 
 
 export const routes = [
@@ -170,7 +175,6 @@ export const routes = [
                 path: '/dashboard/newsfeed/groups',
                 name: 'Groups',
                 component:Groups,
-
             },
 
             {
@@ -178,6 +182,12 @@ export const routes = [
                 name: 'Add group',
                 component:AddGroup,
 
+            },
+
+            {
+                path: '/dashboard/newsfeed/group/edit/:id',
+                name: 'Edit group',
+                component:EditGroup,
             },
 
 

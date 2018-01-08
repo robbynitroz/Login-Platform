@@ -50,4 +50,15 @@ class NewsFeedGroupController extends Controller
         $model->delete();
     }
 
+
+    public function getGroups(Request $request):object
+    {
+        return NewsFeedGroup::all();
+    }
+
+    public function getGroupByID(Request $request):object
+    {
+        return NewsFeedGroup::find($request->id);
+    }
+
 }

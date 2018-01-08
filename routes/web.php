@@ -144,6 +144,16 @@ Route::delete('/newsfeeds/group/delete/{id}', [
     'middleware' => ['web', 'auth']
 ])->name('delete_newsfeed_group');
 
+Route::get('/newsfeeds/groups', [
+    'uses' => 'Newsfeed\NewsFeedGroupController@getGroups',
+    'middleware' => ['web', 'auth']
+])->name('get_newsfeed_groups');
+
+Route::get('/newsfeeds/group/{id}', [
+    'uses' => 'Newsfeed\NewsFeedGroupController@getGroupByID',
+    'middleware' => ['web', 'auth']
+])->name('get_newsfeed_groups');
+
 
 
 

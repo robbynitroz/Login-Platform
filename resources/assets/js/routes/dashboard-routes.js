@@ -81,6 +81,19 @@ const AddNewsFeed = resolve => {
     });
 };
 
+const Groups = resolve => {
+    require.ensure(['../components/dashboard/Groups.vue'], () => {
+        resolve(require('../components/dashboard/Groups.vue'));
+    });
+};
+
+const AddGroup = resolve => {
+    require.ensure(['../components/dashboard/AddGroup.vue'], () => {
+        resolve(require('../components/dashboard/AddGroup.vue'));
+    });
+};
+
+
 export const routes = [
     {
         path: '/dashboard',
@@ -154,14 +167,27 @@ export const routes = [
             },
 
             {
-                path: '/dashboard/newsfeed/all',
-                name: 'All news feed groups',
+                path: '/dashboard/newsfeed/groups',
+                name: 'Groups',
+                component:Groups,
 
             },
 
             {
-                path: '/dashboard/newsfeed/add',
-                name: 'Add newsfeed feed group',
+                path: '/dashboard/newsfeed/group/add',
+                name: 'Add group',
+                component:AddGroup,
+
+            },
+
+
+            {
+                path: '/dashboard/newsfeed/cards',
+                name: 'Cards',
+            },
+            {
+                path: '/dashboard/newsfeed/card/add',
+                name: 'Add newsfeed card',
                 component:AddNewsFeed
 
             },
@@ -172,6 +198,8 @@ export const routes = [
                 name: 'User account',
 
             },
+
+
 
             {
                 path: '/dashboard/settings/users',

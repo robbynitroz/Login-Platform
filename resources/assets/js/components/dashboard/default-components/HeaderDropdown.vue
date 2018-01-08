@@ -1,7 +1,7 @@
 <template>
       <b-nav-item-dropdown right no-caret>
         <template slot="button-content">
-          <img src="/storage/images/avatars/Rob.png" class="img-avatar" alt="admin@bootstrapmaster.com">
+          <img src="/storage/images/avatars/dev.png" class="img-avatar" alt="admin@bootstrapmaster.com">
         </template>
         <b-dropdown-header tag="div" class="text-center"><strong>Account</strong></b-dropdown-header>
         <b-dropdown-item><i class="fa fa-bell-o"></i> Updates<b-badge variant="info">{{itemsCount}}</b-badge></b-dropdown-item>

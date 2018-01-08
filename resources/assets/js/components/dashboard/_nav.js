@@ -89,15 +89,43 @@ export default {
             icon: 'icon-feed',
             children: [
                 {
-                    name: 'All groups',
-                    url: '/dashboard/newsfeed/all',
-                    icon: 'fa fa-rss-square'
+                    name: 'Groups',
+                    url: '/dashboard/groups',
+                    icon: 'fa fa-bullhorn',
+                    children: [
+                        {
+                            name: 'New group',
+                            url: '/dashboard/newsfeed/group/add',
+                            icon: 'fa fa-plus-square-o'
+                        },
+
+                        {
+                            name: 'All groups',
+                            url: '/dashboard/newsfeed/groups',
+                            icon: 'fa fa-cubes'
+                        },
+                    ]
                 },
 
                 {
-                    name: 'Create a new group',
-                    url: '/dashboard/newsfeed/add',
-                    icon: 'icon-pencil'
+                    name: 'News cards',
+                    url: '/dashboard/newsfeed/',
+                    icon: 'fa fa-rss-square',
+                    children: [
+                        {
+                            name: 'New news card',
+                            url: '/dashboard/newsfeed/card/add',
+                            icon: 'fa fa-plus-square-o'
+                        },
+
+                        {
+                            name: 'All cards',
+                            url: '/dashboard/newsfeed/cards',
+                            icon: 'fa fa-newspaper-o'
+                        },
+                    ]
+
+
                 },
             ]
         },

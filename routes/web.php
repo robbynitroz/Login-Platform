@@ -21,6 +21,7 @@ $newsfeed = function () {
     //Newsfeed API
     Route::get('/newsfeeds/get/{hotel_name?}',
         ['uses' => 'Newsfeed\NewsfeedController@index', 'middleware' => ['web']])->name('newsfeed');
+
 };
 
 
@@ -124,6 +125,24 @@ Route::get('/mikrotik/connect',
     ['uses' => 'MikrotikLogin@mikrotikTestConnect', 'middleware' => ['web', 'auth']])->name('test');
 Route::get('/mikrotik/status/{id?}',
     ['uses' => 'NasController@mikrotikStatus', 'middleware' => ['web', 'auth']])->name('get_mikrotik_status');
+
+
+//Newsfeed URLs
+Route::post('/newsfeeds/group/add', [
+    'uses' => 'Newsfeed\NewsFeedGroupController@addGroup',
+    'middleware' => ['web', 'auth']
+])->name('add_newsfeed_group');
+
+Route::post('/newsfeeds/group/edit', [
+    'uses' => 'Newsfeed\NewsFeedGroupController@editGroup',
+    'middleware' => ['web', 'auth']
+])->name('edit_newsfeed_group');
+
+
+Route::delete('/newsfeeds/group/delete/{id}', [
+    'uses' => 'Newsfeed\NewsFeedGroupController@deleteGroup',
+    'middleware' => ['web', 'auth']
+])->name('delete_newsfeed_group');
 
 
 

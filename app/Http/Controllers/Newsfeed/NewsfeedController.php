@@ -19,7 +19,12 @@ class NewsfeedController extends Controller
     public function index(Request $request):array
     {
         $model = new NewsFeed();
-        $results = $model->getFeedsByName($request->hotel_name);
+        if($request->hotel_name === null){
+            $hotel_tag = 'all';
+        }else{
+            $hotel_tag = $request->hotel_name;
+        }
+        $results = $model->getFeedsByName($hotel_tag);
         $feed = array();
         foreach ($results as $result){
             $feed[]= json_decode($result->feed);

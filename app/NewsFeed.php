@@ -29,7 +29,7 @@ class NewsFeed extends Model
      */
     public function getFeedsByName(string $name):array
     {
-       return DB::select("SELECT feed FROM news_feeds WHERE MATCH (belongs_to) AGAINST (?) AND published ='yes'", array($name));
+       return DB::select("SELECT feed FROM news_feeds WHERE MATCH (belongs_to) AGAINST (?) OR MATCH (belongs_to) AGAINST ('all') AND published ='yes'", array($name));
     }
 
 }

@@ -19,7 +19,7 @@ $newsfeed = function () {
     });
 
     //Newsfeed API
-    Route::get('/newsfeeds/{hotel_name}',
+    Route::get('/newsfeeds/get/{hotel_name?}',
         ['uses' => 'Newsfeed\NewsfeedController@index', 'middleware' => ['web']])->name('newsfeed');
 };
 

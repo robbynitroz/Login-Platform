@@ -27,7 +27,7 @@
 
         mounted() {
             let path = this.$route.path;
-            axios.get('/newsfeeds' + path)
+            axios.get('/newsfeeds/get' + path)
                 .then(response => {
                     this.feeds = response.data;
                 })

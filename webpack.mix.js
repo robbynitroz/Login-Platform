@@ -12,7 +12,7 @@ let mix = require('laravel-mix');
  */
 
 mix.options({
-    extractVueStyles: 'public/css/styles.css',
+    //extractVueStyles: 'public/css/styles.css',
     processCssUrls: true,
     //uglify: {},
     purifyCss: true,

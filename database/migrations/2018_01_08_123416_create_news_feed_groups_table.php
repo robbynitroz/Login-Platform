@@ -15,7 +15,7 @@ class CreateNewsFeedGroupsTable extends Migration
     {
         Schema::create('news_feed_groups', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('group_name', 128);
+            $table->string('group_name', 128)->unique();
             $table->json('group_tags');
             $table->timestamps();
         });

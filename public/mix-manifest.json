@@ -1,8 +1,8 @@
 {
     "/js/newsfeed/newsfeed.js": "/js/newsfeed/newsfeed.js",
-    "/css/login/auth.css": "/css/login/auth.css",
     "/js/dashboard/dashboard.js": "/js/dashboard/dashboard.js",
     "/js/clients/clients-login.js": "/js/clients/clients-login.js",
+    "/css/login/auth.css": "/css/login/auth.css",
     "/css/newsfeed/newsfeed.css": "/css/newsfeed/newsfeed.css",
     "/js/login/auth.js": "/js/login/auth.js"
 }

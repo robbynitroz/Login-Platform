@@ -31,4 +31,69 @@ class NewsfeedController extends Controller
         }
         return $feed;
     }
+
+
+    /**
+     * Get necessary data for card creation
+     *
+     * @return string
+     */
+    public function getNecessaryData()
+    {
+        $groups = (new NewsFeedGroupController())->getGroups();
+        $result = array();
+        $i=0;
+        foreach ($groups as $group){
+            $result[$i]['value'] = json_decode($group['group_tags']);
+            $result[$i]['label'] = $group['group_name'];
+            ++$i;
+        }
+        return json_encode($result);
+    }
+
+    /**
+     * Create news card
+     *
+     * @param Request $request
+     * @return int
+     */
+    public function newCard(Request $request):int
+    {
+       $model =  new NewsFeed();
+
+        $model->card_name = $request->card_name;
+        $model->published = $request->published;
+        $belong = '';
+        foreach ($request->belongs_to as $belongs){
+            $belong .= implode(", ", $belongs['value']);
+        }
+        $model->belongs_to = $belong;
+        $model->feed = json_encode(['title' => $request->description, 'text'=>$request->feed_content, 'img'=>'']);
+        $model->save();
+        return $model->id;
+
+    }
+
+    /**
+     * Save news card img
+     *
+     * @param Request $request
+     * @return string
+     */
+    public function editCardMedia(Request $request)
+    {
+
+        if ($request->file('cardimg')->isValid()) {
+            $request->validate([
+                'cardimg' => 'required|image:jpeg,jpg,png',
+            ]);
+             NewsFeed::where('id', $request->id)->update(['feed->img'=> '/storage/images/'.$request->cardimg->hashName()]);
+            $request->cardimg->store('public/images');
+            return 'success';
+        }
+
+        return 'fail';
+
+    }
+
 }

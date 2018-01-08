@@ -154,6 +154,22 @@ Route::get('/newsfeeds/group/{id}', [
     'middleware' => ['web', 'auth']
 ])->name('get_newsfeed_groups');
 
+//News feed cards
+Route::get('/newsfeeds/cards/data', [
+    'uses' => 'Newsfeed\NewsfeedController@getNecessaryData',
+    'middleware' => ['web', 'auth']
+])->name('get_newsfeed_card_data');
+
+Route::post('/newsfeeds/cards/new', [
+    'uses' => 'Newsfeed\NewsfeedController@newCard',
+    'middleware' => ['web', 'auth']
+])->name('create_newsfeed_card');
+
+
+Route::post('/newsfeeds/media/{id}', [
+    'uses' => 'Newsfeed\NewsfeedController@editCardMedia',
+    'middleware' => ['web', 'auth']
+])->name('edit_newsfeed_card_media');
 
 
 

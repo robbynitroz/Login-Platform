@@ -16,7 +16,7 @@ class CreateNewsFeedsTable extends Migration
     {
         Schema::create('news_feeds', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('group_name', 128);
+            $table->string('card_name', 128);
             $table->string('belongs_to', 255);
             $table->json('feed');
             $table->timestamps();

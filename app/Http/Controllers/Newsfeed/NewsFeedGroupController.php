@@ -54,10 +54,9 @@ class NewsFeedGroupController extends Controller
     /**
      * Get all groups
      *
-     * @param Request $request
      * @return object
      */
-    public function getGroups(Request $request):object
+    public function getGroups():object
     {
         return NewsFeedGroup::all();
     }

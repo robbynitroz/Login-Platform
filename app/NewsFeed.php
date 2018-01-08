@@ -18,7 +18,7 @@ class NewsFeed extends Model
     /**
      * @var array
      */
-    protected $fillable = ['group_name','belongs_to', 'feed'];
+    protected $fillable = ['card_name','belongs_to', 'feed'];
 
 
     /**

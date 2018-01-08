@@ -38,6 +38,10 @@
                     <b-button  type="submit" size="lg" variant="primary"> Edit </b-button>
                     <b-button @click = "confirmDelete()"  type="button" size="lg" variant="danger"> Delete </b-button>
                     </template>
+                    <b-button @click="back()"  type="button" size="lg" variant="secondary">
+                        <span v-if="lastID===null">Discard</span>
+                        <span v-else>Back</span>
+                    </b-button>
                 </form>
             </b-col>
             <!--Main editor end-->
@@ -131,6 +135,10 @@
                         this.critError = true;
                     });
             },
+
+            back(){
+                return this.$router.push({name: 'Groups'})
+            }
 
         }
     }

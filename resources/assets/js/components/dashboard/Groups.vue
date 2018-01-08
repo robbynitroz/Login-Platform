@@ -14,7 +14,7 @@
                                     <b-input-group-button>
                                         <b-button variant="success"><i class="fa fa-search"></i></b-button>
                                     </b-input-group-button>
-                                    <b-form-input v-model="filter" type="text" placeholder="Search for..." />
+                                    <b-form-input v-model="filter" type="text" placeholder="Search for..."/>
                                     <b-input-group-button>
                                         <b-button variant="success">Search</b-button>
                                     </b-input-group-button>
@@ -29,12 +29,17 @@
                                        :key="group.id"
                                 >
                                     <!--Hotel blocks-->
-                                    <b-card class="groups" bg-variant="dark" text-variant="white" :title="group.group_name">
+                                    <b-card class="groups" bg-variant="dark" text-variant="white"
+                                            :title="group.group_name">
                                         <p class="card-text">
-                                           <span>{{ normalize(JSON.parse(group.group_tags)) }}</span>
+                                            <span>{{ normalize(JSON.parse(group.group_tags)) }}</span>
                                         </p>
-                                        <b-button @click="editGroup(group.id)"  type="edit" variant="primary"><i class="fa fa-pencil-square-o"></i> Edit</b-button>
-                                        <b-button @click="confirmDelete(group.id, group.group_name)" type="delete" variant="danger"><i class="fa fa-ban"></i> Delete</b-button>
+                                        <b-button @click="editGroup(group.id)" type="edit" variant="primary"><i
+                                                class="fa fa-pencil-square-o"></i> Edit
+                                        </b-button>
+                                        <b-button @click="confirmDelete(group.id, group.group_name)" type="delete"
+                                                  variant="danger"><i class="fa fa-ban"></i> Delete
+                                        </b-button>
                                     </b-card>
                                 </b-col>
                             </b-col>
@@ -42,10 +47,17 @@
                         </b-row>
 
                     </b-card>
+                    <b-modal centered title="Warning" class="modal-danger" v-model="confirmDeleteAction"
+                             @ok="deleteGroup()">
+                        You are going to delete {{ deleteCreds.name }}. Press OK if you are sure!
+                    </b-modal>
+                    <b-modal centered title="Error" class="modal-danger" v-model="errors" hide-footer>
+                        Oops~ something went terribly wrong!
+                    </b-modal>
                 </div>
             </div>
-                </div>
-            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -59,23 +71,20 @@
         },
         data: function () {
             return {
-                filter:'',
-                fetchComplete:false,
-                groups:{}
+                filter: '',
+                fetchComplete: false,
+                groups: {},
+                confirmDeleteAction: false,
+                deleteCreds: {
+                    id: null,
+                    name: null,
+                },
+                errors:false,
             }
         },
 
         mounted() {
-            axios.get('/newsfeeds/groups')
-                .then(response => {
-                    //this.loading = '';
-                    this.fetchComplete = true;
-                    this.groups= response.data;
-                })
-                .catch(e => {
-
-                });
-
+            this.getData();
 
         },
 
@@ -84,35 +93,66 @@
                 return this.groups.filter(group => {
                     return group.group_name.toLowerCase().includes(this.filter.toLowerCase())
                 })
-
             },
         },
 
         methods: {
-            normalize(obj){
+
+            getData(){
+                axios.get('/newsfeeds/groups')
+                    .then(response => {
+                        this.fetchComplete = true;
+                        this.groups = response.data;
+                    })
+                    .catch(e => {
+                        this.errors = true
+                    });
+            },
+
+
+            normalize(obj) {
                 return obj.toString();
             },
 
-            editGroup(id){
-                this.$router.push({ name: 'Edit group', params: { id: id }})
-            }
+            editGroup(id) {
+                this.$router.push({name: 'Edit group', params: {id: id}})
+            },
+
+            confirmDelete(id, name) {
+                this.deleteCreds.id = id;
+                this.deleteCreds.name = name;
+                this.confirmDeleteAction = true
+            },
+
+            deleteGroup(){
+                axios.delete('/newsfeeds/group/delete/' + this.deleteCreds.id)
+                    .then(response => {
+                        this.getData();
+                    })
+                    .catch(e => {
+                        this.errors = true
+                    });
+            },
+
         }
     }
 
 </script>
 <style scoped>
 
-    .groups{
+    .groups {
         border-radius: 10px;
         float: left;
         width: 100%;
     }
+
     .hotel-logo {
         position: absolute;
         top: 5px;
         right: 10px;
     }
-    .form-control{
+
+    .form-control {
         margin-left: -1px;
     }
 

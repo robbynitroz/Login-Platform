@@ -7,12 +7,12 @@
             </b-col>
             <b-col v-if="fetchComplete" md="12">
 
-                <form class="form loginForm" @submit.prevent="save()">
+                <form class="form loginForm" @submit.prevent="edit()">
                 <b-form-group id="group-name"
                               label-for="type name here"
                               description="for identification purposes">
                     <b-form-input type="text"
-                                  v-model="name"
+                                  v-model="groupName"
                                   required
                                   placeholder="Name...">
                     </b-form-input>
@@ -34,6 +34,7 @@
                 </b-card>
                     <b-button  type="submit" size="lg" variant="primary"> Edit </b-button>
                     <b-button @click = "confirmDelete()"  type="button" size="lg" variant="danger"> Delete </b-button>
+                    <b-button @click="back()"  type="button" size="lg" variant="secondary"> Back </b-button>
                 </form>
             </b-col>
             <!--Main editor end-->
@@ -48,7 +49,7 @@
                 </div>
             </b-modal>
 
-            <b-modal centered title="Warning" class="modal-danger" v-model="confirmDeleteAction" @ok="deleteGroup(lastID)">
+            <b-modal centered title="Warning" class="modal-danger" v-model="confirmDeleteAction" @ok="deleteGroup(ID)">
                 You are going to delete current group.  Press OK if you are sure!
             </b-modal>
 
@@ -63,8 +64,8 @@
         name: "AddNewsFeed",
         data() {
             return {
-                name:'',
-                hotelNames:[],
+                groupName:'',
+                hotelNames:null,
                 errors:false,
                 success:false,
                 ID:null,
@@ -85,39 +86,24 @@
                 .then(response => {
                     //this.loading = '';
                     this.fetchComplete = true;
-                    this.groups= response.data;
+                    this.groupName= response.data.group_name;
+                   //this.groupName= response.data.group_name;
+                    this.hotelNames=(JSON.parse(response.data.group_tags));
+                    this.ID= response.data.id;
                 })
                 .catch(e => {
-
+                    this.errors = true;
                 });
 
 
         },
 
         methods:{
-            save(){
-
-                if(this.lastID !==null){
-                    return this.edit()
-                }
-                let data = {
-                    name:this.name,
-                    hotels:this.hotelNames
-                }
-                axios.post('/newsfeeds/group/add', data)
-                    .then(response => {
-                        this.lastID = response.data
-                        this.success = true
-                    })
-                    .catch(e => {
-                        this.errors = true;
-                    });
-            },
 
             edit(){
                 let data = {
-                    id:this.lastID,
-                    name:this.name,
+                    id:this.ID,
+                    name:this.groupName,
                     hotels:this.hotelNames
                 }
                 axios.post('/newsfeeds/group/edit', data)
@@ -142,6 +128,9 @@
                         this.critError = true;
                     });
             },
+            back(){
+                return this.$router.push({name: 'Groups'})
+            }
 
         }
     }

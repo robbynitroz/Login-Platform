@@ -59,7 +59,7 @@ Route::prefix('/auth')->group(function () {
 Auth::routes();
 
 //Dashboard universal route
-Route::get('/dashboard/{page?}/{argument?}/{secondary?}',
+Route::get('/dashboard/{page?}/{argument?}/{secondary?}/{andevenmore?}',
     ['uses' => 'DashboardController@index', 'middleware' => ['web', 'auth']])->name('dashboard');
 
 // Hotel Routes for Dashboard

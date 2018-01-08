@@ -108,7 +108,7 @@ export default {
                 },
 
                 {
-                    name: 'News cards',
+                    name: 'Cards',
                     url: '/dashboard/newsfeed/',
                     icon: 'fa fa-rss-square',
                     children: [

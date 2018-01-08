@@ -8,33 +8,32 @@
             <b-col v-if="fetchComplete" md="12">
 
                 <form class="form loginForm" @submit.prevent="edit()">
-                <b-form-group id="group-name"
-                              label-for="type name here"
-                              description="for identification purposes">
-                    <b-form-input type="text"
-                                  v-model="groupName"
-                                  required
-                                  placeholder="Name...">
-                    </b-form-input>
-                </b-form-group>
+                    <b-form-group id="group-name"
+                                  label-for="type name here"
+                                  description="for identification purposes">
+                        <b-form-input type="text"
+                                      v-model="groupName"
+                                      required
+                                      placeholder="Name...">
+                        </b-form-input>
+                    </b-form-group>
 
 
-
-                <b-card header="Hotel Tags">
-                    <br/>
-                    <b-row>
-                        <b-col lg="12" class="mb-3">
-                            <p>Input hotel names, push enter to divide</p>
-                            <input-tag placeholder="hotel names" :tags="hotelNames"></input-tag>
-                        </b-col>
-                        <div class="clearfix"></div>
+                    <b-card header="Hotel Tags">
                         <br/>
-                    </b-row>
+                        <b-row>
+                            <b-col lg="12" class="mb-3">
+                                <p>Input hotel names, push enter to divide</p>
+                                <input-tag placeholder="hotel names" :tags="hotelNames"></input-tag>
+                            </b-col>
+                            <div class="clearfix"></div>
+                            <br/>
+                        </b-row>
 
-                </b-card>
-                    <b-button  type="submit" size="lg" variant="primary"> Edit </b-button>
-                    <b-button @click = "confirmDelete()"  type="button" size="lg" variant="danger"> Delete </b-button>
-                    <b-button @click="back()"  type="button" size="lg" variant="secondary"> Back </b-button>
+                    </b-card>
+                    <b-button type="submit" size="lg" variant="primary"> Edit</b-button>
+                    <b-button @click="confirmDelete()" type="button" size="lg" variant="danger"> Delete</b-button>
+                    <b-button @click="back()" type="button" size="lg" variant="secondary"> Back</b-button>
                 </form>
             </b-col>
             <!--Main editor end-->
@@ -50,7 +49,7 @@
             </b-modal>
 
             <b-modal centered title="Warning" class="modal-danger" v-model="confirmDeleteAction" @ok="deleteGroup(ID)">
-                You are going to delete current group.  Press OK if you are sure!
+                You are going to delete current group. Press OK if you are sure!
             </b-modal>
 
         </b-row>
@@ -64,32 +63,30 @@
         name: "AddNewsFeed",
         data() {
             return {
-                groupName:'',
-                hotelNames:null,
-                errors:false,
-                success:false,
-                ID:null,
-                confirmDeleteAction:false,
-                fetchComplete:false,
+                groupName: '',
+                hotelNames: null,
+                errors: false,
+                success: false,
+                ID: null,
+                confirmDeleteAction: false,
+                fetchComplete: false,
             }
         },
         components: {
             InputTag
         },
 
-        computed:{
-
-        },
+        computed: {},
 
         mounted() {
             axios.get('/newsfeeds/group/' + this.$route.params.id)
                 .then(response => {
                     //this.loading = '';
                     this.fetchComplete = true;
-                    this.groupName= response.data.group_name;
-                   //this.groupName= response.data.group_name;
-                    this.hotelNames=(JSON.parse(response.data.group_tags));
-                    this.ID= response.data.id;
+                    this.groupName = response.data.group_name;
+                    //this.groupName= response.data.group_name;
+                    this.hotelNames = (JSON.parse(response.data.group_tags));
+                    this.ID = response.data.id;
                 })
                 .catch(e => {
                     this.errors = true;
@@ -98,13 +95,13 @@
 
         },
 
-        methods:{
+        methods: {
 
-            edit(){
+            edit() {
                 let data = {
-                    id:this.ID,
-                    name:this.groupName,
-                    hotels:this.hotelNames
+                    id: this.ID,
+                    name: this.groupName,
+                    hotels: this.hotelNames
                 }
                 axios.post('/newsfeeds/group/edit', data)
                     .then(response => {
@@ -119,7 +116,7 @@
                 this.confirmDeleteAction = true
             },
 
-            deleteGroup(id){
+            deleteGroup(id) {
                 axios.delete('/newsfeeds/group/delete/' + id)
                     .then(response => {
                         return this.$router.push({name: 'Groups'})
@@ -128,7 +125,7 @@
                         this.critError = true;
                     });
             },
-            back(){
+            back() {
                 return this.$router.push({name: 'Groups'})
             }
 

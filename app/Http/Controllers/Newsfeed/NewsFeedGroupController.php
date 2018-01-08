@@ -51,11 +51,23 @@ class NewsFeedGroupController extends Controller
     }
 
 
+    /**
+     * Get all groups
+     *
+     * @param Request $request
+     * @return object
+     */
     public function getGroups(Request $request):object
     {
         return NewsFeedGroup::all();
     }
 
+    /**
+     * Get group by ID
+     *
+     * @param Request $request
+     * @return object
+     */
     public function getGroupByID(Request $request):object
     {
         return NewsFeedGroup::find($request->id);

@@ -139,7 +139,6 @@
             back(){
                 return this.$router.push({name: 'Groups'})
             }
-
         }
     }
 </script>

@@ -67,7 +67,7 @@ class NewsfeedController extends Controller
             foreach ($request->belongs_to as $belongs){
                 if(count($belongs['value'])>1 and count($belongs['value'])>0){
                     $belong .= implode(" , ", $belongs['value']);
-                }else if (array_key_exists($belongs['value'][0])){
+                }else if (isset($belongs['value'][0])){
                     $belong .= '  '. $belongs['value'][0]. ',  ';
                 }
             }

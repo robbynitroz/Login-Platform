@@ -64,14 +64,17 @@ class NewsfeedController extends Controller
         $model->card_name = $request->card_name;
         $model->published = $request->published;
         $belong = '';
-        foreach ($request->belongs_to as $belongs){
-            $belong .= implode(", ", $belongs['value']);
-        }
+            foreach ($request->belongs_to as $belongs){
+                if(count($belongs['value'])>1 and count($belongs['value'])>0){
+                    $belong .= implode(" , ", $belongs['value']);
+                }else{
+                    $belong .= '  '. $belongs['value'][0]. ',  ';
+                }
+            }
         $model->belongs_to = $belong;
         $model->feed = json_encode(['title' => $request->description, 'text'=>$request->feed_content, 'img'=>'']);
         $model->save();
         return $model->id;
-
     }
 
     /**
@@ -82,7 +85,6 @@ class NewsfeedController extends Controller
      */
     public function editCardMedia(Request $request)
     {
-
         if ($request->file('cardimg')->isValid()) {
             $request->validate([
                 'cardimg' => 'required|image:jpeg,jpg,png',
@@ -93,7 +95,6 @@ class NewsfeedController extends Controller
         }
 
         return 'fail';
-
     }
 
 }

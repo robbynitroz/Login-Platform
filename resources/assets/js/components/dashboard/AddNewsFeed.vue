@@ -11,6 +11,7 @@
                               label-for="type name here"
                               description="for identification purposes">
                     <b-form-input type="text"
+                                  @change="nameFiiled"
                                   required
                                   v-model="cardName"
                                   placeholder="Name...">
@@ -68,7 +69,9 @@
                     <b-col class="publish-footer">
                         <br>
                     <b-button class="cancel-button draft-button" variant="link">Discard</b-button>
+                        <template v-if="showSave">
                     <b-button @click="save('save')" type="submit" class="preview-button" variant="success">Save</b-button>
+                        </template>
                     </b-col>
                 </b-card>
 
@@ -90,6 +93,36 @@
 
             </b-col>
             <!--Button configs end-->
+
+            <!--Modal here-->
+            <b-modal centered title="Error" class="modal-danger" v-model="errors" hide-footer>
+                Oops~ something went terribly wrong!
+            </b-modal>
+
+            <b-modal size="sm" centered title="Success" class="modal-success" v-model="cardCreated" hide-footer>
+                <div class="d-block text-center">
+                    <h3>SAVED!</h3>
+                </div>
+            </b-modal>
+
+
+            <b-modal
+                    no-close-on-backdrop
+                    no-close-on-esc
+                    hide-footer
+                    hide-header
+                    hide-header-close
+                    size="sm"
+                    ok-disabled
+                    cancel-disabled
+                    v-model="loading"
+                    centered title="Bootstrap-Vue">
+                <div class="text-center center-block loading-modal">
+                    <p style="color: #00aced; font-size: 2.2rem; font-weight: 900" class="my-4">{{
+                        completed }}%</p>
+                </div>
+            </b-modal>
+
         </b-row>
     </b-container>
 </template>
@@ -162,6 +195,11 @@
                 fetchComplete:false,
                 imageUploaded:false,
                 cardCreated:false,
+                errors:false,
+                showSave:false,
+                completed:0,
+                loading:false,
+
 
 
             }
@@ -187,19 +225,20 @@
                 this.imageUploaded=true
             },
 
+            nameFiiled(){
+              this.showSave = true
+            },
             getData(){
                 axios.get('/newsfeeds/cards/data')
                     .then(response => {
-                        //this.loading = '';
                         this.fetchComplete = true;
                         this.options = response.data
-                        this.options.push({ value:['all'], label:'all' })
+                        this.options.push({ label:'All', value:['all'] })
                     })
                     .catch(e => {
                         this.errors = true;
                     });
             },
-
 
             save(param){
                 if(param ==='save'){
@@ -216,7 +255,13 @@
                             //this.lastID = response.data
                             //this.success = true
                             if(this.imageUploaded){
+                                this.loading = true;
                                 this.uploadImage(response.data);
+                            }else{
+                                this.cardCreated = true;
+                                setTimeout(() => {
+                                    return this.$router.push({name: 'Cards'})
+                                }, 1000);
                             }
 
                         })
@@ -230,19 +275,24 @@
 
             uploadImage(id) {
 
+                let config = {
+                    onUploadProgress: progressEvent => {
+                        this.completed = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
+                    }
+                }
                 var data = new FormData();
                 data.append('cardimg', document.getElementById('card-img').files[0]);
-                axios.post('/newsfeeds/media/' + id, data,
+                axios.post('/newsfeeds/media/' + id, data, config
                 )
                     .then(response => {
+                        this.loading = false;
                         this.cardCreated = true;
                         setTimeout(() => {
                             return this.$router.push({name: 'Cards'})
                         }, 1000);
                     })
                     .catch(e => {
-                        this.critError = true;
-
+                        this.errors = true;
                     });
             },
         },

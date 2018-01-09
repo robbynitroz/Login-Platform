@@ -97,6 +97,11 @@ const EditGroup = resolve => {
         resolve(require('../components/dashboard/EditGroup.vue'));
     });
 };
+const Cards = resolve => {
+    require.ensure(['../components/dashboard/Cards.vue'], () => {
+        resolve(require('../components/dashboard/Cards.vue'));
+    });
+};
 
 
 export const routes = [
@@ -194,11 +199,19 @@ export const routes = [
             {
                 path: '/dashboard/newsfeed/cards',
                 name: 'Cards',
+                component:Cards,
             },
+
             {
                 path: '/dashboard/newsfeed/card/add',
                 name: 'Add newsfeed card',
                 component:AddNewsFeed
+
+            },
+
+            {
+                path: '/dashboard/newsfeed/card/:id',
+                name: 'Edit card',
 
             },
 

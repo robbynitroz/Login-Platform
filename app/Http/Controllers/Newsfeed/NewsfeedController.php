@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Newsfeed;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\NewsFeed;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 
 class NewsfeedController extends Controller
@@ -16,18 +17,18 @@ class NewsfeedController extends Controller
      * @param Request $request
      * @return array
      */
-    public function index(Request $request):array
+    public function index(Request $request): array
     {
         $model = new NewsFeed();
-        if($request->hotel_name === null){
+        if ($request->hotel_name === null) {
             $hotel_tag = 'all';
-        }else{
+        } else {
             $hotel_tag = $request->hotel_name;
         }
         $results = $model->getFeedsByName($hotel_tag);
         $feed = array();
-        foreach ($results as $result){
-            $feed[]= json_decode($result->feed);
+        foreach ($results as $result) {
+            $feed[] = json_decode($result->feed);
         }
         return $feed;
     }
@@ -42,8 +43,8 @@ class NewsfeedController extends Controller
     {
         $groups = (new NewsFeedGroupController())->getGroups();
         $result = array();
-        $i=0;
-        foreach ($groups as $group){
+        $i = 0;
+        foreach ($groups as $group) {
             $result[$i]['value'] = json_decode($group['group_tags']);
             $result[$i]['label'] = $group['group_name'];
             ++$i;
@@ -57,22 +58,24 @@ class NewsfeedController extends Controller
      * @param Request $request
      * @return int
      */
-    public function newCard(Request $request):int
+    public function newCard(Request $request): int
     {
-       $model =  new NewsFeed();
+        $model = new NewsFeed();
 
         $model->card_name = $request->card_name;
         $model->published = $request->published;
         $belong = '';
-            foreach ($request->belongs_to as $belongs){
-                if(count($belongs['value'])>1 and count($belongs['value'])>0){
-                    $belong .= implode(" , ", $belongs['value']);
-                }else if (isset($belongs['value'][0])){
-                    $belong .= '  '. $belongs['value'][0]. ',  ';
+        foreach ($request->belongs_to as $belongs) {
+            if (count($belongs['value']) > 1 and count($belongs['value']) > 0) {
+                $belong .= implode(" , ", $belongs['value']);
+            } else {
+                if (isset($belongs['value'][0])) {
+                    $belong .= '  ' . $belongs['value'][0] . ',  ';
                 }
             }
+        }
         $model->belongs_to = $belong;
-        $model->feed = json_encode(['title' => $request->description, 'text'=>$request->feed_content, 'img'=>'']);
+        $model->feed = json_encode(['title' => $request->description, 'text' => $request->feed_content, 'img' => '']);
         $model->save();
         return $model->id;
     }
@@ -89,12 +92,52 @@ class NewsfeedController extends Controller
             $request->validate([
                 'cardimg' => 'required|image:jpeg,jpg,png',
             ]);
-             NewsFeed::where('id', $request->id)->update(['feed->img'=> '/storage/images/'.$request->cardimg->hashName()]);
+            NewsFeed::where('id',
+                $request->id)->update(['feed->img' => '/storage/images/' . $request->cardimg->hashName()]);
             $request->cardimg->store('public/images');
             return 'success';
         }
 
         return 'fail';
     }
+
+    /**
+     *Get all cards
+     *
+     * @param Request $request
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function getCards(Request $request)
+    {
+        return NewsFeed::all();
+    }
+
+    /**
+     * Delete card by ID
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function deleteCard(Request $request):void
+    {
+        $id = $request->id;
+        $model = NewsFeed::where('id', $id)->get(['feed']);
+        $img = str_replace('/storage/images/', '', (json_decode($model[0]->feed)->img));
+        $this->deleteMedia('public/images/' . $img);
+        NewsFeed::where('id', $id)->delete();
+    }
+
+
+    /**
+     * Delete card image
+     *
+     * @param string $path
+     * @return void
+     */
+    public function deleteMedia(string $path): void
+    {
+        Storage::delete($path);
+    }
+
 
 }

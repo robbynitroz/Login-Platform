@@ -14,6 +14,7 @@ class ChangeNewsFeed extends Migration
     public function up()
     {
         Schema::table('news_feeds', function (Blueprint $table) {
+            $table->text('groups')->nullable()->after('belongs_to');
             $table->string('belongs_to', 255)->nullable()->change();
             $table->json('feed')->nullable()->change();
         });

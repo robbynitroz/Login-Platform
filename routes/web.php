@@ -183,6 +183,17 @@ Route::delete('/newsfeeds/card/delete/{id}', [
 ])->name('delete_newsfeed_card');
 
 
+Route::get('/newsfeeds/card/{id}', [
+    'uses' => 'Newsfeed\NewsfeedController@getCard',
+    'middleware' => ['web', 'auth']
+])->name('get_newsfeed_card');
+
+
+Route::post('/newsfeeds/card/edit/{id}', [
+    'uses' => 'Newsfeed\NewsfeedController@editCard',
+    'middleware' => ['web', 'auth']
+])->name('edit_newsfeed_card');
+
 
 
 

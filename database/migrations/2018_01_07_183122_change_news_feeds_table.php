@@ -14,7 +14,7 @@ class ChangeNewsFeedsTable extends Migration
     public function up()
     {
         Schema::table('news_feeds', function (Blueprint $table) {
-            $table->char('published', 3)->after('group_name');
+            $table->char('published', 3)->after('card_name');
         });
     }
 

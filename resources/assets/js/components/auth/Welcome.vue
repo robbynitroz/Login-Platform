@@ -55,7 +55,7 @@
                 this.welcome='GuestCompass'
                 this.triggerSecond()
 
-            }, 1500)
+            }, 805)
 
 
         },
@@ -206,9 +206,9 @@
 
 
     .compass {
-        -webkit-animation:spin 0.8s linear infinite;
-        -moz-animation:spin 0.8s linear infinite;
-        animation:spin 0.8s linear infinite;
+        -webkit-animation:spin 0.8s linear;
+        -moz-animation:spin 0.8s linear;
+        animation:spin 0.8s linear;
     }
     @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
     @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }

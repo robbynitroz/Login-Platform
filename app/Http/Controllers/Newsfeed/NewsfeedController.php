@@ -76,7 +76,12 @@ class NewsfeedController extends Controller
             }
         }
         $model->belongs_to = $belong;
-        $model->feed = json_encode(['title' => $request->description, 'text' => $request->feed_content, 'img' => '']);
+        $model->feed = json_encode([
+            'title' => $request->description,
+            'text' => $request->feed_content,
+            'img' => '',
+            'buttonLink'=>$request->buttonLink,
+            'buttonText'=>$request->buttonText]);
         $model->save();
         return $model->id;
     }
@@ -180,6 +185,8 @@ class NewsfeedController extends Controller
                 'groups'=>json_encode($request->belongs_to),
                 'feed->title' => $request->description,
                 'feed->text' => $request->feed_content,
+                'feed->buttonLink'=>$request->buttonLink,
+                'feed->buttonText'=>$request->buttonText
             ]);
 
         return $id;

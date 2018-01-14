@@ -16,7 +16,7 @@
                     </b-form-input>
                 </b-form-group>
 
-                <h5>Short description</h5>
+                <h5>Text on the card</h5>
                 <div class="editor-div">
                     <quill-editor
                             :options="editorOptions2"
@@ -25,14 +25,38 @@
                 </div>
                 <br>
 
-                <h5>Content</h5>
+                <h5>Text on the back of the card</h5>
                 <!--Editor-->
                 <div class="editor-div">
                     <quill-editor
                             :options="editorOptions"
-                            v-model="content"
+                            v-model="feedContent"
                     ></quill-editor>
                 </div>
+
+                <br>
+
+                <div role="group">
+                    <label for="buttonText">Text on the button</label>
+                    <b-form-input id="buttonText"
+                                  v-model="buttonText"
+                                  type="text"
+                                  aria-describedby=""
+                                  placeholder="Text..."></b-form-input>
+                    <br>
+                    <label for="buttonLink">URL or Email address</label>
+                    <b-form-input id="inputLive"
+                                  v-model="buttonLink"
+                                  type="text"
+                                  aria-describedby=""
+                                  placeholder="URL or email"></b-form-input>
+                    <b-form-text id="inputLiveHelp">
+                        <!-- this is a form text block (formerly known as help block) -->
+                        don't forget to putt 'mailto:' before email address
+                    </b-form-text>
+                </div>
+                <br>
+
             </b-col>
             <!--Main editor end-->
 
@@ -98,7 +122,6 @@
                     </div>
 
                 </b-card>
-
 
             </b-col>
             <!--Button configs end-->
@@ -192,14 +215,14 @@
                 belongsTo: [],
                 cardName: '',
                 description: '',
-                content: '',
+                feedContent: '',
                 headerImg: '',
                 publish: {
                     status: 'no',
                     color: 'red',
                 },
-
-
+                buttonText:'',
+                buttonLink:'',
                 options: [],
                 searchText: '', // If value is falsy, reset searchText & searchItem
                 selected: [],
@@ -252,8 +275,10 @@
                         this.cardID = response.data.id;
                         this.cardName = response.data.card_name;
                         this.description = (JSON.parse(response.data.feed)).title;
-                        this.content = (JSON.parse(response.data.feed)).title;
+                        this.feedContent = (JSON.parse(response.data.feed)).text;
                         this.selected = (JSON.parse(response.data.groups));
+                        this.buttonText = (JSON.parse(response.data.feed)).buttonText;
+                        this.buttonLink = (JSON.parse(response.data.feed)).buttonLink;
                         if (response.data.published === 'yes') {
                             this.publish.status = 'published'
                             this.publish.color = 'green'

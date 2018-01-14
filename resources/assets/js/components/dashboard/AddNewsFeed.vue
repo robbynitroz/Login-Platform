@@ -18,7 +18,7 @@
                     </b-form-input>
                 </b-form-group>
 
-                <h5>Short description</h5>
+                <h5>Text on the card</h5>
                 <div class="editor-div">
                 <quill-editor
                         :options="editorOptions2"
@@ -27,16 +27,40 @@
                 </div>
                 <br>
 
-                <h5>Content</h5>
+                <h5>Text on the back of the card</h5>
                 <!--Editor-->
                 <div class="editor-div">
                     <quill-editor
                             :options="editorOptions"
-                            v-model="content"
+                            v-model="feedContent"
                     ></quill-editor>
                 </div>
+<br>
+
+                <div role="group">
+                    <label for="buttonText">Text on the button</label>
+                    <b-form-input id="buttonText"
+                                  v-model="buttonText"
+                                  type="text"
+                                  aria-describedby=""
+                                  placeholder="Text..."></b-form-input>
+<br>
+                    <label for="buttonLink">URL or Email address</label>
+                    <b-form-input id="inputLive"
+                                  v-model="buttonLink"
+                                  type="text"
+                                  aria-describedby=""
+                                  placeholder="URL or email"></b-form-input>
+                    <b-form-text id="inputLiveHelp">
+                        <!-- this is a form text block (formerly known as help block) -->
+                        don't forget to putt 'mailto:' before email address
+                    </b-form-text>
+                </div>
+                <br>
             </b-col>
             <!--Main editor end-->
+
+
 
 
             <!--Buttons config-->
@@ -65,7 +89,6 @@
                         <b-col sm="12">
                             <p> <i class="fa fa-paper-plane" aria-hidden="true"> </i>  Published: <span :style="{ color:publish.color }">  {{ publish.status}}</span> </p>
                         </b-col>
-
                     <b-col class="publish-footer">
                         <br>
                     <b-button class="cancel-button draft-button" variant="link">Discard</b-button>
@@ -180,11 +203,13 @@
                 belongsTo:[],
                 cardName:'',
                 description:'',
-                content: '',
+                feedContent: '',
                 publish:{
                     status:'no',
                     color:'red',
                 },
+                buttonText:'',
+                buttonLink:'',
 
 
                 options: [],
@@ -205,7 +230,7 @@
         },
         components: {
             quillEditor,
-           vSelect
+            vSelect
         },
 
         computed:{

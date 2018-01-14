@@ -14,7 +14,9 @@ export const newsfeedCard = {
                 published: 'yes',
                 belongs_to: this.selected,
                 description: this.description,
-                feed_content: this.content
+                feed_content: this.feedContent,
+                buttonText:this.buttonText,
+                buttonLink:this.buttonLink
             }
 
             if (param === 'save') {

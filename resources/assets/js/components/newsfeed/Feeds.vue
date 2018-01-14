@@ -2,20 +2,16 @@
     <div v-if="notEmpty">
         <b-card-group columns>
             <template v-for="feed in feeds">
-                <b-card
-
-                        :img-src="feed.img"
-                        img-fluid
-                        :img-alt="feed.title"
-                        img-top>
-                    <span v-html="feed.title"></span>
-                </b-card>
+                <feed :button="feed.buttonText" :link="feed.buttonLink" :text="feed.text" :image ="feed.img" :title="feed.title"></feed>
             </template>
         </b-card-group>
     </div>
 </template>
 
 <script>
+
+    import Feed from './Feed.vue'
+
     export default {
         name: "Feeds",
         data() {
@@ -48,6 +44,10 @@
 
         methods:{
 
+        },
+
+        components:{
+            Feed,
         }
 
     }

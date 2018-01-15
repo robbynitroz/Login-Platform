@@ -1,14 +1,11 @@
 <template>
-    <div
-            @mouseenter='updateHoverState(false)'
-            @mouseleave="updateHoverState(true)"
-    >
+    <div id="f1_container">
         <b-card
                 :img-src="image"
                 img-fluid
                 :img-alt="title"
                 img-top>
-            <div class="overlay"></div>
+            <div :class="cssClass" class="overlay"></div>
             <span v-html="title"></span>
             <div class="secondary">
                 <div class="center-content">
@@ -17,10 +14,6 @@
                 </div>
             </div>
         </b-card>
-
-
-
-
     </div>
 </template>
 
@@ -30,18 +23,11 @@
         name: "feed",
         data(){
             return {
-                front:true,
+                cssClass:'',
             }
         },
 
         methods: {
-            updateHoverState(isHover) {
-                this.front = isHover;
-            },
-
-            openLink(){
-                window.open(this.link, '_blank');
-            }
 
         },
 
@@ -60,6 +46,9 @@
 </script>
 
 <style scoped>
+    #f1_container {
+        perspective: 1000;
+    }
 
     .center-content {
         display: flex;
@@ -72,7 +61,7 @@
     .card {
         height: 100%;
         transform-style: preserve-3d;
-        transition: all 1s ease-in-out;
+        transition: 1s ease-in-out;
         width: 100%;
     }
 
@@ -80,6 +69,9 @@
         transform: rotateY(180deg);
     }
 
+    button{
+        background: #2087b0 !important;
+    }
 
     .overlay {
         position: absolute;
@@ -87,13 +79,14 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0);
-        transition: background 0.5s ease;
+        background: rgb(211, 208, 209);
+        opacity: 0;
     }
 
     .card:hover .overlay {
         display: block;
-        background: rgb(255, 255, 255);
+        opacity: 1;
+        transform: rotateY(180deg);
     }
 
 
@@ -105,7 +98,6 @@
         top: 0;
         text-align: center;
         display: none;
-        transition: opacity .8s ease;
         transform: rotateY(180deg);
     }
 
@@ -114,6 +106,7 @@
         text-align: center;
         vertical-align: middle;
     }
+
 
 
 </style>

@@ -8,9 +8,10 @@
             </div>
             <div class="card gry">
                 <div class="card-body d-flex justify-content-center align-items-center">
-                     <span class="button" v-html="text"></span>
+                     <div class="button" v-html="text"></div>
+                    <b-button class="button" @click="openLink()" v-if="button" size="lg" variant="primary">{{ button }}</b-button>
                 </div>
-                <b-button class="button" @click="openLink()" v-if="button" size="lg" variant="primary">{{ button }}</b-button>
+
 
             </div>
         </figure>
@@ -32,6 +33,18 @@
             openLink(){
                 window.open(this.link,'_blank');
             }
+        },
+
+        computed:{
+
+            linkButton(){
+
+                if(this.button){
+                    return this.text + this.button
+                }
+
+                return this.text
+            },
         },
 
         mounted(){
@@ -111,6 +124,8 @@
         overflow: hidden;
         z-index: 999;
         border: none;
+        position: absolute;
+        bottom: 35%;
     }
 
 

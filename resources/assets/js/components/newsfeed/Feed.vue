@@ -1,20 +1,19 @@
 <template>
-    <div id="f1_container">
-        <b-card
-                :img-src="image"
-                img-fluid
-                :img-alt="title"
-                img-top>
-            <div class="overlay"></div>
-            <span v-html="title"></span>
-            <div class="secondary">
-                <div class="center-content">
-                    <span v-html="text"></span>
-                    <b-button @click="openLink()" v-if="button" size="lg" variant="primary">{{ button }}</b-button>
+    <div id="container">
 
-                </div>
+        <figure class="card card-flip">
+            <div class="card bg-dark text-white">
+                <img class="card-img img-fluid" :src="image" alt="">
+                <span v-html="title"></span>
             </div>
-        </b-card>
+            <div class="card gry">
+                <div class="card-body d-flex justify-content-center align-items-center">
+                    <p class="card-text"> <span v-html="text"></span></p>
+                </div>
+                <b-button @click="openLink()" v-if="button" size="lg" variant="primary">{{ button }}</b-button>
+            </div>
+        </figure>
+
     </div>
 </template>
 
@@ -48,28 +47,52 @@
     }
 </script>
 
-<style scoped>
-    #f1_container {
+<style scoped lang="scss">
+    #container {
         perspective: 1000;
     }
 
-    .center-content {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        flex-direction: column;
-    }
+
+    .card-flip {
+
+        background: none;
+        border: none;
+        padding: 0;
 
     .card {
-        height: 100%;
-        transform-style: preserve-3d;
-        transition: 1s ease-in-out;
+        backface-visibility: hidden;
+        transition: transform 300ms;
+        transition-timing-function: linear;
         width: 100%;
+        height: 100%;
+        margin: 0;
     }
 
-    .card:hover{
+    .card:first-of-type {
+        tranform: rotateY(0deg);
+    }
+
+    .card:last-of-type {
         transform: rotateY(180deg);
+    // Put this in face with the larger content
+    position: absolute;
+        top: 0;
+        display: flex;
+    }
+
+    &:hover {
+    .card:first-of-type  {
+        transform: rotateY(-180deg);
+    }
+    .card:last-of-type {
+        transform: rotateY(0deg);
+    }
+    }
+
+    }
+
+    .gry{
+        background: rgb(211, 208, 209);
     }
 
     button{
@@ -78,43 +101,8 @@
         position: relative;
         overflow: hidden;
         z-index: 999;
+        border: none;
     }
-
-    .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgb(211, 208, 209);
-        opacity: 0;
-    }
-
-    .card:hover .overlay {
-        display: block;
-        opacity: 1;
-        transform: rotateY(180deg);
-    }
-
-
-    .secondary {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        left:0;
-        top: 0;
-        text-align: center;
-        display: none;
-        transform: rotateY(180deg);
-
-    }
-
-    .card:hover .secondary {
-        display: block;
-        text-align: center;
-        vertical-align: middle;
-    }
-
 
 
 </style>

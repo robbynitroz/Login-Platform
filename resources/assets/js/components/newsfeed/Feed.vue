@@ -19,7 +19,6 @@
 
 <script>
 
-
     export default {
         name: "feed",
         data(){
@@ -29,7 +28,9 @@
         },
 
         methods: {
-
+            openLink(){
+                window.open(this.link,'_blank');
+            }
         },
 
         mounted(){

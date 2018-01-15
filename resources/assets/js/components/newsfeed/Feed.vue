@@ -5,12 +5,13 @@
                 img-fluid
                 :img-alt="title"
                 img-top>
-            <div :class="cssClass" class="overlay"></div>
+            <div class="overlay"></div>
             <span v-html="title"></span>
             <div class="secondary">
                 <div class="center-content">
                     <span v-html="text"></span>
                     <b-button @click="openLink()" v-if="button" size="lg" variant="primary">{{ button }}</b-button>
+
                 </div>
             </div>
         </b-card>
@@ -73,6 +74,10 @@
 
     button{
         background: #2087b0 !important;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        z-index: 999;
     }
 
     .overlay {
@@ -101,6 +106,7 @@
         text-align: center;
         display: none;
         transform: rotateY(180deg);
+
     }
 
     .card:hover .secondary {

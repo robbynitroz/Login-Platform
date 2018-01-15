@@ -125,7 +125,7 @@
         z-index: 999;
         border: none;
         position: absolute;
-        bottom: 35%;
+        bottom: 30%;
     }
 
 

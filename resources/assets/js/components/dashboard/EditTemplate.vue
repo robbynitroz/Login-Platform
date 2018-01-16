@@ -520,7 +520,7 @@
 
                 requireEmail: true,
 
-                langs: '',
+                langs: [],
                 addLangs: {
                     en: 'English',
                     nl: "Dutch",
@@ -618,7 +618,7 @@
                     let data = JSON.parse(response.data.data);
                     this.hotelID = response.data.hotel;
                     this.texts = data.texts;
-                    this.langs = data.langs;
+                    this.langs = Object.values(data.langs);
                     this.requireName = data.requireName;
                     this.requireEmail = data.requireEmail;
                     this.media = data.media;

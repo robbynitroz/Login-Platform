@@ -9,7 +9,7 @@
             <div class="card gry">
                 <div class="card-body d-flex justify-content-center align-items-center">
                      <div class="button" v-html="text"></div>
-                    <b-button class="button" @click="openLink()" v-if="button" size="lg" variant="primary">{{ button }}</b-button>
+                    <b-button class="button" @click="openLink()" v-if="button"  variant="primary">{{ button }}</b-button>
                 </div>
 
 

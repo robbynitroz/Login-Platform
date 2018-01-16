@@ -129,4 +129,18 @@
     }
 
 
+    @media screen and (max-width: 1181px) {
+        button{
+            bottom: 25%;
+        }
+    }
+
+    @media screen and (max-width: 600px) {
+        button{
+            bottom: 18%;
+
+        }
+    }
+
+
 </style>

@@ -121,8 +121,6 @@ Route::put('/router/{id}',
 //Special URLs
 Route::get('/mikrotik/timeout',
     ['uses' => 'MikrotikLogin@getTimeOut', 'middleware' => ['web', 'auth']])->name('mikrotik_timeout');
-Route::get('/mikrotik/connect',
-    ['uses' => 'MikrotikLogin@mikrotikTestConnect', 'middleware' => ['web', 'auth']])->name('test');
 Route::get('/mikrotik/status/{id?}',
     ['uses' => 'NasController@mikrotikStatus', 'middleware' => ['web', 'auth']])->name('get_mikrotik_status');
 
@@ -196,7 +194,6 @@ Route::post('/newsfeeds/card/edit/{id}', [
 
 
 
-
-
-
+Route::get('/testing',
+    ['uses' => 'NasController@restartFreeRadius', 'middleware' => ['web', 'auth']])->name('test');
 

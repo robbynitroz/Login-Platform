@@ -41,6 +41,5 @@
     <login-home></login-home>
 </div>
 <script src="{{ asset('js/clients/clients-login.js') }}"></script>
-<link rel="stylesheet" href="{{ asset('css/client/client.css') }}" type="text/css">
 </body>
 </html>

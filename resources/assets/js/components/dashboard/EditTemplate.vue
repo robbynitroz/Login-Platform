@@ -805,7 +805,16 @@
                     this.littleTextColor = this.colors.hex
                 }
                 setTimeout(()=>{
-                    this.colors = {};
+                    this.colors = {
+                        hex: '',
+                        rgba: {
+                            r: 0,
+                            g: 0,
+                            b: 0,
+                            a: 0
+                        },
+                        a:1
+                    };
                 }, 100);
 
             },
@@ -895,10 +904,16 @@
                 } else if (section == 'buttonBorderHover') {
                     this.colors.hex = this.button.borderColorHover
                 } else if (section == 'background') {
+                    let rgba = this.backgroundColor.substr(11);
+                    this.colors.hex = this.rgb2hex(rgba);
+                    let rgbArray = this.backgroundColor.substr(16).slice(0, -1).split(',');
+                    this.colors.a =  rgbArray[3];
 
-                    /*= 'background:rgba(' +
-                    this.colors.rgba.r + ',' + this.colors.rgba.g + ','
-                    + this.colors.rgba.b + ',' + this.colors.rgba.a + ')'*/
+                    this.colors.rgba.r=rgbArray[0];
+                    this.colors.rgba.g=rgbArray[1];
+                    this.colors.rgba.b=rgbArray[2];
+                    this.colors.rgba.a=rgbArray[3];
+
                 } else if (section == 'policy') {
                     this.colors.hex = this.policy.color
                 } else if (section == 'greeting') {
@@ -910,9 +925,18 @@
                 setTimeout(()=>{
                     this.colorPicker = true;
                     this.forSection = id;
-                }, 100);
+                    console.log(this.colors)
+                }, 150);
 
 
+            },
+
+            rgb2hex(rgb){
+                rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
+                return (rgb && rgb.length === 4) ? "#" +
+                    ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+                    ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+                    ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) : '';
             },
 
             colorChange(val) {

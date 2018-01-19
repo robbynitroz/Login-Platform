@@ -194,6 +194,6 @@ Route::post('/newsfeeds/card/edit/{id}', [
 
 
 
-Route::get('/testing',
-    ['uses' => 'NasController@restartFreeRadius', 'middleware' => ['web', 'auth']])->name('test');
+/*Route::get('/testing',
+    ['uses' => 'NasController@restartFreeRadius', 'middleware' => ['web', 'auth']])->name('test');*/
 

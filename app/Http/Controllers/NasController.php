@@ -237,9 +237,5 @@ class NasController extends Controller
         return $response;
     }
 
-    public function restartFreeRadius():string
-    {
-        return exec('service freeradius restart');
-    }
 
 }

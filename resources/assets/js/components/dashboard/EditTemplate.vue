@@ -365,11 +365,11 @@
                                     </b-card>
 
                                     <template v-if="inAction">
-                                    <b-card class="text-center fix-margin"
-                                            header="Scheduled template">
-                                        <c-switch type="text" variant="primary" on="On" off="Off"
-                                                  @change="scheduleSwitcher()" :checked="scheduled"/>
-                                    </b-card>
+                                        <b-card class="text-center fix-margin"
+                                                header="Scheduled template">
+                                            <c-switch type="text" variant="primary" on="On" off="Off"
+                                                      @change="scheduleSwitcher()" :checked="scheduled"/>
+                                        </b-card>
                                     </template>
 
 
@@ -466,29 +466,28 @@
         </b-modal>
 
 
-        <b-modal centered v-model="colorPicker"
+        <b-modal class="color-picker-modal"
+                centered v-model="colorPicker"
                  size="sm"
                  hide-footer
                  hide-header
                  title="Pick up a color"
 
+
         >
-            <b-container
-                    fluid
-                    :style="{ background:'rgba('+
-                            colors.rgba.r + ','+ colors.rgba.g + ','
-                            + colors.rgba.b + ',' + colors.rgba.a + ')',
-                             }"
+            <div
+                    class="color-picker-modal"
             >
+
                 <div class="color-modal">
-                    <sketch v-model="colors" @change-color="colorChange"></sketch>
+                    <sketch v-if="colorPicker" v-model="colorsMod" @change-color="colorChange"></sketch>
                 </div>
 
                 <b-btn class="mt-3 button-close-picker" @click="colorSelected(forSection)" data-dismiss="modal"
                        variant="primary" block>OK
                 </b-btn>
                 <hr>
-            </b-container>
+            </div>
         </b-modal>
     </div>
 
@@ -565,7 +564,7 @@
                 uploadButton: false,
                 methodsFetchComplete: false,
                 langWanring: false,
-                activeTemplate:'no',
+                activeTemplate: 'no',
 
 
                 colors: {
@@ -576,12 +575,11 @@
                         b: 51,
                         a: 1
                     },
-
                 },
 
 
                 schedule: 'no',
-                scheduleTime:'',
+                scheduleTime: '',
                 startTime: '',
                 endTime: '',
                 shortcuts: [
@@ -591,9 +589,9 @@
                         end: new Date()
                     }
                 ],
-                scheduleChanged:false,
+                scheduleChanged: false,
                 preview: false,
-                inAction:true,
+                inAction: true,
             }
         },
 
@@ -604,11 +602,11 @@
             RingLoader
         },
 
-        watch:{
-            defaultComponent:function (event) {
-            this.activeComponent = event;}
+        watch: {
+            defaultComponent: function (event) {
+                this.activeComponent = event;
+            }
         },
-
 
 
         mounted() {
@@ -633,12 +631,12 @@
                     this.littleTextColor = data.littleTextColor;
                     this.schedule = response.data.scheduled;
                     this.activeTemplate = response.data.activated;
-                    if(response.data.scheduled ==='yes'){
+                    if (response.data.scheduled === 'yes') {
                         this.scheduleChanged = 'no'
                     }
 
-                    if(response.data.activated ==='yes' && response.data.scheduled === 'no'){
-                        this.inAction=false;
+                    if (response.data.activated === 'yes' && response.data.scheduled === 'no') {
+                        this.inAction = false;
                     }
                     this.defaultComponent = response.data.type;
 
@@ -676,6 +674,18 @@
                 return this.greetingsTime.on;
             },
 
+            colorsMod:{
+                //getter
+                get: function () {
+
+                    return this.colors
+
+                },
+                // setter
+                set: function (newColor) {
+                    this.colors = newColor;
+                }
+            },
 
             getGreatingSize: {
                 //getter
@@ -768,8 +778,8 @@
                 }
             },
 
+           colorSelected(section) {
 
-            colorSelected(section) {
                 this.colorPicker = false;
                 if (section == 'buttonBCK') {
                     this.button.colorBackd = this.colors.hex
@@ -794,7 +804,15 @@
                 } else if (section == 'littleTextColor') {
                     this.littleTextColor = this.colors.hex
                 }
+                setTimeout(()=>{
+                    this.colors = {};
+                }, 100);
+
             },
+
+
+
+
 
             changeTimeGreeting() {
                 this.greetingsTime.on = !this.greetingsTime.on
@@ -810,7 +828,7 @@
             scheduleSwitcher() {
                 if (this.schedule == 'yes') {
                     this.schedule = 'no'
-                    this.scheduleChanged='yes'
+                    this.scheduleChanged = 'yes'
                 } else {
                     this.schedule = 'yes'
                 }
@@ -861,8 +879,40 @@
 
 
             storeColor(id) {
-                this.colorPicker = true;
-                this.forSection = id;
+
+
+                let section = id;
+                if (section == 'buttonBCK') {
+                    this.colors.hex = this.button.colorBackd
+                } else if (section == 'buttonText') {
+                    this.colors.hex = this.button.color
+                } else if (section == 'buttonHoverText') {
+                    this.colors.hex = this.button.colorHover
+                } else if (section == 'buttonHoverBack') {
+                    this.colors.hex = this.button.colorBackdHover
+                } else if (section == 'buttonBorder') {
+                    this.colors.hex = this.button.borderColor
+                } else if (section == 'buttonBorderHover') {
+                    this.colors.hex = this.button.borderColorHover
+                } else if (section == 'background') {
+
+                    /*= 'background:rgba(' +
+                    this.colors.rgba.r + ',' + this.colors.rgba.g + ','
+                    + this.colors.rgba.b + ',' + this.colors.rgba.a + ')'*/
+                } else if (section == 'policy') {
+                    this.colors.hex = this.policy.color
+                } else if (section == 'greeting') {
+                    this.colors.hex = this.greeting.color
+                } else if (section == 'littleTextColor') {
+                    this.colors.hex = this.littleTextColor
+                }
+
+                setTimeout(()=>{
+                    this.colorPicker = true;
+                    this.forSection = id;
+                }, 100);
+
+
             },
 
             colorChange(val) {
@@ -910,19 +960,19 @@
                     endTime: this.endTime,
                     media: this.media,
                     hotelLogo: this.hotelLogo,
-                    templateID:this.$route.params.id,
-                    activeTemplate:this.activeComponent,
-                    scheduleChanged:this.scheduleChanged,
+                    templateID: this.$route.params.id,
+                    activeTemplate: this.activeComponent,
+                    scheduleChanged: this.scheduleChanged,
 
                 })
                     .then(response => {
-                        if (!this.logoUploaded && !this.backgiUploaded && preview=='preview') {
+                        if (!this.logoUploaded && !this.backgiUploaded && preview == 'preview') {
                             this.loading = false;
                             window.open('/preview/' + response.data);
-                        } else if(!this.logoUploaded && !this.backgiUploaded && preview=='') {
+                        } else if (!this.logoUploaded && !this.backgiUploaded && preview == '') {
                             this.loading = false;
                             this.templateUpdated = true;
-                        } else if((this.logoUploaded || this.backgiUploaded)) {
+                        } else if ((this.logoUploaded || this.backgiUploaded)) {
                             this.saveMedia(response.data, preview);
                         }
                     })
@@ -951,16 +1001,12 @@
                 data.append('background', document.getElementById('background').files[0]);
 
 
-
                 axios.post(url, data, config)
                     .then(response => {
                         this.loading = false;
                         if (preview !== 'preview') {
                             this.loading = false;
                             this.templateUpdated = true;
-                            /*setTimeout(() => {
-                                return this.$router.push({name: 'All templates'})
-                            }, 1000);*/
                         } else {
                             window.open('/preview/' + response.data);
                         }
@@ -1002,9 +1048,7 @@
     }
 
     .color-modal {
-        padding-top: 20px;
-        padding-bottom: 20px;
-        margin-left: -5px;
+
     }
 
     .demo-div {
@@ -1056,5 +1100,32 @@
 
     .loading-modal {
         background: #151b1e;
+    }
+
+    .color-picker-modal{
+        background: none;
+        padding: 0 !important;
+        margin:-10px
+
+    }
+
+    .button-close-picker{
+        margin-bottom:-86px;
+    }
+
+
+    .vc-sketch{
+        padding:1px;
+        width: 288px;
+    }
+
+
+</style>
+
+
+<style>
+    .vc-sketch-presets{
+        margin-right:0px !important;
+        margin-left:0 !important;
     }
 </style>

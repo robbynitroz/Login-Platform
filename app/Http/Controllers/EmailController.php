@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Email;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,8 +13,6 @@ use Illuminate\Support\Facades\Storage;
  */
 class EmailController extends Controller
 {
-    //
-
     /**
      * Store email in DB if not exist
      *
@@ -24,29 +23,24 @@ class EmailController extends Controller
      */
     public function storeEmail(string $email, int $hotel_id, string $login_type): void
     {
-
+        if (strlen($email) > 47) {
+            return;
+        }
         $emailModel = new Email();
-
-        if ($emailModel->where('email', $email)->where('hotel_id', $hotel_id)->where('type',
-                $login_type)->count() === 0) {
-            $emailModel->email = $email;
-            $emailModel->hotel_id = $hotel_id;
-            $emailModel->type = $login_type;
-            $emailModel->save();
-        };
-
-
+        $emailModel->email = Crypt::encryptString($email);
+        $emailModel->hotel_id = $hotel_id;
+        $emailModel->type = $login_type;
+        $emailModel->save();
         return;
-
     }
 
 
     /**
      * Generates email list for hotel management
      *
-     *@return void
+     * @return void
      */
-    public function generateEmailList():void
+    public function generateEmailList(): void
     {
         $last_numb = json_decode(SettingController::getEmailSchedule())->last_id;
         $emails = DB::table('emails')
@@ -58,7 +52,7 @@ class EmailController extends Controller
             $result[$email->name][] = $email->email;
             $new_las_id = $email->id;
         }
-        if(isset($new_las_id)){
+        if (isset($new_las_id)) {
             (new SettingController())->storeEmailScheduleLastID($new_las_id);
         }
         foreach ($result as $key => $value) {

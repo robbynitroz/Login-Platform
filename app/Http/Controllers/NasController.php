@@ -189,7 +189,7 @@ class NasController extends Controller
             try {
                 $host = $router->nasname;
                 $port = 8728;
-                $waitTimeoutInSeconds = 3;
+                $waitTimeoutInSeconds = 2;
                 $fp = fsockopen($host, $port, $errCode, $errStr, $waitTimeoutInSeconds);
                 fclose($fp);
                 $mikrotik_data['ip'] = $router->nasname;

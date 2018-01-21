@@ -4,15 +4,13 @@
         <figure class="card card-flip">
             <div class="card">
                 <img class="card-img img-fluid" :src="image" alt="">
-                <span class="main-text" v-html="title"></span>
+                <span class="main-text cards-text" v-html="title"></span>
             </div>
             <div class="card gry">
                 <div class="card-body d-flex justify-content-center align-items-center">
-                     <div class="button" v-html="text"></div>
+                     <div class="button cards-text" v-html="text"></div>
                     <b-button class="button" @click="openLink()" v-if="button"  variant="primary">{{ button }}</b-button>
                 </div>
-
-
             </div>
         </figure>
 
@@ -60,6 +58,13 @@
         ]
     }
 </script>
+
+<style>
+    .cards-text p{
+        margin-left: 20px !important;
+        margin-right: 20px !important;
+    }
+</style>
 
 <style scoped lang="scss">
     #container {

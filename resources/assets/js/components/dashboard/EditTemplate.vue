@@ -228,7 +228,15 @@
                                             </b-dropdown-item-button>
                                         </template>
                                     </b-dropdown>
+                                    <b-dropdown id="ddown-buttons" text="Delete languages"
+                                                class="m-2">
+                                        <template v-for="key in langs">
+                                            <b-dropdown-item-button v-if="key !='en'" @click="deleteLanguage(key)">{{ addLangs[key] }}
+                                            </b-dropdown-item-button>
+                                        </template>
+                                    </b-dropdown>
                                 </div>
+
                                 <b-alert v-model="langWanring" dismissible show variant="warning">
                                     Language have been already added to list
                                 </b-alert>
@@ -605,7 +613,12 @@
         watch: {
             defaultComponent: function (event) {
                 this.activeComponent = event;
+            },
+
+            langs:function (event) {
+               this.langs = event
             }
+
         },
 
 
@@ -881,6 +894,21 @@
                 }
 
             },
+
+
+            deleteLanguage(lang) {
+
+                this.deleteArrayIndex(this.langs, lang),
+                    setTimeout(()=>{
+                        this.$delete(this.texts, lang)
+                    }, 150)
+            },
+
+            deleteArrayIndex(array, element){
+                const index = array.indexOf(element);
+                array.splice(index, 1);
+            },
+
 
             updateHoverState(isHover) {
                 this.button.hoverState = isHover;

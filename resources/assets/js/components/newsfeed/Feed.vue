@@ -146,7 +146,7 @@
         }
     }
 
-    @media screen and (max-width: 680px) {
+    @media screen and (max-width: 790px) {
         button{
             bottom: 19%;
         }

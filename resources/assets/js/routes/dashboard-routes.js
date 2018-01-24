@@ -227,6 +227,11 @@ export const routes = [
 
             },
 
+            {
+                path: '/dashboard/settings/email',
+                name: 'Email list settings',
+
+            },
 
 
             {

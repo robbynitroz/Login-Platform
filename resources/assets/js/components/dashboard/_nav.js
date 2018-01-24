@@ -151,6 +151,12 @@ export default {
                 },
 
                 {
+                    name: 'Email list settings',
+                    url: '/dashboard/settings/email',
+                    icon: 'icon-envelope-letter'
+                },
+
+                {
                     name: 'Users accounts',
                     url: '/dashboard/settings/users',
                     icon: 'fa fa-users'

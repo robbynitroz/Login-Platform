@@ -61,8 +61,8 @@
 
 <style>
     .cards-text p{
-        margin-left: 20px !important;
-        margin-right: 20px !important;
+        margin-left: 35px !important;
+        margin-right: 35px !important;
     }
 </style>
 
@@ -137,6 +137,18 @@
     @media screen and (max-width: 1181px) {
         button{
             bottom: 25%;
+        }
+    }
+
+    @media screen and (max-width: 850px) {
+        button{
+            bottom: 20%;
+        }
+    }
+
+    @media screen and (max-width: 680px) {
+        button{
+            bottom: 19%;
         }
     }
 

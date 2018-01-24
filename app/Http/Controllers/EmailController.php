@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Email;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -32,6 +33,11 @@ class EmailController extends Controller
         $emailModel->type = $login_type;
         $emailModel->save();
         return;
+    }
+
+    public function emailList(Request $request)
+    {
+
     }
 
 

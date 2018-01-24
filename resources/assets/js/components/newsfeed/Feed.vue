@@ -61,8 +61,8 @@
 
 <style>
     .cards-text p{
-        margin-left: 35px !important;
-        margin-right: 35px !important;
+        margin-left: 20px !important;
+        margin-right: 20px !important;
     }
 </style>
 
@@ -158,6 +158,7 @@
 
         }
     }
+
 
 
 </style>

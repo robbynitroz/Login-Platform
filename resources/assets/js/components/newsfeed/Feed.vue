@@ -8,7 +8,7 @@
             </div>
             <div class="card gry">
                 <div class="card-body d-flex justify-content-center align-items-center">
-                     <div class="button cards-text" v-html="text"></div>
+                     <div class="button main-content" v-html="text"></div>
                     <b-button class="button" @click="openLink()" v-if="button"  variant="primary">{{ button }}</b-button>
                 </div>
             </div>
@@ -63,6 +63,11 @@
     .cards-text p{
         margin-left: 20px !important;
         margin-right: 20px !important;
+    }
+
+    .main-content{
+        margin-left: 0px !important;
+        margin-right: 0px !important;
     }
 </style>
 

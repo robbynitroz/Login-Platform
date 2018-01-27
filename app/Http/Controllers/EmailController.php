@@ -177,7 +177,7 @@ class EmailController extends Controller
             $attempts = Redis::get("intruder-" . $ip);
             $this->attempts = $attempts + 1;
             Redis::set("intruder-" . $ip, $this->attempts);
-            Redis::expire("intruder-" . $ip, 60);
+            Redis::expire("intruder-" . $ip, 1800);
         }
     }
 

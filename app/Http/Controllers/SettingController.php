@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Setting;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redis;
 
 /**
@@ -12,19 +12,18 @@ use Illuminate\Support\Facades\Redis;
  */
 class SettingController extends Controller
 {
-    /**
-     * Get email schedule time and store it in Redis
-     * @return string
-     */
-    public static function getEmailSchedule():string
-    {
 
-        if (Redis::get('email_schedule') === null) {
-            $setting = Setting::where('type', 'email_schedule')->first();
-            Redis::set('email_schedule', $setting->setting);
-        }
-        return Redis::get('email_schedule');
+    /**
+     * Get data by token
+     *
+     * @param string $token
+     * @return mixed
+     */
+    public function getDataWithToken(string $token)
+    {
+        return ((new Setting())->where('setting->token', $token)->first());
     }
+
 
     /**
      * Store last saved email id in DB
@@ -32,7 +31,7 @@ class SettingController extends Controller
      * @param int $last_id
      * @return void
      */
-    public function storeEmailScheduleLastID(int $last_id):void
+    public function storeEmailScheduleLastID(int $last_id): void
     {
         Redis::del('email_schedule');
         Setting::where('type', 'email_schedule')->update(['setting->last_id' => $last_id]);

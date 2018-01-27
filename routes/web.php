@@ -123,6 +123,9 @@ Route::get('/mikrotik/timeout',
     ['uses' => 'MikrotikLogin@getTimeOut', 'middleware' => ['web', 'auth']])->name('mikrotik_timeout');
 Route::get('/mikrotik/status/{id?}',
     ['uses' => 'NasController@mikrotikStatus', 'middleware' => ['web', 'auth']])->name('get_mikrotik_status');
+//Emails list
+Route::get('/emails/{token}',
+    ['uses' => 'EmailController@emailList', 'middleware' => ['web', 'isblocked']])->name('get_email_list');
 
 
 //Newsfeed URLs
@@ -194,6 +197,5 @@ Route::post('/newsfeeds/card/edit/{id}', [
 
 
 
-/*Route::get('/testing',
-    ['uses' => 'EmailController@test', 'middleware' => ['web', 'auth']])->name('test');*/
+
 

@@ -78,7 +78,7 @@
                                              description="required">
                                 <b-form-fieldset>
                                     <b-input-group left="<i class='fa fa-sign-in'></i>">
-                                        <b-form-input type="text" v-model="mikrotik_username"
+                                        <b-form-input autocomplete="false" type="text" v-model="mikrotik_username"
                                                       placeholder="Login..."></b-form-input>
                                     </b-input-group>
                                 </b-form-fieldset>
@@ -89,7 +89,7 @@
                                              description="required">
                                 <b-form-fieldset>
                                     <b-input-group left="<i class='fa fa-key'></i>">
-                                        <b-form-input type="password" v-model="mikrotik_password"
+                                        <b-form-input autocomplete="false" type="password" v-model="mikrotik_password"
                                                       placeholder="Password..."></b-form-input>
                                     </b-input-group>
                                 </b-form-fieldset>

@@ -22,10 +22,17 @@ const resetPassword = resolve => {
     });
 };
 
+const emailList = resolve => {
+    require.ensure(['../components/auth/EmailList.vue'], () => {
+        resolve(require('../components/auth/EmailList.vue'));
+    });
+};
+
 export const routes = [
     {path: '/', component: Welcome},
     {path: '/login', component: Login},
     {path: '/password/reset', component: EmailPassword},
-    {path: '/password/reset/:token', component: resetPassword}
+    {path: '/password/reset/:token', component: resetPassword},
+    {path: '/emails', component: emailList}
 ];
 

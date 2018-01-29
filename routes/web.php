@@ -126,6 +126,9 @@ Route::get('/mikrotik/status/{id?}',
 //Emails list
 Route::get('/emails/{token}',
     ['uses' => 'EmailController@emailList', 'middleware' => ['web', 'isblocked']])->name('get_email_list');
+Route::get('/emails/', function () {
+    return view('auth.auth');
+})->name('get_email_list_page')->middleware('web');
 
 
 //Newsfeed URLs

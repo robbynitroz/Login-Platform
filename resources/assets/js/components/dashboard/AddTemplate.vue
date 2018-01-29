@@ -571,7 +571,7 @@
                 activeComponent: false,
                 defaultComponent: '', //Must be same as activeComponent
 
-                backgroundColor: '',
+                backgroundColor: 'background:rgba(92,97,94,0.75)',
 
                 littleTextColor: '',
 

@@ -72,7 +72,7 @@
         computed: {},
 
         mounted: function () {
-            document.title = "Reset password";
+            document.title = "Email reset link";
 
         },
 

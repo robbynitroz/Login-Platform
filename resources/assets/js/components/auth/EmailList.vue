@@ -5,8 +5,6 @@
         <div class="vertical-center">
             <div class="container justify-content-center">
                 <div class="row">
-
-
                     <div class="col-md-12 text-center logo">
                         <img :class="loading" class="logo-arrow" alt="guestcompass_logo-arrow"
                              src="/storage/images/logo-layer2.png">
@@ -16,36 +14,21 @@
                     <div class="offset-lg-4 col-lg-4 offset-md-3 col-md-6">
                         <!-- login form -->
                         <form class="form loginForm" @submit.prevent="checkLoginData">
-                            <label hidden for="email">Email</label>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                <input @keyup="errors = false" id="email" class="form-control" name="email"
-                                       placeholder="Email" required type="email"
-                                       v-model="email">
-                            </div>
 
-                            <label hidden for="password">Password</label>
+                            <label hidden for="password">Token</label>
                             <div :class="['input-group', counter('main')]">
                                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                <input @keyup="counter('main')" id="password" class="form-control" name="password"
-                                       placeholder="Password" min="6" required
-                                       type="password" v-model="password">
+                                <input @keyup="counter()" id="password" class="form-control" name="token"
+                                       placeholder="Token" min="6" required
+                                       type="text" v-model="token">
                             </div>
 
-                            <label hidden for="password">Password confirm</label>
                             <transition name="flip" mode="out-in">
-                            <div v-if="activeConfirm" :class="['input-group', counter('secondary')]">
-                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                <input @keyup="counter('secondary')" id="password-confirm" class="form-control" name="password-confirm"
-                                       placeholder="Password confirmation" required
-                                       type="password" v-model="passwordConfirm">
-                            </div>
-                            </transition>
-                            <transition name="flip" mode="out-in">
-                            <button type="submit" class="btn btn-lg btn-block"
-                                   v-if="equal"
-                                   >
-                                Submit</button>
+                                <button type="submit" class="btn btn-lg btn-block"
+                                        v-if="activeConfirm"
+                                >
+                                    Submit
+                                </button>
                             </transition>
                             <div class="clearfix"></div>
 
@@ -55,14 +38,30 @@
                         <!-- errors -->
                         <transition name="fade">
                             <div v-if="errors" class="alert alert-danger error-class text-center" role="alert">
-                                Email or password are wrong check out your entry please!
+                                Oops ! Error !
                             </div>
                         </transition>
+
+
                         <transition name="fade">
-                            <div v-if="errors" class="alert alert-success error-class text-center" role="alert">
-                                Password changed
+                            <div v-if="empty" class="alert alert-warning error-class text-center" role="alert">
+                                There are no new email address !
                             </div>
                         </transition>
+
+                        <transition name="fade">
+                            <div v-if="attempt" class="alert alert-warning error-class text-center" role="alert">
+                                {{ attemptMessage + ' attempt' }}
+                            </div>
+                        </transition>
+
+                        <transition name="fade">
+                            <div v-if="blockedUser" class="alert alert-danger error-class text-center" role="alert">
+                                {{ attemptMessage }}
+                            </div>
+                        </transition>
+
+
                     </div>
                 </div>
             </div>
@@ -71,36 +70,36 @@
 </template>
 
 <script>
-
-    import {loginBackground} from '../../mixins/login-background'
+    import {loginBackground} from '../../mixins/login-background';
 
     export default {
-        name: 'ResetPassword',
+        name: "email-list",
+
         data() {
             return {
                 section: 'ResetPassword',
                 loading: '',
                 email: '',
-                password: '',
-                passwordConfirm:'',
-                activeConfirm:false,
-                equal:false,
+                token: '',
+                passwordConfirm: '',
+                activeConfirm: false,
+                equal: false,
+                empty: false,
                 errors: false,
-                success:false
+                success: false,
+                attempt: false,
+                attemptMessage: '',
+                blockedUser: false,
             }
         },
 
         computed: {},
 
 
-
         mounted: function () {
-            document.title = "Reset password";
+            document.title = "Emails list";
 
         },
-
-
-
         methods: {
 
             changeLoaderStatus() {
@@ -108,61 +107,60 @@
             },
 
 
-            counter(param){
+            counter() {
 
-                if(param =='main') {
-                    if (this.password.length < 6 && this.password.length > 0) {
-                        this.activeConfirm=false;
-                        return 'red-border'
-                    } else if (this.password.length >= 6) {
-                        this.activeConfirm=true;
-                        return 'green-border';
-                    }
-                    return '';
+                if (this.token.length < 6 && this.token.length > 0) {
+                    this.activeConfirm = false;
+                    return 'red-border'
+                } else if (this.token.length >= 6) {
+                    this.activeConfirm = true;
+                    return 'green-border';
                 }
-
-                if(param =='secondary') {
-                    if (this.password !==this.passwordConfirm && this.passwordConfirm.length > 0) {
-                        this.equal=false;
-                        return 'red-border'
-                    } else if (this.password ===this.passwordConfirm && this.passwordConfirm.length > 0) {
-                        this.equal=true;
-                        return 'green-border';
-                    }
-                    return '';
-                }
+                return '';
 
             },
-
 
 
             checkLoginData() {
 
 
                 let config = {
+                    responseType: 'blob', // important
                     onUploadProgress: progressEvent => {
                         this.changeLoaderStatus();
                     }
                 };
 
-                axios.post('/password/reset',
-                    {
-                        email: this.email,
-                        password: this.password,
-                        password_confirmation:this.passwordConfirm,
-                        token: document.head.querySelector('meta[name="token"]').content
-                    }, config)
+                axios.get('/emails/' + this.token, config)
                     .then(response => {
-                        this.loading = '';
-                        if(response.data=='success'){
-                            this.success=true;
-                            setTimeout(()=>{
-                                window.location.href = '/dashboard';
-                            }, 1000)
-                        }else {
-                            this.loading = '';
-                            this.errors=true;
+
+                        let reader = new FileReader();
+                        reader.onload = () => {
+                            if (typeof reader.result === "string") {
+                                if (reader.result == 'Empty') {
+                                    this.empty = true;
+                                    this.loading = '';
+                                    return;
+                                } else if (reader.result.includes('Wrong token! You have left:')) {
+                                    this.attempt = true;
+                                    this.attemptMessage = reader.result;
+                                    return;
+                                } else if (reader.result.includes('You are blocked')) {
+                                    this.blockedUser = true;
+                                    this.attemptMessage = "Your IP address is blocked, try after 30 minutes";
+                                    return;
+                                }
+                            } else {
+                                this.loading = '';
+                                const url = window.URL.createObjectURL(new Blob([response.data]));
+                                const link = document.createElement('a');
+                                link.href = url;
+                                link.setAttribute('download', 'emails.json');
+                                document.body.appendChild(link);
+                                link.click();
+                            }
                         }
+                        reader.readAsText(response.data);
                     })
                     .catch(e => {
                         this.loading = '';
@@ -301,7 +299,7 @@
 
     }
 
-    .error-class{
+    .error-class {
         position: absolute;
         width: 92.5%
     }
@@ -320,31 +318,31 @@
         opacity: 0
     }
 
-    .red-border input{
+    .red-border input {
         border-top: 1px solid #ff5856 !important;
         border-bottom: 1px solid #ff5856 !important;
         border-right: 1px solid #ff5856 !important;
     }
-    .green-border input{
+
+    .green-border input {
         border-top: 1px solid #0bfc00 !important;
         border-bottom: 1px solid #0bfc00 !important;
         border-right: 1px solid #0bfc00 !important;
 
     }
 
-    .red-border span{
+    .red-border span {
         border-top: 1px solid #ff5856 !important;
         border-bottom: 1px solid #ff5856 !important;
         border-left: 1px solid #ff5856 !important;
     }
-    .green-border span{
+
+    .green-border span {
         border-top: 1px solid #0bfc00 !important;
         border-bottom: 1px solid #0bfc00 !important;
         border-left: 1px solid #0bfc00 !important;
 
     }
-
-
 
     .compass {
         -webkit-animation: spin 0.8s linear infinite;
@@ -352,29 +350,30 @@
         animation: spin 0.8s linear infinite;
     }
 
-
-
     /*Flip transition start*/
 
-    .flip-enter{
+    .flip-enter {
 
     }
-    .flip-enter-active{
+
+    .flip-enter-active {
         animation: flip-in 0.5s ease-out forwards;
     }
-    .flip-leave{
 
+    .flip-leave {
 
     }
-    .flip-leave-active{
+
+    .flip-leave-active {
         animation: flip-out 0.5s ease-out forwards;
     }
+
     @keyframes flip-out {
 
         from {
             transform: rotateY(0deg)
         }
-        to{
+        to {
 
             transform: rotateY(90deg)
 
@@ -386,12 +385,13 @@
         from {
             transform: rotateY(90deg)
         }
-        to{
+        to {
 
             transform: rotateY(0deg)
 
         }
     }
+
     /*flip transition end*/
 
     @-moz-keyframes spin {

@@ -113,6 +113,8 @@ class NasController extends Controller
         $router->wanmac = $data['wanmac'];
         $router->save();
 
+        Redis::del("Nas." . $data['nasname']);
+
         return 'success';
     }
 

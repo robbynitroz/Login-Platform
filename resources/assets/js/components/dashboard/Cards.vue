@@ -1,6 +1,5 @@
 <template>
     <div class="wrapper">
-
         <div class="animated fadeIn">
             <div class="row">
                 <div class="col-md-12">
@@ -43,7 +42,6 @@
                                 </b-col>
                             </b-col>
                         </b-row>
-
                     </b-card>
                     <b-modal centered title="Warning" class="modal-danger" v-model="confirmDeleteAction"
                              @ok="deleteCard()">
@@ -57,9 +55,9 @@
         </div>
     </div>
 </template>
-
 <script>
     import {ModelSelect} from 'vue-search-select'
+
     export default {
         name: "cards",
         components: {
@@ -76,7 +74,7 @@
                     id: null,
                     name: null,
                 },
-                errors:false,
+                errors: false,
             }
         },
 
@@ -108,7 +106,7 @@
 
 
             shortDescription(obj) {
-                return (obj.replace(/<\/?[^>]+(>|$)/g, "")).substring(0,15) + '...';
+                return (obj.replace(/<\/?[^>]+(>|$)/g, "")).substring(0, 15) + '...';
             },
 
             editCard(id) {
@@ -121,7 +119,7 @@
                 this.confirmDeleteAction = true
             },
 
-            deleteCard(){
+            deleteCard() {
                 axios.delete('/newsfeeds/card/delete/' + this.deleteCreds.id)
                     .then(response => {
                         this.getData();
@@ -135,10 +133,7 @@
 
     }
 </script>
-
 <style scoped>
-
-
     .groups {
         border-radius: 10px;
         float: left;

@@ -1,18 +1,13 @@
 <template>
     <div class="wrapper">
-
         <div v-if="fetchComplite" class="animated fadeIn">
-
             <div v-if="!isEmpty" class="row">
-
                 <div class="col-md-12">
                     <form enctype="multipart/form-data" @submit.prevent="confirmSave(hotel.id)">
                         <b-card>
                             <div slot="header">
                                 <strong>{{ hotel.name }}</strong>
                             </div>
-
-
                             <!--Hotel name-->
                             <b-form-fieldset label="Hotel name" description="Type hotel name or change it || Required ">
                                 <b-form-fieldset>
@@ -23,7 +18,6 @@
                                     </b-input-group>
                                 </b-form-fieldset>
                             </b-form-fieldset>
-
                             <!--Hotel url-->
                             <b-form-fieldset label="URL" description="Type hotel URL or change it || Required">
                                 <b-form-fieldset>
@@ -34,7 +28,6 @@
                                     </b-input-group>
                                 </b-form-fieldset>
                             </b-form-fieldset>
-
                             <!--facebook url-->
                             <b-form-fieldset label="Facebook page URL"
                                              description="Type hotel FB URL or change it || Optional">
@@ -45,8 +38,6 @@
                                     </b-input-group>
                                 </b-form-fieldset>
                             </b-form-fieldset>
-
-
                             <!--Timeout-->
                             <b-form-fieldset label="Mikrotik timeout for this hotel"
                                              description="Example: 7d (1d default) || Required">
@@ -58,8 +49,6 @@
                                     </b-input-group>
                                 </b-form-fieldset>
                             </b-form-fieldset>
-
-
                             <!--hotel timezone-->
                             <b-form-fieldset label="Hotel Timezone"
                                              description="Select hotel timezone">
@@ -70,8 +59,6 @@
                                         left="<i class='fa fa-facebook-square'></i> ">
                                 </b-form-select>
                             </b-form-fieldset>
-
-
                             <!--Hotel logo-->
                             <b-form-fieldset
                                     label="Logo input"
@@ -91,7 +78,6 @@
                                     class="fa fa-upload"></i>
                                 Upload image
                             </b-button>
-
                             <b-alert v-model="logoUploaded" variant="success" dismissible>
                                 Logo successfully updated
                             </b-alert>
@@ -108,60 +94,44 @@
                                 <b-button @click="confirmDelete(hotel.id, hotel.name, 'delete')" variant="danger">
                                     <i class="fa fa-ban"></i> Delete
                                 </b-button>
-
                             </div>
                         </b-card>
                     </form>
-
-
                 </div>
-
-
             </div><!--/.col-->
-
-
             <!--Ends here-->
-
-
             <b-alert v-model="isEmpty" variant="danger">
                 Wrong way or hotel doesn't exist!
-                <router-link :to="{name:'Hotels'}">Go back </router-link>
+                <router-link :to="{name:'Hotels'}">Go back</router-link>
             </b-alert>
         </div><!--/.col-->
         <b-modal centered title="Warning" class="modal-danger" v-model="dangerModal" @ok="deleteHotel(delHotel.id)">
-            You are going to delete {{ delHotel.name }}.  Press OK if you are sure
+            You are going to delete {{ delHotel.name }}. Press OK if you are sure
         </b-modal>
-
         <b-modal centered title="Critical error" class="modal-danger" v-model="critError" hide-footer>
             Please contact your webmaster or support
         </b-modal>
         <b-modal centered ref="myModalRef" size="sm" hide-footer title="Information">
             <div class="d-block text-center">
-                <h3>{{ delHotel.name }}  successfully deleted </h3>
+                <h3>{{ delHotel.name }} successfully deleted </h3>
             </div>
             <b-btn class="mt-3" variant="success" block @click="hideModal">OK</b-btn>
         </b-modal>
-
         <b-modal centered v-model="hotelUpdated" class="modal-success" size="sm" hide-footer title="Success">
             <div class="d-block text-center">
-                <h3>{{ hotel.name }}  successfully updated </h3>
+                <h3>{{ hotel.name }} successfully updated </h3>
             </div>
         </b-modal>
-
     </div>
-
-
 </template>
 
 <script>
-
 
     export default {
         name: 'Hotel',
         components: {},
         data: function () {
             return {
-
                 fetchComplite: false,
                 hotel: {
                     id: '',
@@ -613,11 +583,8 @@
                     "423": "Pacific\/Wallis",
                     "424": "UTC"
                 },
-
-
             }
         },
-
         mounted() {
             let config = {
                 onUploadProgress: progressEvent => {
@@ -627,9 +594,6 @@
             axios.get('/hotel/' + this.$route.params.hotelID,
                 config)
                 .then(response => {
-                    //this.loading = '';
-                    //this.fetchComplete = true;
-
                     if (response.data.name) {
                         this.isEmpty = false;
                         this.hotel.id = response.data.id;
@@ -639,23 +603,17 @@
                         this.hotel.main_url = response.data.main_url;
                         this.hotel.timezone = response.data.timezone;
                         this.hotel.session_timeout = response.data.session_timeout
-
-
                     } else {
                         console.log("sellers is not empty !");
                     }
                     this.fetchComplite = true;
-
                 })
                 .catch(e => {
                     this.critError = true;
-
                 });
-
         },
 
         computed: {
-
             timezone: {
                 // getter
                 get: function () {
@@ -674,13 +632,9 @@
             timezoneChange() {
                 this.hotel.selectedtimeZone = this.timezones[this.hotel.timezone]
             }
-
-
         },
 
         methods: {
-
-
             onFileChange(e) {
                 this.uploadButton = true
             },
@@ -746,10 +700,8 @@
                 this.$refs.myModalRef.show();
                 this.hotels = response.data;
             },
-
         }
     }
-
 </script>
 
 <style scoped>

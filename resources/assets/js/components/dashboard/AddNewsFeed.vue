@@ -6,7 +6,6 @@
                 <h3>Add Card</h3>
             </b-col>
             <b-col md="9">
-
                 <b-form-group id="group-name"
                               label-for="type name here"
                               description="for identification purposes">
@@ -17,16 +16,14 @@
                                   placeholder="Name...">
                     </b-form-input>
                 </b-form-group>
-
                 <h5>Text on the card</h5>
                 <div class="editor-div">
-                <quill-editor
-                        :options="editorOptions2"
-                        v-model="description"
-                ></quill-editor>
+                    <quill-editor
+                            :options="editorOptions2"
+                            v-model="description"
+                    ></quill-editor>
                 </div>
                 <br>
-
                 <h5>Text on the back of the card</h5>
                 <!--Editor-->
                 <div class="editor-div">
@@ -35,8 +32,7 @@
                             v-model="feedContent"
                     ></quill-editor>
                 </div>
-<br>
-
+                <br>
                 <div role="group">
                     <label for="buttonText">Text on the button</label>
                     <b-form-input id="buttonText"
@@ -44,7 +40,7 @@
                                   type="text"
                                   aria-describedby=""
                                   placeholder="Text..."></b-form-input>
-<br>
+                    <br>
                     <label for="buttonLink">URL or Email address</label>
                     <b-form-input id="inputLive"
                                   v-model="buttonLink"
@@ -59,13 +55,8 @@
                 <br>
             </b-col>
             <!--Main editor end-->
-
-
-
-
             <!--Buttons config-->
             <b-col md="3">
-
                 <b-card header="Group Tags">
                     <br/>
                     <b-row>
@@ -76,31 +67,29 @@
                         <div class="clearfix"></div>
                         <br/>
                     </b-row>
-
                 </b-card>
-
-
                 <b-card header="Publish">
-                    <b-button @click="save('draft')" class="draft-button" variant="outline-secondary">Save as draft</b-button>
-                    <b-button @click="save('preview')" class="preview-button" variant="outline-secondary">Preview</b-button>
+                    <b-button @click="save('draft')" class="draft-button" variant="outline-secondary">Save as draft
+                    </b-button>
+                    <b-button @click="save('preview')" class="preview-button" variant="outline-secondary">Preview
+                    </b-button>
                     <br/>
-
-                        <br/>
-                        <b-col sm="12">
-                            <p> <i class="fa fa-paper-plane" aria-hidden="true"> </i>  Published: <span :style="{ color:publish.color }">  {{ publish.status}}</span> </p>
-                        </b-col>
+                    <br/>
+                    <b-col sm="12">
+                        <p><i class="fa fa-paper-plane" aria-hidden="true"> </i> Published: <span
+                                :style="{ color:publish.color }">  {{ publish.status}}</span></p>
+                    </b-col>
                     <b-col class="publish-footer">
                         <br>
-                    <b-button class="cancel-button draft-button" variant="link">Discard</b-button>
+                        <b-button class="cancel-button draft-button" variant="link">Discard</b-button>
                         <template v-if="showSave">
-                    <b-button @click="save('save')" type="submit" class="preview-button" variant="success">Save</b-button>
+                            <b-button @click="save('save')" type="submit" class="preview-button" variant="success">
+                                Save
+                            </b-button>
                         </template>
                     </b-col>
                 </b-card>
-
-
                 <b-card header="Media">
-
                     <b-form-fieldset
                             label="Header image"
                             description="Card image || optional"
@@ -112,11 +101,8 @@
                         ></b-form-file>
                     </b-form-fieldset>
                 </b-card>
-
-
             </b-col>
             <!--Button configs end-->
-
             <!--Modal here-->
             <b-modal centered title="Error" class="modal-danger" v-model="errors" hide-footer>
                 Oops~ something went terribly wrong!
@@ -126,8 +112,6 @@
                     <h3>SAVED!</h3>
                 </div>
             </b-modal>
-
-
             <b-modal
                     no-close-on-backdrop
                     no-close-on-esc
@@ -144,7 +128,6 @@
                         completed }}%</p>
                 </div>
             </b-modal>
-
         </b-row>
     </b-container>
 </template>
@@ -153,6 +136,7 @@
     import {quillEditor} from 'vue-quill-editor';
     import vSelect from 'vue-select'
     import {newsfeedCard} from '../../mixins/newsfeedCard';
+
     export default {
         name: "AddNewsFeed",
         data() {
@@ -177,8 +161,6 @@
                         ],
                     }
                 },
-
-
                 editorOptions2: {
                     modules: {
                         toolbar: [
@@ -199,33 +181,26 @@
                         ],
                     }
                 },
-
-                belongsTo:[],
-                cardName:'',
-                description:'',
+                belongsTo: [],
+                cardName: '',
+                description: '',
                 feedContent: '',
-                publish:{
-                    status:'no',
-                    color:'red',
+                publish: {
+                    status: 'no',
+                    color: 'red',
                 },
-                buttonText:'',
-                buttonLink:'',
-
-
+                buttonText: '',
+                buttonLink: '',
                 options: [],
                 searchText: '', // If value is falsy, reset searchText & searchItem
-                selected:[],
+                selected: [],
                 lastSelectItem: {},
-                fetchComplete:false,
-                imageUploaded:false,
-                cardCreated:false,
-                errors:false,
-                showSave:false,
-                completed:0,
-
-
-
-
+                fetchComplete: false,
+                imageUploaded: false,
+                cardCreated: false,
+                errors: false,
+                showSave: false,
+                completed: 0,
             }
         },
         components: {
@@ -233,47 +208,41 @@
             vSelect
         },
 
-        computed:{
-
-        },
+        computed: {},
 
         mounted() {
             this.getData();
         },
 
-        methods:{
-            back(){
+        methods: {
+            back() {
                 console.log('Back')
             },
-            imageChange(){
-                this.imageUploaded=true
+            imageChange() {
+                this.imageUploaded = true
             },
 
-            nameFiiled(){
-              this.showSave = true
+            nameFiiled() {
+                this.showSave = true
             },
-            getData(){
+            getData() {
                 axios.get('/newsfeeds/cards/data')
                     .then(response => {
                         this.fetchComplete = true;
                         this.options = response.data
-                        this.options.push({ label:'All', value:['all'] })
+                        this.options.push({label: 'All', value: ['all']})
                     })
                     .catch(e => {
                         this.errors = true;
                     });
             },
-
-
         },
 
         mixins: [
             newsfeedCard
         ],
-
     }
 </script>
-
 <style>
     @import '~quill/dist/quill.core.css';
     @import '~quill/dist/quill.snow.css';
@@ -287,33 +256,38 @@
         background: white;
     }
 
-    .preview-button, .draft-button{
+    .preview-button, .draft-button {
         margin-top: -5%;
         border-radius: 5px;
     }
-    .preview-button{
+
+    .preview-button {
         float: right;
     }
-    .draft-button{
+
+    .draft-button {
         float: left;
     }
 
-    .save-button{
+    .save-button {
         float: right;
         border-radius: 5px;
         font-weight: 600;
     }
-    .publish-footer{
-        border-top:1px solid #c2cfd6 ;
+
+    .publish-footer {
+        border-top: 1px solid #c2cfd6;
     }
-    .cancel-button{
+
+    .cancel-button {
         color: #ff463d;
     }
-    .cancel-button:hover{
+
+    .cancel-button:hover {
         color: red;
     }
 
-    .ql-editor{
+    .ql-editor {
         min-height: 200px;
     }
 </style>

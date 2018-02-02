@@ -1,17 +1,13 @@
 <template>
     <div class="wrapper">
-
         <div class="animated fadeIn">
-
             <div v-if="methodsFetchComplete" class="row">
-
                 <div class="col-md-12">
                     <form enctype="multipart/form-data" @submit.prevent="edit()">
                         <b-card>
                             <div slot="header">
                                 <strong>Edit template</strong>
                             </div>
-
                             <b-modal
                                     no-close-on-backdrop
                                     no-close-on-esc
@@ -29,7 +25,6 @@
                                         completed }}%</p>
                                 </div>
                             </b-modal>
-
                             <!--hotel-->
                             <b-form-fieldset label="Select hotel"
                                              description="which one of hotels this template belongs to ?">
@@ -37,18 +32,14 @@
                                     <option v-for="(hotel, key) in hotels" :value="hotel.id">{{ hotel.name }}</option>
                                 </select>
                             </b-form-fieldset>
-
                             <!--template type / login method-->
                             <b-form-fieldset label="Select method"
                                              description="which one method should this template use ?">
                                 <select v-model="defaultComponent" class="form-control custom-select">
                                     <option v-for="method in methods" :value="method">{{ method }}</option>
                                 </select>
-
                             </b-form-fieldset>
-
                             <hr>
-
                             <div>
                                 <h3>Required images</h3>
                                 <!--Hotel logo-->
@@ -62,8 +53,6 @@
                                             @change="imageChange('logo')"
                                     ></b-form-file>
                                 </b-form-fieldset>
-
-
                                 <!--Background picture or video-->
                                 <b-form-fieldset
                                         label="Template background"
@@ -77,13 +66,8 @@
 
                                     ></b-form-file>
                                 </b-form-fieldset>
-
-
                                 <hr>
-
                                 <h3>Required texts</h3>
-
-
                                 <!--Template texts-->
                                 <div>
                                     <b-tabs>
@@ -101,7 +85,6 @@
                                                                           placeholder="Heading text"></b-form-input>
                                                         </b-input-group>
                                                     </b-form-fieldset>
-
                                                     <!--button text-->
                                                     <b-form-fieldset>
                                                         <b-input-group left="<i class='fa fa-bars'></i>">
@@ -111,8 +94,6 @@
                                                                           placeholder="Login/Email button text"></b-form-input>
                                                         </b-input-group>
                                                     </b-form-fieldset>
-
-
                                                     <!--Email text-->
                                                     <b-form-fieldset v-if="showSomeField">
                                                         <b-input-group left="<i class='fa fa-envelope'></i>">
@@ -122,8 +103,6 @@
                                                                           placeholder="Email heading text"></b-form-input>
                                                         </b-input-group>
                                                     </b-form-fieldset>
-
-
                                                     <!--Little text text-->
                                                     <b-form-fieldset v-if="defaultComponent =='Login'">
                                                         <b-input-group left="<i class='fa fa-podcast'></i>">
@@ -133,11 +112,8 @@
                                                                           placeholder="Little text under button"></b-form-input>
                                                         </b-input-group>
                                                     </b-form-fieldset>
-
                                                     <hr>
                                                     <p>Terms and Conditions settings</p>
-
-
                                                     <!--policyText text-->
                                                     <b-form-fieldset>
                                                         <b-input-group left="<i class='fa fa-question-circle'></i>">
@@ -147,8 +123,6 @@
                                                                           placeholder="Terms and condition text"></b-form-input>
                                                         </b-input-group>
                                                     </b-form-fieldset>
-
-
                                                     <!--policy link text-->
                                                     <b-form-fieldset>
                                                         <b-input-group left="<i class='fa fa-question-circle'></i>">
@@ -158,8 +132,6 @@
                                                                           placeholder="Terms link text, almost always - Terms & Condition"></b-form-input>
                                                         </b-input-group>
                                                     </b-form-fieldset>
-
-
                                                     <!--Go back from terms and conditions page links text-->
                                                     <b-form-fieldset>
                                                         <b-input-group left="<i class='fa fa-question-circle'></i>">
@@ -169,14 +141,11 @@
                                                                           placeholder="Go back from terms and conditions page links text"></b-form-input>
                                                         </b-input-group>
                                                     </b-form-fieldset>
-
-
                                                     <div v-if='sayTime'>
                                                         <hr>
                                                         <p>
                                                             Enter greeting for every time period || Note: You can leave
                                                             default</p>
-
                                                         <!--morining-->
                                                         <b-form-fieldset>
                                                             <b-input-group left="<i class='fa fa-sun-o'></i>">
@@ -186,7 +155,6 @@
                                                                               placeholder="Morning"></b-form-input>
                                                             </b-input-group>
                                                         </b-form-fieldset>
-
                                                         <!--Afternoon-->
                                                         <b-form-fieldset>
                                                             <b-input-group left="<i class='fa fa-cloud'></i>">
@@ -206,20 +174,13 @@
                                                                               placeholder="Evening"></b-form-input>
                                                             </b-input-group>
                                                         </b-form-fieldset>
-
-
                                                     </div>
-
                                                 </b-form-fieldset>
-
                                             </b-tab>
                                         </template>
                                     </b-tabs>
-
                                 </div>
-
                                 <!--Add language button-->
-
                                 <div>
                                     <b-dropdown id="ddown-buttons" text="Add languages"
                                                 class="m-2">
@@ -231,22 +192,17 @@
                                     <b-dropdown id="ddown-buttons" text="Delete languages"
                                                 class="m-2">
                                         <template v-for="key in langs">
-                                            <b-dropdown-item-button v-if="key !='en'" @click="deleteLanguage(key)">{{ addLangs[key] }}
+                                            <b-dropdown-item-button v-if="key !='en'" @click="deleteLanguage(key)">{{
+                                                addLangs[key] }}
                                             </b-dropdown-item-button>
                                         </template>
                                     </b-dropdown>
                                 </div>
-
                                 <b-alert v-model="langWanring" dismissible show variant="warning">
                                     Language have been already added to list
                                 </b-alert>
-
                                 <hr>
-
-
                                 <h3>Required color settings and button colors</h3>
-
-
                                 <div>
                                     <a href="" @click.prevent="storeColor('buttonBCK')">Button background color || </a>
                                     <a href="" @click.prevent="storeColor('buttonText')">Button text color || </a>
@@ -258,7 +214,6 @@
                                     <a href=""
                                        @click.prevent="storeColor('buttonBorderHover')">Button border on hover </a>
                                 </div>
-
                                 <button
                                         type="button"
                                         :style="buttonStyleObject"
@@ -267,16 +222,10 @@
                                         class="btn btn-outline-info large-button text-center"><i
                                         class='fa fa-sign-in'></i> {{ texts.en.buttonText }}
                                 </button>
-
-
                                 <br>
-
                                 <hr>
-
                                 <br>
-
                                 <h4> Greeting text </h4>
-
                                 <div>
                                     <a href=""
                                        @click.prevent="storeColor('policy')">
@@ -286,7 +235,6 @@
                                     <a v-if="defaultComponent =='Login'" href=""
                                        @click.prevent="storeColor('littleTextColor')">
                                         Little text under login button </a>
-
                                 </div>
                                 <br>
                                 <hr>
@@ -301,14 +249,9 @@
                                 <br>
                                 <hr>
                                 <br>
-
-
                                 <h4> Text sizes </h4>
                                 <div>
-
                                 </div>
-
-
                                 <p> Greeting text size - <span style="color: #bb0000"> {{ greeting.size }} </span></p>
                                 <b-form-fieldset>
                                     <b-input-group
@@ -320,7 +263,6 @@
                                     </b-input-group>
                                 </b-form-fieldset>
                                 <br>
-
                                 <template v-if="sayTime">
                                     <p> Greeting time text size- <span style="color: #bb0000"> {{ greetingsTime.size
                                         }} </span></p>
@@ -349,29 +291,23 @@
                                 <br>
                                 <hr>
                                 <br>
-
-
                                 <h4> Options </h4>
                                 <br>
                                 <div class="col-md-12">
-
                                     <b-card class="text-center fix-margin" header="Show Time greeting">
                                         <c-switch type="text" variant="success" on="On" off="Off"
                                                   @change="changeTimeGreeting()" :checked="greetingsTime.on"/>
                                     </b-card>
-
                                     <b-card v-if="dependOnComponent('emailOnly')" class="text-center fix-margin"
                                             header="Sign up via Email along with FB">
                                         <c-switch type="text" variant="success" on="On" off="Off"
                                                   @change="changeEmailState()" :checked="requireEmail"/>
                                     </b-card>
-
                                     <b-card v-if="dependOnComponent('fullName')" class="text-center fix-margin"
                                             header="Require Full name from user">
                                         <c-switch type="text" variant="success" on="On" off="Off"
                                                   @change="changeNameState()" :checked="requireName"/>
                                     </b-card>
-
                                     <template v-if="inAction">
                                         <b-card class="text-center fix-margin"
                                                 header="Scheduled template">
@@ -379,13 +315,9 @@
                                                       @change="scheduleSwitcher()" :checked="scheduled"/>
                                         </b-card>
                                     </template>
-
-
                                     <!--/.col-->
                                 </div>
-
                                 <div class="clearfix"></div>
-
                                 <template v-if="schedule == 'yes'">
                                     <b-alert show dismissible show variant="primary">
                                         <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -393,16 +325,12 @@
                                     </b-alert>
                                 </template>
                                 <br>
-
                                 <hr>
-
                                 <br>
-
                                 <template v-if="schedule =='yes'">
                                     <h4>Schedule time</h4>
                                     <br>
                                     <p>Format: <i> Day-Month-Year || Hours:Min:Secs </i></p>
-
                                     <p>{{ timestamp(scheduleTime) }}</p>
                                     <date-picker v-model="scheduleTime"
                                                  type="datetime"
@@ -438,25 +366,13 @@
                             </div>
                         </b-card>
                     </form>
-
-
                 </div>
-
-
             </div><!--/.col-->
-
-
             <!--Ends here-->
-
-
         </div><!--/.col-->
-
-
         <b-modal centered title="Critical error" class="modal-danger" v-model="critError" hide-footer>
             Please contact your webmaster or support
         </b-modal>
-
-
         <b-modal centered v-model="templateUpdated" class="modal-success" size="sm" hide-footer title="Success">
             <div class="d-block text-center">
                 <h3>Template successfully updated </h3>
@@ -472,25 +388,19 @@
                 </b-button>
             </div>
         </b-modal>
-
-
         <b-modal class="color-picker-modal"
-                centered v-model="colorPicker"
+                 centered v-model="colorPicker"
                  size="sm"
                  hide-footer
                  hide-header
                  title="Pick up a color"
-
-
         >
             <div
                     class="color-picker-modal"
             >
-
                 <div class="color-modal">
                     <sketch v-if="colorPicker" v-model="colorsMod" @change-color="colorChange"></sketch>
                 </div>
-
                 <b-btn class="mt-3 button-close-picker" @click="colorSelected(forSection)" data-dismiss="modal"
                        variant="primary" block>OK
                 </b-btn>
@@ -498,7 +408,6 @@
             </div>
         </b-modal>
     </div>
-
 
 </template>
 
@@ -513,7 +422,6 @@
 
         data: function () {
             return {
-
                 colorPicker: false,
                 forSection: '',
                 completed: 0,
@@ -522,11 +430,8 @@
                 hotelID: '',
                 methods: [],
                 texts: '',
-
                 requireName: false,
-
                 requireEmail: true,
-
                 langs: [],
                 addLangs: {
                     en: 'English',
@@ -540,31 +445,20 @@
                 },
 
                 media: '',
-
                 button: '',
-
                 policy: '',
-
                 greeting: '',
-
                 hotelLogo: '',
                 backgiUploaded: false,
-
                 greetingsTime: '',
-
                 activeComponent: false,
                 defaultComponent: '', //Must be same as activeComponent
-
                 backgroundColor: '',
-
                 littleTextColor: '',
-
                 media: {
                     src: '',
                     type: '',
                 },
-
-
                 critError: false,
                 templateUpdated: false,
                 logoUploaded: false,
@@ -573,8 +467,6 @@
                 methodsFetchComplete: false,
                 langWanring: false,
                 activeTemplate: 'no',
-
-
                 colors: {
                     hex: '#194d33',
                     rgba: {
@@ -584,8 +476,6 @@
                         a: 1
                     },
                 },
-
-
                 schedule: 'no',
                 scheduleTime: '',
                 startTime: '',
@@ -615,8 +505,8 @@
                 this.activeComponent = event;
             },
 
-            langs:function (event) {
-               this.langs = event
+            langs: function (event) {
+                this.langs = event
             }
 
         },
@@ -647,18 +537,15 @@
                     if (response.data.scheduled === 'yes') {
                         this.scheduleChanged = 'no'
                     }
-
                     if (response.data.activated === 'yes' && response.data.scheduled === 'no') {
                         this.inAction = false;
                     }
                     this.defaultComponent = response.data.type;
-
                     if (response.data.scheduled != null) {
                         let st = new Date(response.data.schedule_start_time);
                         let en = new Date(response.data.schedule_end_time);
                         this.scheduleTime = [st, en];
                     }
-
                     this.methodsFetchComplete = true;
 
                 })
@@ -666,18 +553,14 @@
                     this.critError = true;
                 });
 
-
             axios.get('/template/methods')
                 .then(response => {
                     this.hotels = response.data.hotels;
                     this.methods = response.data.methods;
-
                 })
                 .catch(e => {
                     //this.critError = true;
                 });
-
-
         },
 
 
@@ -687,12 +570,11 @@
                 return this.greetingsTime.on;
             },
 
-            colorsMod:{
+            colorsMod: {
                 //getter
                 get: function () {
 
                     return this.colors
-
                 },
                 // setter
                 set: function (newColor) {
@@ -703,7 +585,6 @@
             getGreatingSize: {
                 //getter
                 get: function () {
-
                     var rez = this.greeting.size.slice(0, 3);
                     if (typeof rez != "Nan") {
                         var rez = parseFloat(rez);
@@ -726,14 +607,12 @@
                         var rez = parseFloat(rez);
                     }
                     return rez * 10;
-
                 },
                 // setter
                 set: function (newSize) {
                     this.greetingsTime.size = newSize / 10 + 'rem';
                 }
             },
-
 
             getPolicySize: {
                 //getter
@@ -744,7 +623,6 @@
                         var rez = parseFloat(rez);
                     }
                     return rez * 10;
-
                 },
                 // setter
                 set: function (newSize) {
@@ -758,7 +636,6 @@
                 }
                 return false;
             },
-
 
             buttonStyleObject() {
                 var modifier = '';
@@ -783,7 +660,6 @@
 
         methods: {
 
-
             timestamp(time) {
                 if (typeof time == 'object') {
                     this.startTime = time[0].getTime();
@@ -791,8 +667,7 @@
                 }
             },
 
-           colorSelected(section) {
-
+            colorSelected(section) {
                 this.colorPicker = false;
                 if (section == 'buttonBCK') {
                     this.button.colorBackd = this.colors.hex
@@ -817,7 +692,7 @@
                 } else if (section == 'littleTextColor') {
                     this.littleTextColor = this.colors.hex
                 }
-                setTimeout(()=>{
+                setTimeout(() => {
                     this.colors = {
                         hex: '',
                         rgba: {
@@ -826,14 +701,11 @@
                             b: 0,
                             a: 0
                         },
-                        a:1
+                        a: 1
                     };
                 }, 100);
 
             },
-
-
-
 
 
             changeTimeGreeting() {
@@ -868,12 +740,10 @@
                 }
             },
 
-
             addLanguage(lang) {
 
                 this.langWanring = false;
                 if (typeof this.texts[lang] === 'undefined') {
-
                     var newObj = {
                         greetingText: '',
                         emailText: '',
@@ -895,29 +765,24 @@
 
             },
 
-
             deleteLanguage(lang) {
 
                 this.deleteArrayIndex(this.langs, lang),
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         this.$delete(this.texts, lang)
                     }, 150)
             },
 
-            deleteArrayIndex(array, element){
+            deleteArrayIndex(array, element) {
                 const index = array.indexOf(element);
                 array.splice(index, 1);
             },
-
 
             updateHoverState(isHover) {
                 this.button.hoverState = isHover;
             },
 
-
             storeColor(id) {
-
-
                 let section = id;
                 if (section == 'buttonBCK') {
                     this.colors.hex = this.button.colorBackd
@@ -935,13 +800,12 @@
                     let rgba = this.backgroundColor.substr(11);
                     this.colors.hex = this.rgb2hex(rgba);
                     let rgbArray = this.backgroundColor.substr(16).slice(0, -1).split(',');
-                    this.colors.a =  rgbArray[3];
+                    this.colors.a = rgbArray[3];
 
-                    this.colors.rgba.r=rgbArray[0];
-                    this.colors.rgba.g=rgbArray[1];
-                    this.colors.rgba.b=rgbArray[2];
-                    this.colors.rgba.a=rgbArray[3];
-
+                    this.colors.rgba.r = rgbArray[0];
+                    this.colors.rgba.g = rgbArray[1];
+                    this.colors.rgba.b = rgbArray[2];
+                    this.colors.rgba.a = rgbArray[3];
                 } else if (section == 'policy') {
                     this.colors.hex = this.policy.color
                 } else if (section == 'greeting') {
@@ -949,8 +813,7 @@
                 } else if (section == 'littleTextColor') {
                     this.colors.hex = this.littleTextColor
                 }
-
-                setTimeout(()=>{
+                setTimeout(() => {
                     this.colorPicker = true;
                     this.forSection = id;
                     console.log(this.colors)
@@ -958,19 +821,16 @@
 
 
             },
-
-            rgb2hex(rgb){
+            rgb2hex(rgb) {
                 rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
                 return (rgb && rgb.length === 4) ? "#" +
-                    ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
-                    ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
-                    ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) : '';
+                    ("0" + parseInt(rgb[1], 10).toString(16)).slice(-2) +
+                    ("0" + parseInt(rgb[2], 10).toString(16)).slice(-2) +
+                    ("0" + parseInt(rgb[3], 10).toString(16)).slice(-2) : '';
             },
-
             colorChange(val) {
                 this.colors = val
             },
-
             imageChange(type) {
                 if (type == 'logo') {
                     this.logoUploaded = true
@@ -980,7 +840,6 @@
                 }
 
             },
-
             edit(preview = '') {
 
                 this.loading = true;
@@ -989,8 +848,6 @@
                 } else {
                     var url = '/template/edit/' + this.$route.params.id;
                 }
-
-
                 axios.post(url, {
                     hotelID: this.hotelID,
                     texts: this.texts,
@@ -1015,7 +872,6 @@
                     templateID: this.$route.params.id,
                     activeTemplate: this.activeComponent,
                     scheduleChanged: this.scheduleChanged,
-
                 })
                     .then(response => {
                         if (!this.logoUploaded && !this.backgiUploaded && preview == 'preview') {
@@ -1034,7 +890,6 @@
                     });
             },
 
-
             saveMedia(id, preview) {
                 if (preview === 'preview') {
                     var url = '/template/media/preview?identity=' + id;
@@ -1047,12 +902,9 @@
                         this.completed = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
                     }
                 }
-
                 var data = new FormData();
                 data.append('logo', document.getElementById('logo').files[0]);
                 data.append('background', document.getElementById('background').files[0]);
-
-
                 axios.post(url, data, config)
                     .then(response => {
                         this.loading = false;
@@ -1067,15 +919,11 @@
                     .catch(e => {
                         this.loading = false;
                         this.critError = true;
-
-
                     });
             },
             hideModal() {
                 this.$refs.myModalRef.hide()
             },
-
-
         }
     }
 
@@ -1154,20 +1002,19 @@
         background: #151b1e;
     }
 
-    .color-picker-modal{
+    .color-picker-modal {
         background: none;
         padding: 0 !important;
-        margin:-10px
+        margin: -10px
 
     }
 
-    .button-close-picker{
-        margin-bottom:-86px;
+    .button-close-picker {
+        margin-bottom: -86px;
     }
 
-
-    .vc-sketch{
-        padding:1px;
+    .vc-sketch {
+        padding: 1px;
         width: 288px;
     }
 
@@ -1176,8 +1023,8 @@
 
 
 <style>
-    .vc-sketch-presets{
-        margin-right:0px !important;
-        margin-left:0 !important;
+    .vc-sketch-presets {
+        margin-right: 0px !important;
+        margin-left: 0 !important;
     }
 </style>

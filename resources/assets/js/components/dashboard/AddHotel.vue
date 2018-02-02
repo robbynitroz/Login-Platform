@@ -1,18 +1,13 @@
 <template>
     <div class="wrapper">
-
         <div class="animated fadeIn">
-
             <div class="row">
-
                 <div class="col-md-12">
                     <form enctype="multipart/form-data" @submit.prevent="save()">
                         <b-card>
                             <div slot="header">
                                 <strong>{{ hotel.name || "Add hotel" }}</strong>
                             </div>
-
-
                             <!--Hotel name-->
                             <b-form-fieldset label="Hotel name" description="Type hotel name or change it || Required ">
                                 <b-form-fieldset>
@@ -23,7 +18,6 @@
                                     </b-input-group>
                                 </b-form-fieldset>
                             </b-form-fieldset>
-
                             <!--Hotel url-->
                             <b-form-fieldset label="URL" description="Type hotel URL or change it || Required">
                                 <b-form-fieldset>
@@ -34,7 +28,6 @@
                                     </b-input-group>
                                 </b-form-fieldset>
                             </b-form-fieldset>
-
                             <!--facebook url-->
                             <b-form-fieldset label="Facebook page URL"
                                              description="Type hotel FB URL or change it || Optional">
@@ -45,8 +38,6 @@
                                     </b-input-group>
                                 </b-form-fieldset>
                             </b-form-fieldset>
-
-
                             <!--Timeout-->
                             <b-form-fieldset label="Mikrotik timeout for this hotel"
                                              description="Example: 7d (1d default) || Required">
@@ -58,8 +49,6 @@
                                     </b-input-group>
                                 </b-form-fieldset>
                             </b-form-fieldset>
-
-
                             <!--hotel timezone-->
                             <b-form-fieldset label="Hotel Timezone"
                                              description="Select hotel timezone">
@@ -67,11 +56,9 @@
                                         :options="timezones"
                                         v-model="timezone"
                                         required
-                                        >
+                                >
                                 </b-form-select>
                             </b-form-fieldset>
-
-
                             <!--Hotel logo-->
                             <b-form-fieldset
                                     label="Logo input"
@@ -83,7 +70,6 @@
                                         @change="imageChange"
                                 ></b-form-file>
                             </b-form-fieldset>
-
                             <div slot="footer">
                                 <b-button
                                         type="submit"
@@ -99,38 +85,21 @@
                             </div>
                         </b-card>
                     </form>
-
-
                 </div>
-
-
             </div><!--/.col-->
-
-
             <!--Ends here-->
-
-
         </div><!--/.col-->
-
-
         <b-modal centered title="Critical error" class="modal-danger" v-model="critError" hide-footer>
             Please contact your webmaster or support
         </b-modal>
-
-
         <b-modal centered v-model="hotelCreated" class="modal-success" size="sm" hide-footer title="Success">
             <div class="d-block text-center">
-                <h3>{{ hotel.name }}  successfully created </h3>
+                <h3>{{ hotel.name }} successfully created </h3>
             </div>
         </b-modal>
-
     </div>
-
-
 </template>
-
 <script>
-
 
     export default {
         name: 'AddHotel',
@@ -145,7 +114,7 @@
                     session_timeout: '1d',
                     selectedtimeZone: '',
                     logo: '',
-                    timezone:''
+                    timezone: ''
 
 
                 },
@@ -154,6 +123,7 @@
                 logoUploaded: false,
                 logo: '',
                 uploadButton: false,
+                //Timezones supported by PHP
                 timezones: {
                     "0": "Africa\/Abidjan",
                     "1": "Africa\/Accra",
@@ -581,7 +551,6 @@
                     "423": "Pacific\/Wallis",
                     "424": "UTC"
                 },
-
             }
         },
 
@@ -610,32 +579,29 @@
                 this.hotel.selectedtimeZone = this.timezones[this.hotel.timezone]
             }
 
-
         },
 
         methods: {
 
-            imageChange(){
-              this.logoUploaded=true
+            imageChange() {
+                this.logoUploaded = true
             },
 
-            save(){
+            save() {
 
                 axios.post('/hotel', {
                     hotel: this.hotel,
                     timezone: this.timezones[this.hotel.timezone],
                 })
                     .then(response => {
-                        if(this.logoUploaded===true){
+                        if (this.logoUploaded === true) {
                             this.uploadImage(response.data)
-                        }else {
+                        } else {
                             this.hotelCreated = true;
                             setTimeout(() => {
                                 return this.$router.push({name: 'Hotels'})
                             }, 1000);
                         }
-
-
                     })
                     .catch(e => {
                         this.critError = true;
@@ -643,7 +609,6 @@
             },
 
             uploadImage(id) {
-
                 var data = new FormData();
                 data.append('logo', document.getElementById('logo').files[0]);
 
@@ -657,21 +622,15 @@
                     })
                     .catch(e => {
                         this.critError = true;
-
                     });
             },
             hideModal() {
                 this.$refs.myModalRef.hide()
             },
-
-
-
-
         }
     }
 
 </script>
-
 <style scoped>
     .hotels {
         border-radius: 10px;

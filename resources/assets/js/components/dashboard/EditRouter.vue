@@ -1,30 +1,25 @@
 <template>
     <div class="wrapper">
-
         <div v-if="allRight" class="animated fadeIn">
-
             <div v-if="!isEmpty" class="row">
-
                 <div class="col-md-12">
                     <form enctype="multipart/form-data" @submit.prevent="edit()">
                         <b-card>
                             <div slot="header">
                                 <strong>{{ router.nasname }}</strong>
                             </div>
-
-
                             <!--Router IP-->
-                            <b-form-fieldset label="Router IP address" description="Router IP address assigned by system || can't be changed ">
+                            <b-form-fieldset label="Router IP address"
+                                             description="Router IP address assigned by system || can't be changed ">
                                 <b-form-fieldset>
                                     <b-input-group left="<i class='fa fa-link'></i>">
                                         <b-form-input type="text" v-model="router.nasname"
                                                       disabled
                                                       readonly
-                                                      ></b-form-input>
+                                        ></b-form-input>
                                     </b-input-group>
                                 </b-form-fieldset>
                             </b-form-fieldset>
-
                             <!--Router shortname-->
                             <b-form-fieldset label="Shortname" description="Type something short">
                                 <b-form-fieldset>
@@ -35,7 +30,6 @@
                                     </b-input-group>
                                 </b-form-fieldset>
                             </b-form-fieldset>
-
                             <!--desc-->
                             <b-form-fieldset label="Full description"
                                              description="Enter full description">
@@ -46,17 +40,13 @@
                                     </b-input-group>
                                 </b-form-fieldset>
                             </b-form-fieldset>
-
-
                             <!--hotel-->
                             <p>Select hotel</p>
                             <model-select :options="hotels"
                                           v-model="router.hotel_id"
                                           placeholder="select Hotel">
                             </model-select>
-
                             <br>
-
                             <!--desc-->
                             <b-form-fieldset label="WAN MAC address"
                                              description="not required">
@@ -67,12 +57,8 @@
                                     </b-input-group>
                                 </b-form-fieldset>
                             </b-form-fieldset>
-
-
                             <hr>
                             <h5>Mikrotik credentials</h5>
-
-
                             <!--desc-->
                             <b-form-fieldset label="Mikrotik login"
                                              description="required">
@@ -83,8 +69,6 @@
                                     </b-input-group>
                                 </b-form-fieldset>
                             </b-form-fieldset>
-
-
                             <b-form-fieldset label="Mikrotik password"
                                              description="required">
                                 <b-form-fieldset>
@@ -94,9 +78,6 @@
                                     </b-input-group>
                                 </b-form-fieldset>
                             </b-form-fieldset>
-
-
-
                             <div slot="footer">
                                 <b-button
                                         type="submit"
@@ -110,32 +91,22 @@
                                 <b-button @click="confirmDelete(router.id, router.secret, 'delete')" variant="danger">
                                     <i class="fa fa-ban"></i> Delete
                                 </b-button>
-
                             </div>
                         </b-card>
                     </form>
-
-
                 </div>
-
-
             </div><!--/.col-->
-
-
             <!--Ends here-->
-
-
             <b-alert v-model="isEmpty" variant="danger">
                 Wrong way or hotel doesn't exist!
-                <router-link :to="{name:'Routers'}">Go back </router-link>
+                <router-link :to="{name:'Routers'}">Go back</router-link>
             </b-alert>
-
             <b-alert v-model="requiredID" variant="danger">
                 Please select hotel
             </b-alert>
         </div><!--/.col-->
         <b-modal centered title="Warning" class="modal-danger" v-model="dangerModal" @ok="deleteRouter(delRouter.id)">
-            You are going to delete {{ delRouter.ip }}.  Press OK if you are sure
+            You are going to delete {{ delRouter.ip }}. Press OK if you are sure
         </b-modal>
 
         <b-modal centered title="Critical error" class="modal-danger" v-model="critError" hide-footer>
@@ -143,7 +114,7 @@
         </b-modal>
         <b-modal centered ref="myModalRef" size="sm" hide-footer title="Information">
             <div class="d-block text-center">
-                <h3>{{ delRouter.ip }}  successfully deleted </h3>
+                <h3>{{ delRouter.ip }} successfully deleted </h3>
             </div>
             <b-btn class="mt-3" variant="success" block @click="hideModal">OK</b-btn>
         </b-modal>
@@ -153,15 +124,11 @@
                 <h3> {{ router.secret }} successfully updated </h3>
             </div>
         </b-modal>
-
     </div>
-
-
 </template>
 
 <script>
-
-    import { ModelSelect } from 'vue-search-select'
+    import {ModelSelect} from 'vue-search-select'
 
     export default {
         name: 'EditRouter',
@@ -170,27 +137,26 @@
         },
         data: function () {
             return {
-
                 fetchComplite: {
-                    first:false,
-                    second:false,
+                    first: false,
+                    second: false,
                 },
-                router:false,
-                hotels:[],
+                router: false,
+                hotels: [],
                 critError: false,
                 isEmpty: true,
                 dangerModal: false,
                 successDel: true,
-                success:false,
+                success: false,
                 uploadButton: false,
-                requiredID:false,
+                requiredID: false,
                 delRouter: {
                     id: '',
                     ip: '',
                     action: ''
                 },
-                mikrotik_password:'',
-                mikrotik_username:'',
+                mikrotik_password: '',
+                mikrotik_username: '',
 
             }
         },
@@ -207,9 +173,9 @@
 
                     if (response.data.id) {
                         this.isEmpty = false;
-                        this.router= response.data;
+                        this.router = response.data;
                     } else {
-                        this.isEmpty= true;
+                        this.isEmpty = true;
                     }
                     this.fetchComplite.first = true;
                 })
@@ -218,12 +184,10 @@
 
                 });
 
-
-
             axios.get('/template/methods')
                 .then(response => {
-                    response.data.hotels.forEach(element =>{
-                        this.hotels.push( { value:element.id, text:element.name })
+                    response.data.hotels.forEach(element => {
+                        this.hotels.push({value: element.id, text: element.name})
                     });
                     this.fetchComplite.second = true;
                 })
@@ -235,33 +199,31 @@
 
         computed: {
 
-            allRight(){
-                if(this.fetchComplite.first == true && this.fetchComplite.second == true){
+            allRight() {
+                if (this.fetchComplite.first == true && this.fetchComplite.second == true) {
                     return true;
-                }else {
+                } else {
                     return false
                 }
             },
-
-
         },
 
         methods: {
 
             edit() {
 
-                if(this.router.hotel_id == null || this.router.hotel_id == ''){
-                    this.requiredID= true;
+                if (this.router.hotel_id == null || this.router.hotel_id == '') {
+                    this.requiredID = true;
                     return;
                 }
                 axios.put('/router/' + this.$route.params.routerID, {
-                    data:this.router,
-                    mikrotik_username:this.mikrotik_username,
-                    mikrotik_password:this.mikrotik_password
+                    data: this.router,
+                    mikrotik_username: this.mikrotik_username,
+                    mikrotik_password: this.mikrotik_password
                 })
                     .then(response => {
-                      //  console.log(response);
-                       this.success = true;
+                        //  console.log(response);
+                        this.success = true;
                         setTimeout(() => {
                             return this.$router.push({name: 'Routers'})
                         }, 750);
@@ -270,8 +232,6 @@
                         this.critError = true;
                     });
             },
-
-
 
             hideModal() {
                 this.$refs.myModalRef.hide()
@@ -283,13 +243,13 @@
                 this.dangerModal = true
             },
 
-            deleteRouter(id){
+            deleteRouter(id) {
                 let config = {
                     onUploadProgress: progressEvent => {
 
                     }
                 };
-                axios.delete('/router/'+id,
+                axios.delete('/router/' + id,
                     config)
                     .then(response => {
                         this.afterDelete();
@@ -306,7 +266,6 @@
                 this.$refs.myModalRef.show();
 
             },
-
         }
     }
 

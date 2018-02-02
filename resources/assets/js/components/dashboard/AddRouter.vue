@@ -1,18 +1,13 @@
 <template>
     <div class="wrapper">
-
         <div v-if="allRight" class="animated fadeIn">
-
             <div v-if="!isEmpty" class="row">
-
                 <div class="col-md-12">
                     <form enctype="multipart/form-data" @submit.prevent="save()">
                         <b-card>
                             <div slot="header">
                                 <strong>Add router</strong>
                             </div>
-
-
                             <!--hotel-->
                             <p>Select hotel</p>
                             <model-select :options="hotels"
@@ -20,7 +15,6 @@
                                           placeholder="select Hotel">
                             </model-select>
                             <br>
-
                             <!--Router shortname-->
                             <b-form-fieldset label="Shortname" description="Type something short">
                                 <b-form-fieldset>
@@ -31,7 +25,6 @@
                                     </b-input-group>
                                 </b-form-fieldset>
                             </b-form-fieldset>
-
                             <!--desc-->
                             <b-form-fieldset label="Full description"
                                              description="Enter full description">
@@ -42,10 +35,6 @@
                                     </b-input-group>
                                 </b-form-fieldset>
                             </b-form-fieldset>
-
-
-
-
                             <!--MAC-->
                             <b-form-fieldset label="WAN MAC address"
                                              description="not required">
@@ -56,12 +45,8 @@
                                     </b-input-group>
                                 </b-form-fieldset>
                             </b-form-fieldset>
-
-
                             <hr>
                             <h5>Mikrotik credentials</h5>
-
-
                             <!--desc-->
                             <b-form-fieldset label="Mikrotik login"
                                              description="required">
@@ -73,8 +58,6 @@
                                     </b-input-group>
                                 </b-form-fieldset>
                             </b-form-fieldset>
-
-
                             <b-form-fieldset label="Mikrotik password"
                                              description="required">
                                 <b-form-fieldset>
@@ -85,76 +68,54 @@
                                     </b-input-group>
                                 </b-form-fieldset>
                             </b-form-fieldset>
-
-
-
                             <div slot="footer">
                                 <b-button
                                         type="submit"
                                         variant="primary"><i
                                         class="fa fa-floppy-o"></i>
-                                   Save
+                                    Save
                                 </b-button>
                                 <b-button :to="{name:'Routers'}" variant="secondary"><i class="fa fa-times"></i>
                                     Cancel
                                 </b-button>
-
                             </div>
                         </b-card>
                     </form>
-
-
                 </div>
-
-
             </div><!--/.col-->
-
-
             <!--Ends here-->
-
-
             <b-alert v-model="isEmpty" variant="danger">
                 Wrong way or hotel doesn't exist!
-                <router-link :to="{name:'Routers'}">Go back </router-link>
+                <router-link :to="{name:'Routers'}">Go back</router-link>
             </b-alert>
-
             <b-alert v-model="requiredID" variant="danger">
                 Please select hotel
             </b-alert>
         </div><!--/.col-->
         <b-modal centered title="Warning" class="modal-danger" v-model="dangerModal" @ok="deleteRouter(delRouter.id)">
-            You are going to delete {{ delRouter.ip }}.  Press OK if you are sure
+            You are going to delete {{ delRouter.ip }}. Press OK if you are sure
         </b-modal>
-
         <b-modal centered title="Critical error" class="modal-danger" v-model="critError" hide-footer>
             Please contact your webmaster or support
         </b-modal>
-
         <b-modal centered title="Special error" class="modal-danger" v-model="specialError" hide-footer>
             IP range exceeded !!! PLEASE CONTACT SYS ADMIN AND DEVELOPER!!!
         </b-modal>
-
         <b-modal centered ref="myModalRef" size="sm" hide-footer title="Information">
             <div class="d-block text-center">
-                <h3>{{ delRouter.ip }}  successfully deleted </h3>
+                <h3>{{ delRouter.ip }} successfully deleted </h3>
             </div>
             <b-btn class="mt-3" variant="success" block @click="hideModal">OK</b-btn>
         </b-modal>
-
         <b-modal centered v-model="success" class="modal-success" size="sm" hide-footer title="Success">
             <div class="d-block text-center">
                 <h3>Router successfully created </h3>
             </div>
         </b-modal>
-
     </div>
-
-
 </template>
-
 <script>
-
-    import { ModelSelect } from 'vue-search-select'
+    import {ModelSelect} from 'vue-search-select'
 
     export default {
         name: 'EditRouter',
@@ -165,37 +126,36 @@
             return {
 
                 fetchComplite: false,
-                router:{
-                    shortname:'',
-                    description:'',
-                    wanmac:'',
-                    hotel_id:'',
-                    mikrotik_username:'',
-                    mikrotik_password:''
+                router: {
+                    shortname: '',
+                    description: '',
+                    wanmac: '',
+                    hotel_id: '',
+                    mikrotik_username: '',
+                    mikrotik_password: ''
                 },
-                hotels:[],
+                hotels: [],
                 critError: false,
                 isEmpty: true,
                 dangerModal: false,
                 successDel: true,
-                success:false,
+                success: false,
                 uploadButton: false,
-                requiredID:false,
+                requiredID: false,
                 delRouter: {
                     id: '',
                     ip: '',
                     action: ''
                 },
-                specialError:false,
-
+                specialError: false,
             }
         },
 
         mounted() {
             axios.get('/template/methods')
                 .then(response => {
-                    response.data.hotels.forEach(element =>{
-                        this.hotels.push( { value:element.id, text:element.name })
+                    response.data.hotels.forEach(element => {
+                        this.hotels.push({value: element.id, text: element.name})
                     });
                     this.fetchComplite = true;
                     this.isEmpty = false
@@ -205,13 +165,11 @@
                 });
 
         },
-
         computed: {
-
-            allRight(){
-                if(this.fetchComplite == true){
+            allRight() {
+                if (this.fetchComplite == true) {
                     return true;
-                }else {
+                } else {
                     return false
                 }
             },
@@ -220,18 +178,17 @@
         },
 
         methods: {
-
             save() {
 
-                if(this.router.hotel_id == null || this.router.hotel_id == ''){
-                    this.requiredID= true;
+                if (this.router.hotel_id == null || this.router.hotel_id == '') {
+                    this.requiredID = true;
                     return;
                 }
                 axios.post('/router/add', {
-                    data:this.router
+                    data: this.router
                 })
                     .then(response => {
-                        if(response.data == 'Special error'){
+                        if (response.data == 'Special error') {
                             this.specialError = true;
                             return;
                         }
@@ -245,16 +202,13 @@
                     });
             },
 
-
             hideModal() {
                 this.$refs.myModalRef.hide()
             },
 
         }
     }
-
 </script>
-
 <style scoped>
     .hotels {
         border-radius: 10px;

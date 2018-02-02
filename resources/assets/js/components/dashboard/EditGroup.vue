@@ -6,7 +6,6 @@
                 <h3>Edit group</h3>
             </b-col>
             <b-col v-if="fetchComplete" md="12">
-
                 <form class="form loginForm" @submit.prevent="edit()">
                     <b-form-group id="group-name"
                                   label-for="type name here"
@@ -17,8 +16,6 @@
                                       placeholder="Name...">
                         </b-form-input>
                     </b-form-group>
-
-
                     <b-card header="Hotel Tags">
                         <br/>
                         <b-row>
@@ -29,7 +26,6 @@
                             <div class="clearfix"></div>
                             <br/>
                         </b-row>
-
                     </b-card>
                     <b-button type="submit" size="lg" variant="primary"> Edit</b-button>
                     <b-button @click="confirmDelete()" type="button" size="lg" variant="danger"> Delete</b-button>
@@ -37,21 +33,17 @@
                 </form>
             </b-col>
             <!--Main editor end-->
-
             <b-modal centered title="Error" class="modal-danger" v-model="errors" hide-footer>
                 Oops~ something went terribly wrong!
             </b-modal>
-
             <b-modal size="sm" centered title="Success" class="modal-success" v-model="success" hide-footer>
                 <div class="d-block text-center">
                     <h3>SAVED!</h3>
                 </div>
             </b-modal>
-
             <b-modal centered title="Warning" class="modal-danger" v-model="confirmDeleteAction" @ok="deleteGroup(ID)">
                 You are going to delete current group. Press OK if you are sure!
             </b-modal>
-
         </b-row>
     </b-container>
 </template>
@@ -91,12 +83,9 @@
                 .catch(e => {
                     this.errors = true;
                 });
-
-
         },
 
         methods: {
-
             edit() {
                 let data = {
                     id: this.ID,
@@ -128,13 +117,10 @@
             back() {
                 return this.$router.push({name: 'Groups'})
             }
-
         }
     }
 </script>
-
 <style>
-
 </style>
 
 

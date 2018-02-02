@@ -4,11 +4,11 @@ const Dashboard = resolve => {
     });
 };
 
-const Home = resolve => {
+/*const Home = resolve => {
     require.ensure(['../components/dashboard/Home.vue'], () => {
         resolve(require('../components/dashboard/Home.vue'));
     });
-};
+};*/
 
 
 const Hotels = resolve => {
@@ -62,6 +62,11 @@ const Routers = resolve => {
     });
 };
 
+const Home = resolve => {
+    require.ensure(['../components/dashboard/Routers.vue'], () => {
+        resolve(require('../components/dashboard/Routers.vue'));
+    });
+};
 
 const EditRouter = resolve => {
     require.ensure(['../components/dashboard/EditRouter.vue'], () => {

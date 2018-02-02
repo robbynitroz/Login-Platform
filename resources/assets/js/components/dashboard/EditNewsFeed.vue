@@ -15,7 +15,6 @@
                                   placeholder="Name...">
                     </b-form-input>
                 </b-form-group>
-
                 <h5>Text on the card</h5>
                 <div class="editor-div">
                     <quill-editor
@@ -24,7 +23,6 @@
                     ></quill-editor>
                 </div>
                 <br>
-
                 <h5>Text on the back of the card</h5>
                 <!--Editor-->
                 <div class="editor-div">
@@ -33,9 +31,7 @@
                             v-model="feedContent"
                     ></quill-editor>
                 </div>
-
                 <br>
-
                 <div role="group">
                     <label for="buttonText">Text on the button</label>
                     <b-form-input id="buttonText"
@@ -56,14 +52,10 @@
                     </b-form-text>
                 </div>
                 <br>
-
             </b-col>
             <!--Main editor end-->
-
-
             <!--Buttons config-->
             <b-col md="3">
-
                 <b-card header="Group Tags">
                     <br/>
                     <b-row>
@@ -74,23 +66,18 @@
                         <div class="clearfix"></div>
                         <br/>
                     </b-row>
-
                 </b-card>
-
-
                 <b-card header="Publish">
                     <b-button @click="save('draft')" class="draft-button" variant="outline-secondary">Save as draft
                     </b-button>
                     <b-button @click="save('preview')" class="preview-button" variant="outline-secondary">Preview
                     </b-button>
                     <br/>
-
                     <br/>
                     <b-col sm="12">
                         <p><i class="fa fa-paper-plane" aria-hidden="true"> </i> Published: <span
                                 :style="{ color:publish.color }">  {{ publish.status}}</span></p>
                     </b-col>
-
                     <b-col class="publish-footer">
                         <br>
                         <b-button class="cancel-button draft-button" variant="link">Delete</b-button>
@@ -101,7 +88,6 @@
                     </b-col>
                 </b-card>
                 <b-card header="Media">
-
                     <b-form-fieldset
                             label="Header image"
                             description="Card image || optional"
@@ -120,24 +106,18 @@
                     <div v-if="headerImg != ''">
                         <b-img :src="headerImg" fluid alt="Header img image"/>
                     </div>
-
                 </b-card>
-
             </b-col>
             <!--Button configs end-->
-
             <!--Modal here-->
             <b-modal centered title="Error" class="modal-danger" v-model="errors" hide-footer>
                 Oops~ something went terribly wrong!
             </b-modal>
-
             <b-modal size="sm" centered title="Success" class="modal-success" v-model="cardCreated" hide-footer>
                 <div class="d-block text-center">
                     <h3>SAVED!</h3>
                 </div>
             </b-modal>
-
-
             <b-modal
                     no-close-on-backdrop
                     no-close-on-esc
@@ -154,7 +134,6 @@
                         completed }}%</p>
                 </div>
             </b-modal>
-
         </b-row>
     </b-container>
 </template>
@@ -188,8 +167,6 @@
                         ],
                     }
                 },
-
-
                 editorOptions2: {
                     modules: {
                         toolbar: [
@@ -210,7 +187,6 @@
                         ],
                     }
                 },
-
                 cardID: null,
                 belongsTo: [],
                 cardName: '',
@@ -221,8 +197,8 @@
                     status: 'no',
                     color: 'red',
                 },
-                buttonText:'',
-                buttonLink:'',
+                buttonText: '',
+                buttonLink: '',
                 options: [],
                 searchText: '', // If value is falsy, reset searchText & searchItem
                 selected: [],
@@ -233,8 +209,6 @@
                 errors: false,
                 completed: 0,
                 loading: false,
-
-
             }
         },
         components: {
@@ -293,16 +267,11 @@
                         this.errors = true;
                     });
             },
-
-
         },
-
 
         mixins: [
             newsfeedCard
         ],
-
-
     }
 </script>
 

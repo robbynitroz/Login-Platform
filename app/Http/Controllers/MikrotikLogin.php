@@ -46,7 +46,6 @@ class MikrotikLogin extends Controller
      */
     public function getData(Request $request)
     {
-
         if ($request->has('clientmac')) {
             $this->client_mac = $request->query('clientmac');
             $this->nas_info = (new NasController())->getNas(env('TEST_IP', $request->ip()));
@@ -59,7 +58,6 @@ class MikrotikLogin extends Controller
         } else {
             return redirect('http://192.168.88.1/login');
         }
-
     }
 
 
@@ -167,7 +165,7 @@ class MikrotikLogin extends Controller
      */
     public function getTimeOut(Request $request)
     {
-        $router = (new NasController())->getNas('192.168.253.5');
+        $router = (new NasController())->getNas($request->ip());
         $hotel_id = (json_decode($router, true));
         $hotel_id = $hotel_id[0]['hotel_id'];
         $hotel = (new HotelController())->getHotel($hotel_id);

@@ -1,6 +1,5 @@
 <template>
     <div class="wrapper">
-
         <div class="animated fadeIn">
             <div class="row">
                 <div class="col-md-12">
@@ -22,7 +21,6 @@
                             </b-col>
                             <div class="clearfix"></div>
                             <br/>
-
                             <b-col v-if="fetchComplete" lg="12">
                                 <b-col lg="4" class="groups"
                                        v-for="group in filteredList"
@@ -43,9 +41,7 @@
                                     </b-card>
                                 </b-col>
                             </b-col>
-
                         </b-row>
-
                     </b-card>
                     <b-modal centered title="Warning" class="modal-danger" v-model="confirmDeleteAction"
                              @ok="deleteGroup()">
@@ -59,7 +55,6 @@
         </div>
     </div>
 </template>
-
 <script>
     import {ModelSelect} from 'vue-search-select'
 
@@ -133,7 +128,6 @@
                         this.errors = true
                     });
             },
-
         }
     }
 
@@ -155,6 +149,5 @@
     .form-control {
         margin-left: -1px;
     }
-
 
 </style>

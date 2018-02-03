@@ -65,7 +65,7 @@ class SettingController extends Controller
      * @param Request $request
      * @return int
      */
-    public function newEmailsSettings(Request $request)
+    public function newEmailsSettings(Request $request):int
     {
         $request->validate([
             'name' => 'required',
@@ -77,7 +77,7 @@ class SettingController extends Controller
         $setting->setting = json_encode([
             'name' => $request->name,
             'token' => $request->token,
-            'hotels' => $request->hotels
+            'hotels' => json_encode($request->hotels)
         ]);
         $setting->save();
         return $setting->id;

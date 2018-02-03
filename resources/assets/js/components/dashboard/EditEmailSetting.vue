@@ -5,16 +5,16 @@
             <b-col sm="12">
             </b-col>
             <b-col md="12">
-                <form class="form loginForm" @submit.prevent="save()">
-                <b-form-group id="group-name"
-                              label-for="type name here"
-                              description="for identification purposes">
-                    <b-form-input type="text"
-                                  v-model="name"
-                                  required
-                                  placeholder="Name...">
-                    </b-form-input>
-                </b-form-group>
+                <form class="form loginForm" @submit.prevent="edit()">
+                    <b-form-group id="group-name"
+                                  label-for="type name here"
+                                  description="for identification purposes">
+                        <b-form-input type="text"
+                                      v-model="name"
+                                      required
+                                      placeholder="Name...">
+                        </b-form-input>
+                    </b-form-group>
                     <b-form-group id="group-name"
                                   label-for="Push the button to generate new token">
                         <b-form-input type="text"
@@ -23,24 +23,24 @@
                                       readonly
                                       placeholder="TOKEN">
                         </b-form-input>
-                        <b-button @click="tokenGen()" type="button" variant="primary"> Generate </b-button>
+                        <b-button @click="tokenGen()" type="button" variant="primary"> Generate</b-button>
                     </b-form-group>
-                <b-card header="Select Hotels">
-                    <br/>
-                    <b-row>
-                        <b-col lg="12" class="mb-3">
-                            <v-select :value.sync="selected" multiple :options="options"></v-select>
-                        </b-col>
-                        <div class="clearfix"></div>
+                    <b-card header="Select Hotels">
                         <br/>
-                    </b-row>
-                </b-card>
-                    <b-button v-if="lastID === null" type="submit" size="lg" variant="success"> Save </b-button>
+                        <b-row>
+                            <b-col lg="12" class="mb-3">
+                                <v-select :value.sync="selected" multiple :options="options"></v-select>
+                            </b-col>
+                            <div class="clearfix"></div>
+                            <br/>
+                        </b-row>
+                    </b-card>
+                    <b-button v-if="lastID === null" type="submit" size="lg" variant="success"> Save</b-button>
                     <template v-else>
-                    <b-button  type="submit" size="lg" variant="primary"> Edit </b-button>
-                    <b-button @click = "confirmDelete()"   type="button" size="lg" variant="danger"> Delete </b-button>
+                        <b-button type="submit" size="lg" variant="primary"> Edit</b-button>
+                        <b-button @click="confirmDelete()" type="button" size="lg" variant="danger"> Delete</b-button>
                     </template>
-                    <b-button @click="back()"  type="button" size="lg" variant="secondary">
+                    <b-button @click="back()" type="button" size="lg" variant="secondary">
                         <span v-if="lastID===null">Discard</span>
                         <span v-else>Back</span>
                     </b-button>
@@ -56,26 +56,27 @@
                 </div>
             </b-modal>
             <b-modal centered title="Warning" class="modal-danger" v-model="confirmDeleteAction" @ok="deleteSetting()">
-                You are going to delete current setting.  Press OK if you are sure!
+                You are going to delete current setting. Press OK if you are sure!
             </b-modal>
         </b-row>
     </b-container>
 </template>
 <script>
     import vSelect from 'vue-select';
+
     export default {
         name: "AddNewsFeed",
         data() {
             return {
-                name:'',
-                token:'',
-                selected:[],
-                preHotels:[],
-                options:[],
-                errors:false,
-                success:false,
-                lastID:null,
-                confirmDeleteAction:false,
+                name: '',
+                token: '',
+                selected: [],
+                preHotels: [],
+                options: [],
+                errors: false,
+                success: false,
+                lastID: null,
+                confirmDeleteAction: false,
             }
         },
 
@@ -83,87 +84,66 @@
             vSelect
         },
 
-        computed:{
-        },
+        computed: {},
 
         mounted() {
             this.getData();
         },
 
-        methods:{
+        methods: {
 
             tokenGen() {
 
                 var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
                 var text = '';
-                for (var i = 0; i < 32; i++){
+                for (var i = 0; i < 32; i++) {
                     text += possible.charAt(Math.floor(Math.random() * possible.length));
                 }
                 this.token = text
             },
 
-            getData(){
+            getData() {
                 axios.get('/hotels').then(response => {
-                    this.preHotels = response.data;
-                    this.preHotels.forEach(el=>{
-                        this.options.push({
-                            id:el.id,
-                            label:el.name
+                        this.preHotels = response.data;
+                        this.preHotels.forEach(el => {
+                            this.options.push({
+                                id: el.id,
+                                label: el.name
+                            })
                         })
-                    })
-                    this.getSecondary()
+                        this.getSecondary()
                     }
-                ).catch(e=>{
-                    this.errors=true
+                ).catch(e => {
+                    this.errors = true
                 })
             },
 
-            getSecondary(){
-                 axios.get('/settings/email/'+ this.$route.params.id).then(response => {
-                     let dataReceived = JSON.parse(response.data[0].setting);
-                     this.name = dataReceived.name;
-                     this.token = dataReceived.token;
-                     dataReceived.hotels.forEach(parentEl=>{
-                         this.options.forEach(el=>{
-                             if(el.id === parentEl ){
-                                 this.selected.push(el)
-                             }
-                         })
-                     })
+            getSecondary() {
+                axios.get('/settings/email/' + this.$route.params.id).then(response => {
+                        let dataReceived = JSON.parse(response.data[0].setting);
+                        this.name = dataReceived.name;
+                        this.token = dataReceived.token;
+                        let hotels = JSON.parse(dataReceived.hotels)
+                        hotels.forEach(parentEl => {
+                            this.options.forEach(el => {
+                                if (el.id === parentEl) {
+                                    this.selected.push(el)
+                                }
+                            })
+                        })
                     }
-                ).catch(e=>{
-                    this.errors=true
+                ).catch(e => {
+                    this.errors = true
                 })
             },
 
-
-            save(){
-
-                if(this.lastID !==null){
-                    return this.edit()
-                }
+            edit() {
                 let data = {
-                    name:this.name,
-                    hotels:this.transformHotelIDs(),
-                    token:this.token
+                    name: this.name,
+                    hotels: this.transformHotelIDs(),
+                    token: this.token
                 }
-                axios.post('/settings/emails/add', data)
-                    .then(response => {
-                        this.lastID = response.data
-                        this.success = true
-                    })
-                    .catch(e => {
-                        this.errors = true;
-                    });
-            },
-
-            edit(){
-                let data = {
-                    name:this.name,
-                    hotels:this.transformHotelIDs(),
-                    token:this.token
-                }
-                axios.post('/settings/emails/edit/'+this.lastID, data)
+                axios.post('/settings/emails/edit/' + this.$route.params.id, data)
                     .then(response => {
                         this.success = true
                     })
@@ -172,32 +152,30 @@
                     });
             },
 
-            transformHotelIDs(){
+            transformHotelIDs() {
                 var transformed = [];
-                this.selected.forEach(el=>{
+                this.selected.forEach(el => {
                     transformed.push(el.id)
                 })
                 return transformed;
             },
 
-
-
             confirmDelete() {
                 this.confirmDeleteAction = true
             },
 
-            deleteSetting(){
+            deleteSetting() {
                 axios.delete('/settings/delete/' + this.lastID)
                     .then(response => {
-                        this.$router.push({name:'Email list settings'})
+                        this.back()
                     })
                     .catch(e => {
                         this.errors = true
                     });
             },
 
-            back(){
-                return this.$router.push({name: 'Groups'})
+            back() {
+                this.$router.push({name: 'Email list settings'})
             }
         }
     }

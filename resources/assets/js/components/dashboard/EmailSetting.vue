@@ -6,8 +6,10 @@
                     <b-card header="Email group">
                         <br/>
                         <b-row>
-                            <b-col  lg="1" class="mb-3">
-                                <b-button @click="$router.push({name: 'Add Email list setting'})" variant="primary"><i class="fa fa-plus"></i> Add</b-button>
+                            <b-col lg="1" class="mb-3">
+                                <b-button @click="$router.push({name: 'Add Email list setting'})" variant="primary"><i
+                                        class="fa fa-plus"></i> Add
+                                </b-button>
                             </b-col>
                             <b-col offset="7" lg="3" class="mb-3">
                                 <!--hotel-->
@@ -31,7 +33,7 @@
                                     <b-card class="groups" bg-variant="dark" text-variant="white"
                                             :title="setting.name">
                                         <p class="card-text">
-                                            <span>Included: {{ setting.hotels.length }}  hotels</span>
+                                            <span>Included: {{ countHotels(setting.hotels) }}  hotels</span>
                                         </p>
                                         <b-button @click="editEmailSetting(setting.id)" type="edit" variant="primary"><i
                                                 class="fa fa-pencil-square-o"></i> Edit
@@ -54,14 +56,14 @@
                 </div>
             </div>
         </div>
-            <b-card header="NOTE:  Please send tokens to hotels">
-        <b-col lg="12">
-            <span>To download email please use one of this URLs:</span><br>
-            <span><b>https://wifi.guestcompass.nl/emails</b></span><br>
-            <p><b>https://wifi.guestcompass.nl/emails/{ TOKEN }</b></p>
-            <span style="font-size: 10px">change { TOKEN } to actual token</span>
-        </b-col>
-            </b-card>
+        <b-card header="NOTE:  Please send tokens to hotels">
+            <b-col lg="12">
+                <span>To download email please use one of this URLs:</span><br>
+                <span><b>https://wifi.guestcompass.nl/emails</b></span><br>
+                <p><b>https://wifi.guestcompass.nl/emails/{ TOKEN }</b></p>
+                <span style="font-size: 10px">change { TOKEN } to actual token</span>
+            </b-col>
+        </b-card>
 
     </div>
 </template>
@@ -84,7 +86,7 @@
                     id: null,
                     name: null,
                 },
-                errors:false,
+                errors: false,
             }
         },
 
@@ -103,23 +105,27 @@
 
         methods: {
 
-            getData(){
+            countHotels(str) {
+                let a = (JSON.parse(str))
+                return a.length
+            },
+
+            getData() {
                 axios.get('/settings/emails')
                     .then(response => {
-                        //console.log(response.data)
-                        if(response.data.length > 0){
+                        if (response.data.length > 0) {
                             let process = response.data;
-                            process.forEach(element=> {
-                               this.settings.push(
-                                   {
-                                       id:element.id,
-                                       name:JSON.parse(element.setting).name,
-                                       hotels:JSON.parse(element.setting).hotels
-                                   }
-                               )
+                            process.forEach(element => {
+                                this.settings.push(
+                                    {
+                                        id: element.id,
+                                        name: JSON.parse(element.setting).name,
+                                        hotels: JSON.parse(element.setting).hotels
+                                    }
+                                )
                             })
                             this.fetchComplete = true
-                        }else {
+                        } else {
                             return;
                         }
                     })
@@ -138,7 +144,7 @@
                 this.confirmDeleteAction = true
             },
 
-            deleteSetting(){
+            deleteSetting() {
                 axios.delete('/settings/delete/' + this.deleteCreds.id)
                     .then(response => {
                         this.settings = [];

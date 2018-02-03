@@ -160,8 +160,6 @@
                 return transformed;
             },
 
-
-
             confirmDelete() {
                 this.confirmDeleteAction = true
             },
@@ -169,7 +167,7 @@
             deleteSetting(){
                 axios.delete('/settings/delete/' + this.lastID)
                     .then(response => {
-                        this.$router.push({name:'Email list settings'})
+                        this.back()
                     })
                     .catch(e => {
                         this.errors = true
@@ -177,7 +175,7 @@
             },
 
             back(){
-                return this.$router.push({name: 'Groups'})
+                this.$router.push({name: 'Email list settings'})
             }
         }
     }

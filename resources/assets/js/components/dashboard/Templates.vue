@@ -217,7 +217,6 @@
                     });
             },
 
-
             deleteReserved() {
                 axios.delete('/template/reserved/' + this.goDel)
                     .then(response => {
@@ -240,7 +239,6 @@
                 this.reservedModal = true
                 this.newReserved = id;
             },
-
 
             setNewRes() {
                 axios.post('/template/set-reserved', {

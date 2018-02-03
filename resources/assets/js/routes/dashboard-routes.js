@@ -17,17 +17,13 @@ const Hotels = resolve => {
     });
 };
 
-const Modals = resolve => {
-    require.ensure(['../components/dashboard/Modals.vue'], () => {
-        resolve(require('../components/dashboard/Modals.vue'));
-    });
-};
 
 const Hotel = resolve => {
     require.ensure(['../components/dashboard/Hotel.vue'], () => {
         resolve(require('../components/dashboard/Hotel.vue'));
     });
 };
+
 
 const AddHotel = resolve => {
     require.ensure(['../components/dashboard/AddHotel.vue'], () => {
@@ -113,6 +109,24 @@ const EditCard = resolve => {
     });
 };
 
+const EmailSettings = resolve => {
+    require.ensure(['../components/dashboard/EmailSetting.vue'], () => {
+        resolve(require('../components/dashboard/EmailSetting.vue'));
+    });
+};
+
+const AddEmailSettings = resolve => {
+    require.ensure(['../components/dashboard/AddEmailSetting.vue'], () => {
+        resolve(require('../components/dashboard/AddEmailSetting.vue'));
+    });
+};
+
+const EditEmailSettings = resolve => {
+    require.ensure(['../components/dashboard/EditEmailSetting.vue'], () => {
+        resolve(require('../components/dashboard/EditEmailSetting.vue'));
+    });
+};
+
 export const routes = [
     {
         path: '/dashboard',
@@ -129,20 +143,17 @@ export const routes = [
                 path: '/dashboard/hotels',
                 name: 'Hotels',
                 component: Hotels
-
             },
             {
                 path: '/dashboard/hotel/add',
                 name: 'Add Hotel',
                 component:AddHotel
-
             },
 
             {
                 path: '/dashboard/hotel/edit/:hotelID',
                 name: 'Edit Hotel',
                 component: Hotel
-
             },
 
             {
@@ -155,7 +166,6 @@ export const routes = [
                 path: '/dashboard/template/add',
                 name: 'Add new template',
                 component:AddTemplate
-
             },
 
             {
@@ -182,7 +192,6 @@ export const routes = [
                 path: '/dashboard/router/add',
                 name: 'Add router',
                 component:AddRouter
-
             },
 
             {
@@ -195,7 +204,6 @@ export const routes = [
                 path: '/dashboard/newsfeed/group/add',
                 name: 'Add group',
                 component:AddGroup,
-
             },
 
             {
@@ -215,29 +223,36 @@ export const routes = [
                 path: '/dashboard/newsfeed/card/add',
                 name: 'Add newsfeed card',
                 component:AddNewsFeed
-
             },
 
             {
                 path: '/dashboard/newsfeed/card/:id',
                 name: 'Edit card',
                 component:EditCard
-
             },
-
 
             {
                 path: '/dashboard/settings/account',
                 name: 'User account',
-
             },
 
             {
                 path: '/dashboard/settings/email',
                 name: 'Email list settings',
-
+                component:EmailSettings
             },
 
+            {
+                path: '/dashboard/settings/email/add',
+                name: 'Add Email list setting',
+                component:AddEmailSettings
+            },
+
+            {
+                path: '/dashboard/settings/email/:id',
+                name: 'Edit Email list setting',
+                component:EditEmailSettings
+            },
 
             {
                 path: '/dashboard/settings/users',

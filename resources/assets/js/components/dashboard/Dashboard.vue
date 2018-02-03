@@ -13,11 +13,9 @@
     <AppFooter/>
   </div>
 </template>
-
 <script>
 import nav from './_nav'
 import { Header as AppHeader, Sidebar, Footer as AppFooter, Breadcrumb } from './default-components/'
-
 export default {
   name: 'Dashboard',
   components: {
@@ -39,7 +37,6 @@ export default {
       return this.$route.matched
     }
   },
-
 }
 </script>
 <style lang="scss">
@@ -51,9 +48,7 @@ export default {
   @import '~simple-line-icons/css/simple-line-icons.css';
   /* Import Bootstrap Vue Styles */
   @import '~bootstrap-vue/dist/bootstrap-vue.css';
-
   @import '../../../sass/dashboard-styles/style';
-
 </style>
 
 

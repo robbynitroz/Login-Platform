@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Setting;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Redis;
+use Illuminate\Http\Request;
+
 
 /**
  * Class SettingController
@@ -26,16 +26,83 @@ class SettingController extends Controller
 
 
     /**
-     * Store last saved email id in DB
+     * Return emails settings
      *
-     * @param int $last_id
+     * @return object
+     */
+    public function getEmailsSettings(): object
+    {
+        return Setting::where('type', 'email')->get();
+    }
+
+
+    /**
+     * Return email settings by ID
+     *
+     * @param Request $request
+     * @return object
+     */
+    public function getEmailsSettingsByID(Request $request): object
+    {
+        return Setting::where('id', $request->id)->get();
+    }
+
+
+    /**
+     * Delete setting by ID
+     *
+     * @param Request $request
+     */
+    public function deleteSettingByID(Request $request): void
+    {
+        Setting::find($request->id)->delete();
+    }
+
+
+    /**
+     * Create new email setting
+     *
+     * @param Request $request
+     * @return int
+     */
+    public function newEmailsSettings(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'hotels' => 'required',
+            'token' => 'required',
+        ]);
+        $setting = new Setting();
+        $setting->type = 'email';
+        $setting->setting = json_encode([
+            'name' => $request->name,
+            'token' => $request->token,
+            'hotels' => $request->hotels
+        ]);
+        $setting->save();
+        return $setting->id;
+    }
+
+
+    /**
+     * Update email setting
+     *
+     * @param Request $request
      * @return void
      */
-    public function storeEmailScheduleLastID(int $last_id): void
+    public function editEmailsSettings(Request $request):void
     {
-        Redis::del('email_schedule');
-        Setting::where('type', 'email_schedule')->update(['setting->last_id' => $last_id]);
-        self::getEmailSchedule();
+        $request->validate([
+            'name' => 'required',
+            'hotels' => 'required',
+            'token' => 'required',
+        ]);
+        Setting::where('id',
+            $request->id)->update([
+            'setting->name' => $request->name,
+            'setting->token' => $request->token,
+            'setting->hotels' => json_encode($request->hotels)
+        ]);
     }
 
 }

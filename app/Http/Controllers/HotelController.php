@@ -142,9 +142,7 @@ class HotelController extends Controller
 
             return 'success';
         }
-
         return 'fail';
-
     }
 
     /**

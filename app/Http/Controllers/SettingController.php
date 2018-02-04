@@ -179,7 +179,7 @@ class SettingController extends Controller
      */
     public function setUtilisationPercent(): void
     {
-        $model = Setting::where('type', 'database_utilisation')->first();
+        $model = Setting::where('type', 'database_utilization')->first();
         $model = $model->setting;
         $this->utilisation_percent = json_decode($model)->utilize;
         $this->utilisation_percent;

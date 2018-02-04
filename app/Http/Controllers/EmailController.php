@@ -122,7 +122,7 @@ class EmailController extends Controller
     private function checkData(Request $request): void
     {
         if ($this->data !== null) {
-            $this->hotels_list = (json_decode(json_decode($this->data)->setting))->hotels;
+            $this->hotels_list = json_decode((json_decode(json_decode($this->data)->setting))->hotels);
             $this->prepareEmailList();
         } else {
             $this->blockUser($request->ip());
@@ -139,7 +139,7 @@ class EmailController extends Controller
     {
         $model = ((new Email())->whereIn('hotel_id', $this->hotels_list));
         $this->emails_address = $model->get();
-        $model->delete();
+        //$model->delete();
         $this->prepareEmailListForDownload();
     }
 

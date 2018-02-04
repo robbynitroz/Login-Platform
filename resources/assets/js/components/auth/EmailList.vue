@@ -14,7 +14,6 @@
                     <div class="offset-lg-4 col-lg-4 offset-md-3 col-md-6">
                         <!-- login form -->
                         <form class="form loginForm" @submit.prevent="checkLoginData">
-
                             <label hidden for="password">Token</label>
                             <div :class="['input-group', counter('main')]">
                                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
@@ -22,7 +21,6 @@
                                        placeholder="Token" min="6" required
                                        type="text" v-model="token">
                             </div>
-
                             <transition name="flip" mode="out-in">
                                 <button type="submit" class="btn btn-lg btn-block"
                                         v-if="activeConfirm"
@@ -31,9 +29,7 @@
                                 </button>
                             </transition>
                             <div class="clearfix"></div>
-
                         </form>
-
                         <div class="clearfix"></div>
                         <!-- errors -->
                         <transition name="fade">
@@ -41,27 +37,21 @@
                                 Oops ! Error !
                             </div>
                         </transition>
-
-
                         <transition name="fade">
                             <div v-if="empty" class="alert alert-warning error-class text-center" role="alert">
                                 There are no new email address !
                             </div>
                         </transition>
-
                         <transition name="fade">
                             <div v-if="attempt" class="alert alert-warning error-class text-center" role="alert">
                                 {{ attemptMessage + ' attempt' }}
                             </div>
                         </transition>
-
                         <transition name="fade">
                             <div v-if="blockedUser" class="alert alert-danger error-class text-center" role="alert">
                                 {{ attemptMessage }}
                             </div>
                         </transition>
-
-
                     </div>
                 </div>
             </div>
@@ -134,25 +124,26 @@
                 axios.get('/emails/' + this.token, config)
                     .then(response => {
 
-                        let reader = new FileReader();
+                        var responseData = response.data;
+                        var reader = new FileReader();
                         reader.onload = () => {
-                            if (typeof reader.result === "string") {
-                                if (reader.result == 'Empty') {
+                            if (typeof responseData === "string") {
+                                if (responseData == 'Empty') {
                                     this.empty = true;
                                     this.loading = '';
                                     return;
-                                } else if (reader.result.includes('Wrong token! You have left:')) {
+                                } else if (responseData.includes('Wrong token! You have left:')) {
                                     this.attempt = true;
                                     this.attemptMessage = reader.result;
                                     return;
-                                } else if (reader.result.includes('You are blocked')) {
+                                } else if (responseData.includes('You are blocked')) {
                                     this.blockedUser = true;
                                     this.attemptMessage = "Your IP address is blocked, try after 30 minutes";
                                     return;
                                 }
                             } else {
                                 this.loading = '';
-                                const url = window.URL.createObjectURL(new Blob([response.data]));
+                                const url = window.URL.createObjectURL(new Blob([responseData]));
                                 const link = document.createElement('a');
                                 link.href = url;
                                 link.setAttribute('download', 'emails.json');

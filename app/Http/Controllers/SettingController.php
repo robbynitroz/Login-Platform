@@ -17,29 +17,30 @@ class SettingController extends Controller
     /**
      * Radacct table rows count
      *
-     * @var int
+     * @var int $count_radacct
      */
     private $count_radacct;
 
     /**
      * client_auths table rows count
      *
-     * @var int
+     * @var int $count_client_auths
      */
     private $count_client_auths;
 
     /**
      * radcheck table rows count
      *
-     * @var int
+     * @var int $count_radcheck
      */
     private $count_radcheck;
     /**
      * Utilisation percent
      *
-     * @var int
+     * @var int $utilisation_percent
      */
     private $utilisation_percent;
+
 
     /**
      * Get data by token

@@ -34,6 +34,7 @@ class SettingController extends Controller
      * @var int $count_radcheck
      */
     private $count_radcheck;
+
     /**
      * Utilisation percent
      *
@@ -53,7 +54,6 @@ class SettingController extends Controller
         return ((new Setting())->where('setting->token', $token)->first());
     }
 
-
     /**
      * Return emails settings
      *
@@ -63,7 +63,6 @@ class SettingController extends Controller
     {
         return Setting::where('type', 'email')->get();
     }
-
 
     /**
      * Return email settings by ID
@@ -76,7 +75,6 @@ class SettingController extends Controller
         return Setting::where('id', $request->id)->get();
     }
 
-
     /**
      * Delete setting by ID
      *
@@ -86,7 +84,6 @@ class SettingController extends Controller
     {
         Setting::find($request->id)->delete();
     }
-
 
     /**
      * Create new email setting
@@ -112,7 +109,6 @@ class SettingController extends Controller
         return $setting->id;
     }
 
-
     /**
      * Update email setting
      *
@@ -134,7 +130,6 @@ class SettingController extends Controller
         ]);
     }
 
-
     /**
      * Register utilizations
      *
@@ -144,7 +139,6 @@ class SettingController extends Controller
     {
         $this->utilizeDatabase();
     }
-
 
     /**
      * Database utilizations mechanism
@@ -158,7 +152,6 @@ class SettingController extends Controller
         $this->deleteUnusefulRaws();
     }
 
-
     /**
      * Set count properties, count tables
      *
@@ -170,7 +163,6 @@ class SettingController extends Controller
         $this->count_client_auths = DB::table('client_auths')->count();
         $this->count_radcheck = DB::table('radcheck')->where('router', 'no')->count();
     }
-
 
     /**
      * Set utilisation percent to be deleted from tables
@@ -184,7 +176,6 @@ class SettingController extends Controller
         $this->utilisation_percent = json_decode($model)->utilize;
         $this->utilisation_percent;
     }
-
 
     /**
      * Delete old, not in use anymore data from DB
@@ -204,7 +195,6 @@ class SettingController extends Controller
         DB::table('radcheck')->where('router', 'no')->limit($limit)->delete();
         unset($limit);
     }
-
 
     /**
      * Get the percentage of rows to be deleted

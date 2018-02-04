@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Email;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class EmailController
@@ -21,36 +21,42 @@ class EmailController extends Controller
      * @var object $emails_address
      */
     public $emails_address;
+
     /**
      * Email address
      *
      * @var array
      */
     public $email_address_array = array();
+
     /**
      * File name (UNIX timestamp)
      *
      * @var int $file_name
      */
     public $file_name;
+
     /**
      * In case if no emails in DB
      *
      * @var bool
      */
     public $empty = false;
+
     /**
      * Wrong token attempts
      *
      * @var int
      */
     public $attempts = 0;
+
     /**
      * Hotels id list
      *
      * @var array $hotels_list
      */
     protected $hotels_list;
+
     /**
      * Data received from model
      *
@@ -62,7 +68,7 @@ class EmailController extends Controller
      * Store email in DB if not exist
      *
      * @param string $email
-     * @param int $hotel_id
+     * @param int    $hotel_id
      * @param string $login_type
      * @return void
      */
@@ -78,7 +84,6 @@ class EmailController extends Controller
         $emailModel->save();
         return;
     }
-
 
     /**
      * Entry point, run necessary methods
@@ -102,7 +107,6 @@ class EmailController extends Controller
         }
     }
 
-
     /**
      * Set data
      *
@@ -110,7 +114,6 @@ class EmailController extends Controller
      */
     public function setData(string $token)
     {
-
         $this->data = ((new SettingController())->getDataWithToken($token));
     }
 
@@ -128,7 +131,6 @@ class EmailController extends Controller
             $this->blockUser($request->ip());
         }
     }
-
 
     /**
      * Getting emails columns from Email model
@@ -167,20 +169,19 @@ class EmailController extends Controller
      *
      * @param string $ip
      */
-    public function blockUser(string $ip):void
+    public function blockUser(string $ip): void
     {
         if (Redis::get("intruder-" . $ip) === null) {
             Redis::set("intruder-" . $ip, 1);
             Redis::expire("intruder-" . $ip, 1800);
             $this->attempts = 1;
-        }else{
+        } else {
             $attempts = Redis::get("intruder-" . $ip);
             $this->attempts = $attempts + 1;
             Redis::set("intruder-" . $ip, $this->attempts);
             Redis::expire("intruder-" . $ip, 1800);
         }
     }
-
 
     /**
      * File download and removal from DB

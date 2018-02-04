@@ -17,7 +17,7 @@ use Intervention\Image\Facades\Image;
 class TemplateController extends Controller
 {
     /**
-     * @var
+     * @var mixed $user_templates
      */
     public $user_templates;
 
@@ -51,7 +51,7 @@ class TemplateController extends Controller
     /**
      * Get specific template, usually used for users already authorized to use WiFi and shown after session timeout
      *
-     * @param int $hotel_id
+     * @param int    $hotel_id
      * @param string $template_type
      * @return mixed
      */
@@ -65,7 +65,6 @@ class TemplateController extends Controller
         }
         return Redis::get('templates.reserved.' . $hotel_id);
     }
-
 
     /**
      * Get necessary data for page
@@ -109,7 +108,6 @@ class TemplateController extends Controller
                 'hotelLogo' => ''
             ], JSON_FORCE_OBJECT
         );
-
         //if template is schedule
         if ($request->schedule) {
             $start_date = date("Y-m-d H:i:s", (int)substr($request->startTime, 0, 10));
@@ -127,6 +125,32 @@ class TemplateController extends Controller
         return $newTemplate->id;
     }
 
+    /**
+     * Check if schedule template dates are busy
+     *
+     * @param $request
+     * @param $start_date
+     * @param $end_date
+     * @return bool
+     */
+    public function checkIfBusy($request, $start_date, $end_date)
+    {
+        $id = $request->hotelID;
+        $template_id = $request->templateID ?? $request->templateID ?? false;
+        $templates = (new HotelController())->getHotelTemplates($request, $id);
+        foreach ($templates as $template) {
+            if ($template_id !== false and $template_id == $template->id) {
+                continue;
+            }
+            if (($template->schedule_start_time >= $start_date and $template->schedule_end_time <= $start_date)
+                or ($template->schedule_start_time <= $end_date and $template->schedule_end_time >= $end_date)
+                or ($template->schedule_start_time >= $start_date and $template->schedule_start_time <= $end_date)
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Edit template
@@ -137,10 +161,9 @@ class TemplateController extends Controller
     public function editTemplate(Request $request)
     {
         //return $request->all();
-        $editTemplate =Template::find($request->id);
+        $editTemplate = Template::find($request->id);
         $editTemplate->hotel = (int)$request->hotelID;
         $editTemplate->type = $request->activeTemplate;
-
         $editTemplate->data = json_encode(
             [
                 'texts' => $request->texts,
@@ -160,9 +183,8 @@ class TemplateController extends Controller
                 'hotelLogo' => $request->hotelLogo
             ], JSON_FORCE_OBJECT
         );
-
         //if template is schedule
-        if ($request->schedule=='yes') {
+        if ($request->schedule == 'yes') {
             $start_date = date("Y-m-d H:i:s", (int)substr($request->startTime, 0, 10));
             $end_date = date("Y-m-d H:i:s", (int)substr($request->endTime, 0, 10));
             if ($this->checkIfBusy($request, $start_date, $end_date)) {
@@ -172,13 +194,15 @@ class TemplateController extends Controller
             $editTemplate->schedule_start_time = $start_date;
             $editTemplate->schedule_end_time = $end_date;
             $editTemplate->activated = 'yes';
-        }else if($request->scheduleChanged == 'yes' and $request->schedule=='no'){
+        } else {
+            if ($request->scheduleChanged == 'yes' and $request->schedule == 'no') {
                 $editTemplate->scheduled = 'no';
                 $editTemplate->activated = 'no';
                 $editTemplate->schedule_start_time = null;
                 $editTemplate->schedule_end_time = null;
-        }
+            }
 
+        }
         $editTemplate->save();
         $id = $editTemplate->hotel;
         $this->deleteCachedTemplates((int)$id);
@@ -186,31 +210,15 @@ class TemplateController extends Controller
     }
 
     /**
-     * Check if schedule template dates are busy
+     * Delete cached templates for updated or deleted hotel (REDIS)
      *
-     * @param $request
-     * @param $start_date
-     * @param $end_date
-     * @return bool
+     * @param int $id
      */
-    public function checkIfBusy($request, $start_date, $end_date)
+    public function deleteCachedTemplates(int $id)
     {
-        $id = $request->hotelID;
-        $template_id = $request->templateID ?? $request->templateID ?? false;
-        $templates = (new HotelController())->getHotelTemplates($request, $id);
-        foreach ($templates as $template) {
-            if($template_id !== false and $template_id == $template->id){ continue; }
-            if (($template->schedule_start_time >= $start_date and $template->schedule_end_time <= $start_date)
-                or ($template->schedule_start_time <= $end_date and $template->schedule_end_time >= $end_date)
-                or ($template->schedule_start_time >= $start_date and $template->schedule_start_time <= $end_date)
-            ) {
-                return true;
-            }
-
-        }
-        return false;
+        Redis::del('templates.' . $id);
+        Redis::del("templates.reserved." . $id);
     }
-
 
     /**
      * Manage templates media files
@@ -234,46 +242,42 @@ class TemplateController extends Controller
         $media = array();
 
         //Check if logo exist and validate
-        if($request->file('logo')){
-        if ($request->file('logo')->isValid()) {
-            $request->validate([
-                'logo' => 'image:jpeg,jpg,png'
-            ]);
-            $hotelLogo = $request->logo->hashName();
-            $request->logo->store('public/'.$imagePath);
-            $this->optimizeImages('app/public/'.$imagePath.'/'.$hotelLogo);
-        }}
+        if ($request->file('logo')) {
+            if ($request->file('logo')->isValid()) {
+                $request->validate([
+                    'logo' => 'image:jpeg,jpg,png'
+                ]);
+                $hotelLogo = $request->logo->hashName();
+                $request->logo->store('public/' . $imagePath);
+                $this->optimizeImages('app/public/' . $imagePath . '/' . $hotelLogo);
+            }
+        }
 
         //Check if background files exist and validate
-        if($request->file('background')){
-        if ($request->file('background')->isValid()) {
-            $request->validate([
-                'background' => 'mimes:jpeg,jpg,bmp,png,mp4,mpeg4'
-            ]);
+        if ($request->file('background')) {
+            if ($request->file('background')->isValid()) {
+                $request->validate([
+                    'background' => 'mimes:jpeg,jpg,bmp,png,mp4,mpeg4'
+                ]);
+                $media['type'] = $request->background->getClientOriginalExtension();
+                if ($media['type'] == 'mp4' or $media['type'] == 'mpeg4') {
+                    $media['src'] = '/storage/' . $videoPath . '/' . $request->background->hashName();
+                    $request->background->store('public/' . $videoPath);
+                } else {
+                    $media['src'] = '/storage/' . $imagePath . '/' . $request->background->hashName();
+                    $request->background->store('public/' . $imagePath);
 
-
-            $media['type'] = $request->background->getClientOriginalExtension();
-
-            if ($media['type'] == 'mp4' or $media['type'] == 'mpeg4') {
-                $media['src'] = '/storage/' . $videoPath . '/' . $request->background->hashName();
-                $request->background->store('public/' . $videoPath);
-            } else {
-                $media['src'] = '/storage/' . $imagePath . '/' . $request->background->hashName();
-                $request->background->store('public/' . $imagePath);
+                }
             }
+        }
+        if ($videoPath !== 'tmp') {
+            $this->saveFileNames((int)$request->id, $hotelLogo, $media);
+        } else {
+            return $this->previewFiles((int)$request->identity, $hotelLogo, $media);
 
-        }}
-
-            if ($videoPath !== 'tmp') {
-                $this->saveFileNames((int)$request->id, $hotelLogo, $media);
-            } else {
-                return $this->previewFiles((int)$request->identity, $hotelLogo, $media);
-            }
-
-
+        }
         return 'success';
     }
-
 
     /**
      * Optimize logo size to be not more then 390 px
@@ -281,31 +285,30 @@ class TemplateController extends Controller
      * @param string $image
      * @return void
      */
-    public function optimizeImages(string $image):void
+    public function optimizeImages(string $image): void
     {
         $path = storage_path();
-        $path .= '/'.$image;
+        $path .= '/' . $image;
         $img = Image::make($path);
         // resize the image to a width of 600 and constrain aspect ratio (auto height)
 
-        if($img->width() > 390) {
+        if ($img->width() > 390) {
             $img->resize(390, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
             $img->save($path, 90);
-        }else{
+        } else {
             return;
-        }
-        // save file as jpg with medium quality (90)
-    }
 
+        }
+    }
 
     /**
      * Saves file names in MySQL DB
      *
-     * @param int $id
+     * @param int    $id
      * @param string $hotelLogo
-     * @param array $media
+     * @param array  $media
      */
     public function saveFileNames(int $id, string $hotelLogo, array $media): void
     {
@@ -313,27 +316,22 @@ class TemplateController extends Controller
         $templateModel = (Template::find($id));
         $jsonData = $templateModel->data;
         $data = json_decode($jsonData);
-
         //Prepare old files if exist
         $oldFiles = array();
-
-        if($hotelLogo !== ''){
+        if ($hotelLogo !== '') {
             if ($data->hotelLogo != '') {
                 array_push($oldFiles, $data->hotelLogo);
             }
-            $data->hotelLogo = '/storage/images/'.$hotelLogo;
+            $data->hotelLogo = '/storage/images/' . $hotelLogo;
         }
-
-        if(!empty($media)) {
+        if (!empty($media)) {
             if ($data->media->src != '') {
                 array_push($oldFiles, $data->media->src);
             }
             $data->media = $media;
         }
-
         //Delete old files if exist
         $this->destroyFiles($oldFiles);
-
         $templateModel->data = json_encode($data, JSON_FORCE_OBJECT);
         $templateModel->save();
         $id = $templateModel->hotel;
@@ -351,40 +349,27 @@ class TemplateController extends Controller
     }
 
     /**
-     * Delete cached templates for updated or deleted hotel (REDIS)
-     *
-     * @param int $id
-     */
-    public function deleteCachedTemplates(int $id)
-    {
-        Redis::del('templates.' . $id);
-        Redis::del("templates.reserved." . $id);
-    }
-
-    /**
      * Preview files management
      *
-     * @param int $identity
+     * @param int    $identity
      * @param string $hotelLogo
-     * @param array $media
+     * @param array  $media
      * @return int
      */
     public function previewFiles(int $identity, string $hotelLogo, array $media)
     {
         $jsonData = Redis::get('data-' . $identity);
         $data = json_decode($jsonData);
-
-        if(!empty($media)){
+        if (!empty($media)) {
             $data->media = $media;
         }
-        if($hotelLogo !== ''){
-            $data->hotelLogo = '/storage/tmp/'.$hotelLogo;
+        if ($hotelLogo !== '') {
+            $data->hotelLogo = '/storage/tmp/' . $hotelLogo;
         }
         $newData = json_encode($data, JSON_FORCE_OBJECT);
         Redis::set('data-' . $identity, $newData, 300);
         Redis::expire('data-' . $identity, 60);
         return $identity;
-
     }
 
     /**
@@ -395,11 +380,9 @@ class TemplateController extends Controller
      */
     public function preparePreview(Request $request)
     {
-
         if ($request->type === 'alreadySaved') {
             return $this->prepareSavedTemplate((int)$request->id);
         }
-
         $data = [
             'texts' => $request->texts,
             'langs' => $request->langs,
@@ -417,26 +400,21 @@ class TemplateController extends Controller
             'media' => ['src' => '', 'type' => ''],
             'hotelLogo' => ''
         ];
-
-        if($request->media){
-            $data['media']['src'] =$request->media['src'];
-            $data['media']['type'] =$request->media['type'];
+        if ($request->media) {
+            $data['media']['src'] = $request->media['src'];
+            $data['media']['type'] = $request->media['type'];
         }
-
-        if($request->hotelLogo){
-            $data['hotelLogo']=$request->hotelLogo;
+        if ($request->hotelLogo) {
+            $data['hotelLogo'] = $request->hotelLogo;
         }
         $data = json_encode(
-           $data , JSON_FORCE_OBJECT
+            $data, JSON_FORCE_OBJECT
         );
-
         $timestamp = Carbon::now()->timestamp;
         Redis::set('data-' . $timestamp, $data, 300);
         Redis::expire('data-' . $timestamp, 60);
-
         return $timestamp;
     }
-
 
     /**
      * Save template in Redis for preview
@@ -450,7 +428,6 @@ class TemplateController extends Controller
         $timestamp = Carbon::now()->timestamp;
         Redis::set('data-' . $timestamp, $template->data, 300);
         Redis::expire('data-' . $timestamp, 60);
-
         return $timestamp;
     }
 
@@ -462,9 +439,7 @@ class TemplateController extends Controller
      */
     public function preview(Request $request)
     {
-
         $data = Redis::get('data-' . $request->id);
-
         if (!$data) {
             return 'Sorry data expired';
         }
@@ -494,13 +469,14 @@ class TemplateController extends Controller
      */
     public function activate(Request $request)
     {
-        if(!$request->id or !$request->hotel){
+        if (!$request->id or !$request->hotel) {
             return 'fail';
         }
         $id = $request->id;
         $hotel_id = $request->hotel;
         //Deactivate old one
-        (new Template())->where('hotel', $hotel_id)->where('activated', 'yes')->where('scheduled', 'no')->update(['activated' => 'no']);
+        (new Template())->where('hotel', $hotel_id)->where('activated', 'yes')->where('scheduled',
+            'no')->update(['activated' => 'no']);
         //Activate new one
         (Template::find($id))->update(['activated' => 'yes']);
         $this->deleteCachedTemplates($hotel_id);
@@ -515,19 +491,18 @@ class TemplateController extends Controller
      */
     public function delete(Request $request)
     {
-        if(!$request->id){
+        if (!$request->id) {
             return 'fail';
         }
         $null_critical = Template::find($request->id);
-        $null_critical->activated='no';
-        $null_critical->scheduled='no';
-        $null_critical->schedule_start_time=null;
-        $null_critical->schedule_end_time=null;
+        $null_critical->activated = 'no';
+        $null_critical->scheduled = 'no';
+        $null_critical->schedule_start_time = null;
+        $null_critical->schedule_end_time = null;
         $null_critical->save();
         $null_critical->delete();
         return 'success';
     }
-
 
     /**
      * Store new reserved template
@@ -535,32 +510,32 @@ class TemplateController extends Controller
      * @param Request $request
      * @return void
      */
-    public function setReserved(Request $request):void
+    public function setReserved(Request $request): void
     {
-            $new_reserved = array();
-            $source_template=Template::findOrFail($request->id);
-            $new_reserved['hotel'] = $source_template->hotel;
-            $new_reserved['type'] =  'reserved';
-            $new_reserved['data'] =  $source_template->data;
-            $this->unsetOldReserved($request, $new_reserved['hotel']);
-            Template::create($new_reserved);
-            Redis::del("templates.reserved." . $new_reserved['hotel']);
+        $new_reserved = array();
+        $source_template = Template::findOrFail($request->id);
+        $new_reserved['hotel'] = $source_template->hotel;
+        $new_reserved['type'] = 'reserved';
+        $new_reserved['data'] = $source_template->data;
+        $this->unsetOldReserved($request, $new_reserved['hotel']);
+        Template::create($new_reserved);
+        Redis::del("templates.reserved." . $new_reserved['hotel']);
     }
-
 
     /**
      * Delete old reserved template
      *
      * @param Request $request
-     * @param int $id
+     * @param int     $id
      * @return void
      */
-    public function unsetOldReserved(Request $request, int $id = 0):void
+    public function unsetOldReserved(Request $request, int $id = 0): void
     {
-        if($id !==0){
+        if ($id !== 0) {
             $hotel_id = $id;
-        }else{
+        } else {
             $hotel_id = $request->id;
+
         }
         (new Template())->where('hotel', $hotel_id)->where('type', 'reserved')->forcedelete();
         Redis::del("templates.reserved." . $hotel_id);

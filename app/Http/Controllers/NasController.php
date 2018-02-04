@@ -17,7 +17,6 @@ use PEAR2\Net\RouterOS;
 class NasController extends Controller
 {
 
-
     /**
      * Fetch NAS infro from DB and store in Redis or fetch NAS from Redis if exist
      *
@@ -31,18 +30,6 @@ class NasController extends Controller
             Redis::set('Nas.' . $ip, json_encode($nas_profile));
         }
         return Redis::get("Nas." . $ip);
-    }
-
-
-    /**
-     * Get Routers by hotel ID
-     *
-     * @param Request $request
-     * @return mixed
-     */
-    public function getHotelRouters(Request $request)
-    {
-        return (new HotelController())->getHotelRouters($request);
     }
 
     /**
@@ -103,10 +90,10 @@ class NasController extends Controller
         $router->description = $data['description'];
         $router->shortname = $data['shortname'];
         $router->hotel_id = $data['hotel_id'];
-        if($request->mikrotik_username !=''){
+        if ($request->mikrotik_username != '') {
             $router->mikrotik_username = Crypt::encryptString($request->mikrotik_username);
         }
-        if($request->mikrotik_password !=''){
+        if ($request->mikrotik_password != '') {
             $router->mikrotik_password = Crypt::encryptString($request->mikrotik_password);
         }
         $router->wanmac = $data['wanmac'];
@@ -148,7 +135,7 @@ class NasController extends Controller
      * Add new router
      *
      * @param Request $request
-     * @param $ip
+     * @param         $ip
      * @return void
      */
     public function newRouter(Request $request, $ip): void
@@ -197,15 +184,25 @@ class NasController extends Controller
                 $mikrotik_data['username'] = Crypt::decryptString($router->mikrotik_username);
                 $mikrotik_data['password'] = Crypt::decryptString($router->mikrotik_password);
                 $count_users = $this->getNumberOfUsers($mikrotik_data);
-                $response[$router->nasname] = array('online'=>'yes', 'users'=>$count_users);
+                $response[$router->nasname] = array('online' => 'yes', 'users' => $count_users);
             } catch (\Exception $e) {
                 //do nothing, we don't need to trow an exception
-                $response[$router->nasname] = array('online'=>'no', 'users'=>0);
+                $response[$router->nasname] = array('online' => 'no', 'users' => 0);
+
             }
-
         }
-
         return $response;
+    }
+
+    /**
+     * Get Routers by hotel ID
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function getHotelRouters(Request $request)
+    {
+        return (new HotelController())->getHotelRouters($request);
     }
 
     /**
@@ -218,6 +215,7 @@ class NasController extends Controller
     {
         return Nas::all();
     }
+
 
     /**
      * Get number of users on Mikrotik
@@ -237,6 +235,5 @@ class NasController extends Controller
         $response = $util->setMenu('/ip hotspot active')->count();
         return $response;
     }
-
 
 }

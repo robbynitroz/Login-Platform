@@ -24,6 +24,7 @@ class NewsfeedController extends Controller
             $hotel_tag = 'all';
         } else {
             $hotel_tag = $request->hotel_name;
+
         }
         $results = $model->getFeedsByName($hotel_tag);
         $feed = array();
@@ -32,7 +33,6 @@ class NewsfeedController extends Controller
         }
         return $feed;
     }
-
 
     /**
      * Get necessary data for card creation
@@ -72,6 +72,7 @@ class NewsfeedController extends Controller
             } else {
                 if (isset($belongs['value'][0])) {
                     $belong .= '  ' . $belongs['value'][0] . ',  ';
+
                 }
             }
         }
@@ -80,8 +81,9 @@ class NewsfeedController extends Controller
             'title' => $request->description,
             'text' => $request->feed_content,
             'img' => '',
-            'buttonLink'=>$request->buttonLink,
-            'buttonText'=>$request->buttonText]);
+            'buttonLink' => $request->buttonLink,
+            'buttonText' => $request->buttonText
+        ]);
         $model->save();
         return $model->id;
     }
@@ -114,6 +116,12 @@ class NewsfeedController extends Controller
         return 'fail';
     }
 
+    /**
+     * Get stored media
+     *
+     * @param int $id
+     * @return string
+     */
     private function getStoredMediaName(int $id): string
     {
         $model = NewsFeed::where('id', $id)->get(['feed']);
@@ -159,11 +167,23 @@ class NewsfeedController extends Controller
         NewsFeed::where('id', $id)->delete();
     }
 
+    /**
+     * Get card from DB by ID
+     *
+     * @param Request $request
+     * @return mixed
+     */
     public function getCard(Request $request)
     {
         return NewsFeed::find($request->id);
     }
 
+    /**
+     * Edit card
+     *
+     * @param Request $request
+     * @return mixed
+     */
     public function editCard(Request $request)
     {
         $id = $request->id;
@@ -175,22 +195,21 @@ class NewsfeedController extends Controller
                 if (isset($belongs['value'][0])) {
                     $belong .= '  ' . $belongs['value'][0] . ',  ';
                 }
+
             }
         }
         NewsFeed::where('id', $id)
             ->update([
-                'card_name'=> $request->card_name,
-                'published'=> $request->published,
-                'belongs_to'=> $belong,
-                'groups'=>json_encode($request->belongs_to),
+                'card_name' => $request->card_name,
+                'published' => $request->published,
+                'belongs_to' => $belong,
+                'groups' => json_encode($request->belongs_to),
                 'feed->title' => $request->description,
                 'feed->text' => $request->feed_content,
-                'feed->buttonLink'=>$request->buttonLink,
-                'feed->buttonText'=>$request->buttonText
+                'feed->buttonLink' => $request->buttonLink,
+                'feed->buttonText' => $request->buttonText
             ]);
-
         return $id;
     }
-
 
 }

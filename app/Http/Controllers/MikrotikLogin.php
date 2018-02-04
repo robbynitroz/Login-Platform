@@ -14,29 +14,26 @@ use Illuminate\Http\Request;
 class MikrotikLogin extends Controller
 {
 
-
     /**
      * Mikrotik client IP address
      *
-     * @var string
+     * @var string $nas_info
      */
     public $nas_info;
 
     /**
      * User template
      *
-     * @var object
+     * @var object $templates
      */
     public $templates;
-
 
     /**
      * Mikrotik client/device MAC address
      *
-     * @var string
+     * @var string $client_mac
      */
     public $client_mac;
-
 
     /**
      * Get the request see if MAC address received, if yes check the IP address
@@ -57,14 +54,14 @@ class MikrotikLogin extends Controller
             return $this->processData($hotel_id, $request);
         } else {
             return redirect('http://192.168.88.1/login');
+
         }
     }
-
 
     /**
      * Get template
      *
-     * @param int $hotel_id
+     * @param int     $hotel_id
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      */
@@ -75,6 +72,7 @@ class MikrotikLogin extends Controller
             $this->templates = (new TemplateController())->getTemplate($hotel_id);
         } else {
             $this->templates = (new TemplateController())->getTemplates($hotel_id);
+
         }
         $template = json_decode($this->templates);
         if (empty($template)) {
@@ -87,13 +85,14 @@ class MikrotikLogin extends Controller
             return $this->serveLoginTemplate($template[0], $hotel, $request);
         } else {
             return $this->checkScheduledTemplate($hotel_id, $template, $request);
+
         }
     }
 
     /**
      * Return template view to user
      *
-     * @param $template
+     * @param         $template
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -127,8 +126,8 @@ class MikrotikLogin extends Controller
     /**
      * Check for schedule template, return template
      *
-     * @param int $hotel_id
-     * @param $templates
+     * @param int     $hotel_id
+     * @param         $templates
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -146,16 +145,14 @@ class MikrotikLogin extends Controller
                 }
             } else {
                 $main_template[] = $template;
+
             }
         }
-
         if (isset($scheduled_template)) {
             return $this->serveLoginTemplate($scheduled_template[0], $hotels, $request);
         }
-
         return $this->serveLoginTemplate($main_template[0], $hotels, $request);
     }
-
 
     /**
      * Mikrotik timeout

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Hotel;
-use App\Nas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 
@@ -13,13 +12,13 @@ use Illuminate\Support\Facades\Redis;
  */
 class HotelController extends Controller
 {
-    //
 
     /**
-     * @var
+     * Single hotel data
+     *
+     * @var mixed $single_hotel
      */
     public $single_hotel;
-
 
     /**
      * Fetch hotel info from DB and store in Redis or fetch info from Redis
@@ -48,7 +47,6 @@ class HotelController extends Controller
         return Hotel::find($id);
     }
 
-
     /**
      * Get * hotels
      *
@@ -59,21 +57,19 @@ class HotelController extends Controller
         return Hotel::all();
     }
 
-
     /**
      * All releted templates
      *
      * @param Request $request
      * @return mixed
      */
-    public function getHotelTemplates(Request $request, $id=false)
+    public function getHotelTemplates(Request $request, $id = false)
     {
-        if($id){
+        if ($id) {
             return (Hotel::find($id))->templates;
         }
         return (Hotel::find($request->id))->templates;
     }
-
 
     /**
      * All releted routers
@@ -86,7 +82,6 @@ class HotelController extends Controller
         return (Hotel::find($request->id))->nas;
     }
 
-
     /**
      * Delete hotels and related templates
      *
@@ -97,9 +92,8 @@ class HotelController extends Controller
     {
         Redis::del('hotel.' . $id);
         $templates = (Hotel::find($id))->templates()->delete();
-        (new NasController())->deleteHotelRouters((int) $id);
+        (new NasController())->deleteHotelRouters((int)$id);
         $hotel = (Hotel::find($id))->delete();
-
         return 'Success';
     }
 
@@ -122,7 +116,6 @@ class HotelController extends Controller
         Redis::del('hotel.' . $request->id);
     }
 
-
     /**
      * Update/edit hotel logo
      *
@@ -139,7 +132,6 @@ class HotelController extends Controller
             $updateHotelLogo->logo = $request->logo->hashName();
             $request->logo->store('public/images');
             $updateHotelLogo->save();
-
             return 'success';
         }
         return 'fail';
@@ -151,7 +143,7 @@ class HotelController extends Controller
      * @param Request $request
      * @return int
      */
-    public function newHotel(Request $request):int
+    public function newHotel(Request $request): int
     {
         $newHotel = new Hotel();
         $newHotel->name = $request->hotel['name'];

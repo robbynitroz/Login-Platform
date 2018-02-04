@@ -96,9 +96,7 @@
                 this.loading = 'compass'
             },
 
-
             counter() {
-
                 if (this.token.length < 6 && this.token.length > 0) {
                     this.activeConfirm = false;
                     return 'red-border'
@@ -107,9 +105,7 @@
                     return 'green-border';
                 }
                 return '';
-
             },
-
 
             checkLoginData() {
 

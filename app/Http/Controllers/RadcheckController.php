@@ -10,11 +10,12 @@ use App\Radcheck;
  */
 class RadcheckController extends Controller
 {
+
     /**
      * Check if device registered for Mikrotik auth
      *
      * @param string $clientMac
-     * @param int $hotel_id
+     * @param int    $hotel_id
      * @return mixed
      */
     public function checkClient(string $clientMac, int $hotel_id)
@@ -32,14 +33,13 @@ class RadcheckController extends Controller
      * Create new device credentials for Mikrotik
      *
      * @param string $clientMac
-     * @param int $hotel_id
+     * @param int    $hotel_id
      * @param string $router
      * @return bool
      */
-    public function newDevice(string $clientMac, int $hotel_id, string $router = 'no'):bool
+    public function newDevice(string $clientMac, int $hotel_id, string $router = 'no'): bool
     {
         $data = array(
-
             [
                 'username' => $clientMac,
                 'attribute' => 'User-Password',
@@ -57,11 +57,9 @@ class RadcheckController extends Controller
                 'hotel_id' => $hotel_id,
                 'router' => $router
             ]
-
         );
-
         Radcheck::insert($data);
-
         return true;
     }
+
 }

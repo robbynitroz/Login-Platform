@@ -7,17 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 class NewsFeedGroup extends Model
 {
     /**
-     * @var bool
-     */
-    public $timestamps = true;
-    /**
-     * @var string
+     * Table name
+     *
+     * @var string $table
      */
     protected $table = 'news_feed_groups';
+
     /**
-     * @var array
+     * The attributes that are mass assignable.
+     *
+     * @var array $fillable
      */
     protected $fillable = ['group_name','group_tags'];
 
+    /**
+     * Timestamps on
+     *
+     * @var bool $timestamps
+     */
+    public $timestamps = true;
 
 }

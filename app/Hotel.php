@@ -14,23 +14,36 @@ class Hotel extends Model
     use SoftDeletes;
 
     /**
-     * @var bool
+     * Timestamps on
+     *
+     * @var bool $timestamps
      */
     public $timestamps = true;
+
     /**
-     * @var string
+     * Table name
+     *
+     * @var string $table
      */
     protected $table = 'hotels';
+
     /**
-     * @var array
+     * The attributes that are mass assignable.
+     *
+     * @var array $fillable
      */
     protected $fillable = ['name', 'session_timeout', 'timezone', 'main_url', 'facebook_url'];
+
     /**
-     * @var array
+     * Soft deletes on
+     *
+     * @var array $dates
      */
     protected $dates = ['deleted_at'];
 
     /**
+     * Relation to templates
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function templates()
@@ -39,6 +52,8 @@ class Hotel extends Model
     }
 
     /**
+     * Relation to Nas
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function nas()

@@ -11,14 +11,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Nas extends Model
 {
-    //
+
     /**
-     * @var string
+     * Table name
+     *
+     * @var string $table
      */
     protected $table = 'nas';
 
     /**
-     * @var array
+     * The attributes that are mass assignable.
+     *
+     * @var array $fillable
      */
     protected $fillable = [
         'nasname',
@@ -39,7 +43,6 @@ class Nas extends Model
         return $this->belongsTo('App\Hotel', 'hotel_id', 'id');
     }
 
-
     /**
      * Select all IP fields
      *
@@ -50,6 +53,12 @@ class Nas extends Model
         return DB::select("SELECT nasname FROM `nas`");
     }
 
+    /**
+     * Get all ips by ID
+     *
+     * @param int $id
+     * @return mixed
+     */
     public function allIPsByHotel(int $id)
     {
         return DB::select("SELECT nasname FROM `nas` WHERE  `hotel_id`== :id", ['id'=>$id]);

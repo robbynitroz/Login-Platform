@@ -10,17 +10,24 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ClientAuth extends Model
 {
-    //
     /**
-     * @var bool
+     * Timestamps on
+     *
+     * @var bool $timestamps
      */
     public $timestamps = true;
+
     /**
-     * @var string
+     * Table name
+     *
+     * @var string $table
      */
     protected $table = 'client_auths';
+
     /**
-     * @var array
+     * The attributes that are mass assignable.
+     *
+     * @var array $fillable
      */
     protected $fillable = [
         'hotel_id',
@@ -29,6 +36,8 @@ class ClientAuth extends Model
     ];
 
     /**
+     * Relation to hotels, foreign key hotel_id
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function hotel()

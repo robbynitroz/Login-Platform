@@ -10,15 +10,18 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Radcheck extends Model
 {
-    //
 
     /**
-     * @var string
+     * Table name
+     *
+     * @var string $table
      */
     protected $table = 'radcheck';
 
     /**
-     * @var array
+     * The attributes that are mass assignable.
+     *
+     * @var array $fillable
      */
     protected $fillable = [
         'username',
@@ -29,6 +32,11 @@ class Radcheck extends Model
         'router',
     ];
 
+    /**
+     * Timestamps off
+     *
+     * @var bool $timestamps
+     */
     public $timestamps = false;
 
 }

@@ -10,18 +10,25 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Email extends Model
 {
-    //
 
     /**
+     * Timestamps on
+     *
      * @var bool
      */
     public $timestamps = true;
+
     /**
-     * @var string
+     * Table name
+     *
+     * @var string $table
      */
     protected $table = 'emails';
+
     /**
-     * @var array
+     * The attributes that are mass assignable.
+     *
+     * @var array $fillable
      */
     protected $fillable = [
         'hotel_id',
@@ -30,6 +37,8 @@ class Email extends Model
     ];
 
     /**
+     * Relation to hotel, foreign key hotel_id
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function hotel()

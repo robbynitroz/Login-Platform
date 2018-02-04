@@ -21,11 +21,10 @@ class ResetPasswordController extends Controller
 
     use ResetsPasswords;
 
-
     /**
      * Where to redirect users after resetting their password.
      *
-     * @var string
+     * @var string $redirectTo
      */
     protected $redirectTo = '/login';
 

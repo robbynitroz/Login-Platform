@@ -7,19 +7,27 @@ use Illuminate\Support\Facades\DB;
 
 class NewsFeed extends Model
 {
+
     /**
-     * @var bool
-     */
-    public $timestamps = true;
-    /**
-     * @var string
+     * Table name
+     *
+     * @var string $table
      */
     protected $table = 'news_feeds';
+
     /**
-     * @var array
+     * The attributes that are mass assignable.
+     *
+     * @var array $fillable
      */
     protected $fillable = ['card_name','belongs_to', 'feed'];
 
+    /**
+     * Timestamps on
+     *
+     * @var bool $timestamps
+     */
+    public $timestamps = true;
 
     /**
      * Search in full text belongs_to column by given string, return feed

@@ -41,7 +41,6 @@ class ForgotPasswordController extends Controller
         return view('auth.auth');
     }
 
-
     /**
      * Get the response for a successful password reset link.
      *
@@ -52,7 +51,6 @@ class ForgotPasswordController extends Controller
         return json_encode('success');
     }
 
-
     /**
      * Get the response for a failed password reset link.
      *
@@ -62,6 +60,5 @@ class ForgotPasswordController extends Controller
     {
         return json_encode('failure');
     }
-
 
 }

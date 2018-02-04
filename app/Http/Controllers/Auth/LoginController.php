@@ -37,7 +37,6 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-
     /**
      * Change default vue for login
      *
@@ -47,4 +46,5 @@ class LoginController extends Controller
     {
         return view('auth.auth');
     }
+
 }

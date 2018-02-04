@@ -15,32 +15,11 @@ class SettingController extends Controller
 {
 
     /**
-     * Radacct table rows count
+     * Table rows count results
      *
-     * @var int $count_radacct
+     * @var array $table_counts
      */
-    private $count_radacct;
-
-    /**
-     * client_auths table rows count
-     *
-     * @var int $count_client_auths
-     */
-    private $count_client_auths;
-
-    /**
-     * radcheck table rows count
-     *
-     * @var int $count_radcheck
-     */
-    private $count_radcheck;
-
-    /**
-     * radpostauth table rows count
-     *
-     * @var int $count_radpostauth
-     */
-    private $count_radpostauth;
+    private $table_counts = array();
 
     /**
      * Utilisation percent
@@ -48,7 +27,6 @@ class SettingController extends Controller
      * @var int $utilisation_percent
      */
     private $utilisation_percent;
-
 
     /**
      * Get data by token
@@ -166,10 +144,10 @@ class SettingController extends Controller
      */
     private function setCountTables(): void
     {
-        $this->count_radacct = DB::table('radacct')->where('nasporttype', 'Wireless-802.11')->count();
-        $this->count_client_auths = DB::table('client_auths')->count();
-        $this->count_radcheck = DB::table('radcheck')->where('router', 'no')->count();
-        $this->count_radpostauth = DB::table('radpostauth')->count();
+        $this->table_counts['radacct'] = DB::table('radacct')->where('nasporttype', 'Wireless-802.11')->count();
+        $this->table_counts['client_auths'] = DB::table('client_auths')->count();
+        $this->table_counts['radcheck'] = DB::table('radcheck')->where('router', 'no')->count();
+        $this->table_counts['radpostauth'] = DB::table('radpostauth')->count();
     }
 
     /**
@@ -192,13 +170,13 @@ class SettingController extends Controller
      */
     private function deleteUnusefulRaws(): void
     {
-        $limit = $this->getLimit($this->count_radacct);
+        $limit = $this->getLimit($this->table_counts['radacct']);
         DB::table('radacct')->where('nasporttype', 'Wireless-802.11')->limit($limit)->delete();
-        $limit = $this->getLimit($this->count_client_auths);
+        $limit = $this->getLimit($this->table_counts['client_auths']);
         DB::table('client_auths')->limit($limit)->delete();
-        $limit = $this->getLimit($this->count_radpostauth);
+        $limit = $this->getLimit($this->table_counts['radpostauth']);
         DB::table('radpostauth')->limit($limit)->delete();
-        $limit = $this->getLimit($this->count_radcheck);
+        $limit = $this->getLimit($this->table_counts['radcheck']);
         if ($limit % 2 !== 0) {
             $limit += 1;
         }

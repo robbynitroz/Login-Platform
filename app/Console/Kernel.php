@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         //Run database utilization every week
-        $schedule->call('App\Http\Controllers\SettingController@utilitiesRegister')->everyTenMinutes();
+        $schedule->call('App\Http\Controllers\SettingController@utilitiesRegister')->weekly();
     }
 
     /**

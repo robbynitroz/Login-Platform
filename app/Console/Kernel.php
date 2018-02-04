@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Http\Controllers\SettingController;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,8 +25,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        //Run database utilization every week
+        $schedule->call('App\Http\Controllers\SettingController@utilitiesRegister')->weekly();
     }
 
     /**

@@ -36,6 +36,13 @@ class SettingController extends Controller
     private $count_radcheck;
 
     /**
+     * radpostauth table rows count
+     *
+     * @var int $count_radpostauth
+     */
+    private $count_radpostauth;
+
+    /**
      * Utilisation percent
      *
      * @var int $utilisation_percent
@@ -162,6 +169,7 @@ class SettingController extends Controller
         $this->count_radacct = DB::table('radacct')->where('nasporttype', 'Wireless-802.11')->count();
         $this->count_client_auths = DB::table('client_auths')->count();
         $this->count_radcheck = DB::table('radcheck')->where('router', 'no')->count();
+        $this->count_radpostauth = DB::table('radpostauth')->count();
     }
 
     /**
@@ -188,6 +196,8 @@ class SettingController extends Controller
         DB::table('radacct')->where('nasporttype', 'Wireless-802.11')->limit($limit)->delete();
         $limit = $this->getLimit($this->count_client_auths);
         DB::table('client_auths')->limit($limit)->delete();
+        $limit = $this->getLimit($this->count_radpostauth);
+        DB::table('radpostauth')->limit($limit)->delete();
         $limit = $this->getLimit($this->count_radcheck);
         if ($limit % 2 !== 0) {
             $limit += 1;

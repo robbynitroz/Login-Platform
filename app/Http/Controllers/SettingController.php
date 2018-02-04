@@ -207,7 +207,7 @@ class SettingController extends Controller
     }
 
     /**
-     * Get the percentage of rows to be deleted
+     * Get the percentage of rows to be deleted from tables
      *
      * @param int $number
      * @return int

@@ -241,3 +241,4 @@ Route::delete('/settings/delete/{id}', [
     'uses' => 'SettingController@deleteSettingByID',
     'middleware' => ['web', 'auth']
 ])->name('delete_setting_by_id');
+

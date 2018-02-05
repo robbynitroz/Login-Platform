@@ -242,3 +242,13 @@ Route::delete('/settings/delete/{id}', [
     'middleware' => ['web', 'auth']
 ])->name('delete_setting_by_id');
 
+Route::get('/settings/utilisation', [
+    'uses' => 'SettingController@getUtilisationSettings',
+    'middleware' => ['web', 'auth']
+])->name('get_utilisation_settings');
+
+Route::post('/settings/utilisation/set', [
+    'uses' => 'SettingController@storeUtilisationSettings',
+    'middleware' => ['web', 'auth']
+])->name('store_utilisation_settings');
+

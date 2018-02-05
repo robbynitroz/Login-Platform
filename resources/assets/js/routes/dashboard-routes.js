@@ -127,6 +127,13 @@ const EditEmailSettings = resolve => {
     });
 };
 
+const Utilities = resolve => {
+    require.ensure(['../components/dashboard/Utilities.vue'], () => {
+        resolve(require('../components/dashboard/Utilities.vue'));
+    });
+};
+
+
 export const routes = [
     {
         path: '/dashboard',
@@ -263,7 +270,7 @@ export const routes = [
             {
                 path: '/dashboard/settings/utilities',
                 name: 'System utilities',
-
+                component:Utilities
             },
 
             {

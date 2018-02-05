@@ -22,11 +22,11 @@ class SettingController extends Controller
     private $table_counts = array();
 
     /**
-     * Utilisation percent
+     * Utilisation settings
      *
-     * @var int $utilisation_percent
+     * @var array $utilisation_setting
      */
-    private $utilisation_percent;
+    private $utilisation_setting = array();
 
     /**
      * Get data by token
@@ -132,9 +132,25 @@ class SettingController extends Controller
      */
     protected function utilizeDatabase(): void
     {
+        $this->setUtilisationSettings();
+        if ($this->utilisation_setting['on'] === false) {
+            return;
+        }
         $this->setCountTables();
-        $this->setUtilisationPercent();
         $this->deleteUnusefulRaws();
+    }
+
+    /**
+     * Set utilisation settings
+     *
+     * @return void
+     */
+    protected function setUtilisationSettings(): void
+    {
+        $model = Setting::where('type', 'database_utilization')->first();
+        $model = $model->setting;
+        $this->utilisation_setting['percent'] = json_decode($model)->utilize;
+        $this->utilisation_setting['on'] = json_decode($model)->on;
     }
 
     /**
@@ -148,19 +164,6 @@ class SettingController extends Controller
         $this->table_counts['client_auths'] = DB::table('client_auths')->count();
         $this->table_counts['radcheck'] = DB::table('radcheck')->where('router', 'no')->count();
         $this->table_counts['radpostauth'] = DB::table('radpostauth')->count();
-    }
-
-    /**
-     * Set utilisation percent to be deleted from tables
-     *
-     * @return void
-     */
-    public function setUtilisationPercent(): void
-    {
-        $model = Setting::where('type', 'database_utilization')->first();
-        $model = $model->setting;
-        $this->utilisation_percent = json_decode($model)->utilize;
-        $this->utilisation_percent;
     }
 
     /**
@@ -192,7 +195,37 @@ class SettingController extends Controller
      */
     private function getLimit(int $number): int
     {
-        return (int)(($number * $this->utilisation_percent) / 100);
+        return (int)(($number * $this->utilisation_setting['percent']) / 100);
+    }
+
+    /**
+     * Get utilisation settings
+     *
+     * @return array
+     */
+    public function getUtilisationSettings(): array
+    {
+        $this->setUtilisationSettings();
+        return $this->utilisation_setting;
+    }
+
+    /**
+     * Store utilisation settings in db
+     *
+     * @param Request $request
+     *
+     * @return void
+     */
+    public function storeUtilisationSettings(Request $request): void
+    {
+        $request->validate([
+            'on' => 'required|boolean',
+            'percent' => 'required|integer',
+        ]);
+        Setting::where('type', 'database_utilization')->update([
+            'setting->on' => $request->on,
+            'setting->utilize' => (int)$request->percent
+        ]);
     }
 
 }

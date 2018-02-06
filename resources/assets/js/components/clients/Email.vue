@@ -1,48 +1,34 @@
 <template>
-
     <div class="vertical-center" :style="background(false)">
-
         <div class="container justify-content-center  row">
-
             <div :style="background(true)" class="login col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
-
                 <a :style="{ float:'right', fontSize:policy.size, margin:'3% 0 0 0', color:policy.color }" href="#"
                    @click="changeToPolicy"
                 >
                     {{ texts[defaultLanguage].policyLinkText | capitalize }} </a>
-
                 <div class="clearfix"></div>
-
                 <h1 v-if="greetingsTime.on" :style="{ color:greetingsTime.color, fontSize:greetingsTime.size}"
                     class="text-center greetings"> {{ sayTime }}</h1>
                 <div v-else class="clearfix greetings"></div>
-
-
                 <h2 class="text-center message"
                     :style="{ color:greeting.color, fontSize:greeting.size, wordWrap:'break-word'}">
                     {{ texts[defaultLanguage].greetingText }} </h2>
-
-                <!--Here-->
                 <div v-if="loadingBar" class="loader"></div>
                 <div class="col-xs-12 text-center button align-items-center justify-content-center">
-
-
                     <form @submit.prevent="sendToServer" action="#" method="post">
-
                         <div class="form-group middle dimensions">
                             <div v-if="requireName" class="form-row full-name">
                                 <div class="col">
                                     <input v-model="userName" type="text" class="form-control" placeholder="First name">
                                 </div>
                                 <div class="col">
-                                    <input v-model="userLastName" type="text" class="form-control" placeholder="Last name">
+                                    <input v-model="userLastName" type="text" class="form-control"
+                                           placeholder="Last name">
                                 </div>
                             </div>
                             <input v-model="userEmail" type="email" class="form-control form-control-lg"
                                    :placeholder="texts[defaultLanguage].emailText">
                         </div>
-
-
                         <button v-show="!loadingBar"
                                 type="submit"
                                 :style="buttonStyleObject"
@@ -52,40 +38,28 @@
                             {{ texts[defaultLanguage].buttonText
                             }}
                         </button>
-
                     </form>
                 </div>
-                <!--Here-->
-
-
                 <div class="col-xs-12 text-center">
                     <img class="img-fluid logo-image" :src="hotelLogo"/>
                 </div>
-
             </div>
         </div>
-
     </div>
-
-
 </template>
 
 <script>
-    import {mapGetters} from 'vuex';
-    import {mapActions} from 'vuex';
+    import {mapActions, mapGetters} from 'vuex';
     import {languageDetection} from '../../mixins/languageDetection';
     import {windowSize} from '../../mixins/windowSize';
 
-
-
     export default {
-
         name: 'appEmail',
         data() {
             return {
                 userEmail: '',
-                userName:'',
-                userLastName:'',
+                userName: '',
+                userLastName: '',
                 loader: false
             }
         },
@@ -97,7 +71,6 @@
                 return value.toUpperCase();
             }
         },
-
 
         computed: {
             sayTime() {
@@ -125,10 +98,7 @@
                 'greeting',
                 'button',
                 'requireName',
-
-
             ]),
-
 
             buttonStyleObject() {
                 var modifier = '';
@@ -141,12 +111,9 @@
                     borderColor: this.button['borderColor' + modifier]
                 };
             },
-
-
         },
 
         methods: {
-
             ...mapActions([
                 'updateActiveComponent'
             ]),
@@ -195,16 +162,16 @@
                 axios.post('/auth/email',
                     {
                         email: this.userEmail,
-                        name:this.userName,
-                        surname:this.userLastName,
-                        hotel_url:hotelURL.content,
-                        hotel_id:hotelID.content,
-                        mac_address:clientMac.content,
-                        login_type:loginMethod.content
+                        name: this.userName,
+                        surname: this.userLastName,
+                        hotel_url: hotelURL.content,
+                        hotel_id: hotelID.content,
+                        mac_address: clientMac.content,
+                        login_type: loginMethod.content
                     },
                     config)
                     .then(response => {
-                        document.location.href =response.data;
+                        document.location.href = response.data;
                         this.changeLoaderStatus()
                     })
                     .catch(e => {
@@ -225,8 +192,6 @@
 </script>
 
 <style scoped>
-
-
     .middle {
         margin-top: 15%;
     }
@@ -282,7 +247,6 @@
         .large-button {
 
             margin: 8%;
-
         }
 
         .message {
@@ -335,7 +299,7 @@
         }
     }
 
-    .full-name{
+    .full-name {
         margin-top: -10%;
         margin-bottom: 5%;
     }

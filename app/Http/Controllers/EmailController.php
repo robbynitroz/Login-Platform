@@ -132,7 +132,7 @@ class EmailController extends Controller
      *
      * @return void
      */
-    public function setData(string $token)
+    public function setData(string $token): void
     {
         $this->data = ((new SettingController())->getDataWithToken($token));
     }
@@ -141,6 +141,7 @@ class EmailController extends Controller
      * Check if data empty, means, token was fake
      *
      * @param Request $request
+     * @return void
      */
     private function checkData(Request $request): void
     {
@@ -167,7 +168,7 @@ class EmailController extends Controller
     {
         $model = ((new Email())->whereIn('hotel_id', $this->hotels_list));
         $this->emails_address = $model->get();
-        //$model->delete();  //don't forget to remove comment
+        $model->delete();
         $this->prepareEmailListForDownload();
     }
 
@@ -233,7 +234,7 @@ class EmailController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
-    public function downloadEmailsList()
+    public function downloadEmailsList(): object
     {
         $path = (storage_path('app/email-list/') . $this->file_name . '.json');
         return response()->download($path, 'emails.json')->deleteFileAfterSend(true);;

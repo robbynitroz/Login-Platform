@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSettingsTable extends Migration
+class ChangeHotelTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('settings', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('type', 200);
-            $table->json('setting');
-            $table->timestamps();
+        Schema::table('hotels', function (Blueprint $table) {
+            $table->string('name')->unique()->change();
         });
     }
 
@@ -28,6 +25,8 @@ class CreateSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('settings');
+        Schema::table('hotels', function (Blueprint $table) {
+            $table->dropUnique('name');
+        });
     }
 }

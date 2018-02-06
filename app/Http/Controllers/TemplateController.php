@@ -71,7 +71,7 @@ class TemplateController extends Controller
      *
      * @return array
      */
-    public function getLoginMethods()
+    public function getLoginMethods(): array
     {
         $hotels = (new HotelController())->getHotels();
         return ['methods' => ['Login', 'Email', 'Facebook'], 'hotels' => $hotels];
@@ -133,7 +133,7 @@ class TemplateController extends Controller
      * @param $end_date
      * @return bool
      */
-    public function checkIfBusy($request, $start_date, $end_date)
+    public function checkIfBusy($request, $start_date, $end_date): bool
     {
         $id = $request->hotelID;
         $template_id = $request->templateID ?? $request->templateID ?? false;
@@ -156,7 +156,7 @@ class TemplateController extends Controller
      * Edit template
      *
      * @param Request $request
-     * @return string
+     * @return mixed
      */
     public function editTemplate(Request $request)
     {
@@ -213,8 +213,10 @@ class TemplateController extends Controller
      * Delete cached templates for updated or deleted hotel (REDIS)
      *
      * @param int $id
+     *
+     * @return void
      */
-    public function deleteCachedTemplates(int $id)
+    public function deleteCachedTemplates(int $id): void
     {
         Redis::del('templates.' . $id);
         Redis::del("templates.reserved." . $id);
@@ -356,7 +358,7 @@ class TemplateController extends Controller
      * @param array  $media
      * @return int
      */
-    public function previewFiles(int $identity, string $hotelLogo, array $media)
+    public function previewFiles(int $identity, string $hotelLogo, array $media): int
     {
         $jsonData = Redis::get('data-' . $identity);
         $data = json_decode($jsonData);
@@ -378,7 +380,7 @@ class TemplateController extends Controller
      * @param Request $request
      * @return int
      */
-    public function preparePreview(Request $request)
+    public function preparePreview(Request $request): int
     {
         if ($request->type === 'alreadySaved') {
             return $this->prepareSavedTemplate((int)$request->id);
@@ -435,6 +437,7 @@ class TemplateController extends Controller
      * Preview page
      *
      * @param Request $request
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
      */
     public function preview(Request $request)
@@ -467,7 +470,7 @@ class TemplateController extends Controller
      * @param Request $request
      * @return string
      */
-    public function activate(Request $request)
+    public function activate(Request $request): string
     {
         if (!$request->id or !$request->hotel) {
             return 'fail';
@@ -489,7 +492,7 @@ class TemplateController extends Controller
      * @param Request $request
      * @return string
      */
-    public function delete(Request $request)
+    public function delete(Request $request): string
     {
         if (!$request->id) {
             return 'fail';

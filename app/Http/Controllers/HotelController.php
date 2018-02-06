@@ -52,7 +52,7 @@ class HotelController extends Controller
      *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function getHotels()
+    public function getHotels(): object
     {
         return Hotel::all();
     }
@@ -88,7 +88,7 @@ class HotelController extends Controller
      * @param $id
      * @return string
      */
-    public function deleteHotel($id)
+    public function deleteHotel($id): string
     {
         Redis::del('hotel.' . $id);
         $templates = (Hotel::find($id))->templates()->delete();
@@ -101,9 +101,13 @@ class HotelController extends Controller
      * Edit/update hotel information
      *
      * @param Request $request
+     * @return void
      */
-    public function editHotel(Request $request)
+    public function editHotel(Request $request): void
     {
+        $request->validate([
+            'hotel.name' => 'required|unique:hotels,name',
+        ]);
         $updateHotel = (Hotel::find($request->id));
         $updateHotel->name = $request->hotel['name'];
         $updateHotel->main_url = $request->hotel['main_url'];
@@ -122,7 +126,7 @@ class HotelController extends Controller
      * @param Request $request
      * @return string
      */
-    public function editHotelFiles(Request $request)
+    public function editHotelFiles(Request $request): string
     {
         if ($request->file('logo')->isValid()) {
             $request->validate([
@@ -145,6 +149,9 @@ class HotelController extends Controller
      */
     public function newHotel(Request $request): int
     {
+        $request->validate([
+            'hotel.name' => 'required|unique:hotels,name',
+        ]);
         $newHotel = new Hotel();
         $newHotel->name = $request->hotel['name'];
         $newHotel->main_url = $request->hotel['main_url'];

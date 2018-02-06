@@ -123,7 +123,7 @@
                                                                           placeholder="First name"></b-form-input>
                                                         </b-input-group>
                                                     </b-form-fieldset>
-                                                    <!--First name text-->
+                                                    <!--First last name text-->
                                                     <b-form-fieldset v-if="requireName">
                                                         <b-input-group left="<i class='fa fa-drivers-license-o'></i>">
                                                             <b-form-input type="text"

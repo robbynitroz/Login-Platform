@@ -28,9 +28,17 @@
 
 
                     <form @submit.prevent="sendToServer" action="#" method="post">
+
                         <div class="form-group middle dimensions">
+                            <div v-if="requireName" class="form-row full-name">
+                                <div class="col">
+                                    <input v-model="userName" type="text" class="form-control" placeholder="First name">
+                                </div>
+                                <div class="col">
+                                    <input v-model="userLastName" type="text" class="form-control" placeholder="Last name">
+                                </div>
+                            </div>
                             <input v-model="userEmail" type="email" class="form-control form-control-lg"
-                                   id="formGroupExampleInput"
                                    :placeholder="texts[defaultLanguage].emailText">
                         </div>
 
@@ -76,6 +84,8 @@
         data() {
             return {
                 userEmail: '',
+                userName:'',
+                userLastName:'',
                 loader: false
             }
         },
@@ -114,6 +124,7 @@
                 'greetingsTime',
                 'greeting',
                 'button',
+                'requireName',
 
 
             ]),
@@ -138,7 +149,6 @@
 
             ...mapActions([
                 'updateActiveComponent'
-
             ]),
 
             // whenever the document is resized, re-set the 'fullHeight' variable
@@ -172,15 +182,12 @@
                 this.loader = !this.loader;
             },
 
-
             sendToServer() {
-
                 let config = {
                     onUploadProgress: progressEvent => {
                         this.changeLoaderStatus();
                     }
                 };
-
                 let hotelID = document.head.querySelector('meta[name="hotel"]');
                 let hotelURL = document.head.querySelector('meta[name="hotel-url"]');
                 let clientMac = document.head.querySelector('meta[name="mac-address"]');
@@ -188,6 +195,8 @@
                 axios.post('/auth/email',
                     {
                         email: this.userEmail,
+                        name:this.userName,
+                        surname:this.userLastName,
                         hotel_url:hotelURL.content,
                         hotel_id:hotelID.content,
                         mac_address:clientMac.content,
@@ -203,7 +212,6 @@
                         this.changeLoaderStatus()
                     })
             }
-
 
         },
 
@@ -327,5 +335,9 @@
         }
     }
 
+    .full-name{
+        margin-top: -10%;
+        margin-bottom: 5%;
+    }
 
 </style>

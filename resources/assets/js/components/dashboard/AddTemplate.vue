@@ -114,6 +114,24 @@
                                                                           placeholder="Little text under button"></b-form-input>
                                                         </b-input-group>
                                                     </b-form-fieldset>
+                                                    <!--First name text-->
+                                                    <b-form-fieldset v-if="requireName">
+                                                        <b-input-group left="<i class='fa fa-user'></i>">
+                                                            <b-form-input type="text"
+                                                                          required
+                                                                          v-model="texts[lang].name"
+                                                                          placeholder="First name"></b-form-input>
+                                                        </b-input-group>
+                                                    </b-form-fieldset>
+                                                    <!--First name text-->
+                                                    <b-form-fieldset v-if="requireName">
+                                                        <b-input-group left="<i class='fa fa-drivers-license-o'></i>">
+                                                            <b-form-input type="text"
+                                                                          required
+                                                                          v-model="texts[lang].lastName"
+                                                                          placeholder="Last name"></b-form-input>
+                                                        </b-input-group>
+                                                    </b-form-fieldset>
                                                     <hr>
                                                     <p>Terms and Conditions settings</p>
                                                     <!--policyText text-->
@@ -429,6 +447,8 @@
                         sayTimeMorning: 'Good morning!',
                         sayTimeAfternoon: 'Good afternoon!',
                         littleText: 'connect and proceed to our webapp',
+                        name:'First name',
+                        lastName:'Last name'
                     }
                 },
                 requireName: false,

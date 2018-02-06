@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Email;
+use App\Hotel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redis;
@@ -65,22 +66,41 @@ class EmailController extends Controller
     private $data;
 
     /**
+     * Hotel names && IDs
+     *
+     * @var array
+     */
+    private $hotels = [];
+
+
+    /**
      * Store email in DB if not exist
      *
-     * @param string $email
-     * @param int    $hotel_id
-     * @param string $login_type
+     * @param Request $request
+     *
      * @return void
      */
-    public function storeEmail(string $email, int $hotel_id, string $login_type): void
+    public function storeEmail(Request $request): void
     {
-        if (strlen($email) > 47) {
+        $request->validate([
+            'email' => 'required|email',
+            'name' => 'string|nullable',
+            'surname' => 'string|nullable'
+        ]);
+        //if email is longer then 47 symbols exit program, must not throw any error
+        if (strlen($request->email) > 47 or strlen($request->name) > 45 or strlen($request->surname) > 45) {
             return;
         }
         $emailModel = new Email();
-        $emailModel->email = Crypt::encryptString($email);
-        $emailModel->hotel_id = $hotel_id;
-        $emailModel->type = $login_type;
+        $emailModel->email = Crypt::encryptString($request->email);
+        if (!empty($request->name)) {
+            $emailModel->name = Crypt::encryptString($request->name);
+        }
+        if (!empty($request->surname)) {
+            $emailModel->last_name = Crypt::encryptString($request->surname);
+        }
+        $emailModel->hotel_id = (int)$request->hotel_id;
+        $emailModel->type = $request->login_type;
         $emailModel->save();
         return;
     }
@@ -95,11 +115,9 @@ class EmailController extends Controller
     {
         $this->setData($request->token);
         $this->checkData($request);
-
         if ($this->attempts > 0) {
             return 'Wrong token! You have left: ' . (3 - $this->attempts);
         }
-
         if ($this->empty === false) {
             return $this->downloadEmailsList();
         } else {
@@ -111,6 +129,8 @@ class EmailController extends Controller
      * Set data
      *
      * @param string $token
+     *
+     * @return void
      */
     public function setData(string $token)
     {
@@ -126,6 +146,12 @@ class EmailController extends Controller
     {
         if ($this->data !== null) {
             $this->hotels_list = json_decode((json_decode(json_decode($this->data)->setting))->hotels);
+            if (count($this->hotels_list) > 1) {
+                $model = ((new Hotel())->find($this->hotels_list));
+                foreach ($model as $hotel) {
+                    $this->hotels[$hotel['id']] = $hotel['name'];
+                }
+            }
             $this->prepareEmailList();
         } else {
             $this->blockUser($request->ip());
@@ -141,7 +167,7 @@ class EmailController extends Controller
     {
         $model = ((new Email())->whereIn('hotel_id', $this->hotels_list));
         $this->emails_address = $model->get();
-        //$model->delete();
+        //$model->delete();  //don't forget to remove comment
         $this->prepareEmailListForDownload();
     }
 
@@ -153,8 +179,27 @@ class EmailController extends Controller
     public function prepareEmailListForDownload(): void
     {
         if (($this->emails_address)->count() > 0) {
+            $x = 0;
+            $hotel_name = '';
             foreach ($this->emails_address as $emails) {
-                $this->email_address_array[] = Crypt::decryptString($emails->email);
+                if (count($this->hotels) > 1) {
+                    if ($hotel_name !== $this->hotels[$emails->hotel_id]) {
+                        $hotel_name = $this->hotels[$emails->hotel_id];
+                        $x = 0;
+                    }
+                    $email = Crypt::decryptString($emails->email);
+                    $this->email_address_array[$hotel_name][$x]['email'] = $email;
+                    if (!empty($emails->name)) {
+                        $this->email_address_array[$hotel_name][$x]['name'] = Crypt::decryptString($emails->name);
+                    }
+                    if (!empty($emails->last_name)) {
+                        $this->email_address_array[$hotel_name][$x]['lastName'] = Crypt::decryptString($emails->last_name);
+                    }
+                    $x++;
+                } else {
+                    $this->email_address_array[] = Crypt::decryptString($emails->email);
+                }
+
             }
             $this->file_name = time();
             Storage::disk('local')->put('email-list/' . $this->file_name . '.json',

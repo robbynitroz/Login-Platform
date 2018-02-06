@@ -41,6 +41,10 @@ const getters = {
         return state.requireEmail;
     },
 
+    requireName: state => {
+        return state.requireName;
+    },
+
 };
 
 export default {

@@ -188,19 +188,23 @@ class EmailController extends Controller
                         $hotel_name = $this->hotels[$emails->hotel_id];
                         $x = 0;
                     }
-                    $email = Crypt::decryptString($emails->email);
-                    $this->email_address_array[$hotel_name][$x]['email'] = $email;
+                    $this->email_address_array[$hotel_name][$x]['email'] = Crypt::decryptString($emails->email);
                     if (!empty($emails->name)) {
                         $this->email_address_array[$hotel_name][$x]['name'] = Crypt::decryptString($emails->name);
                     }
                     if (!empty($emails->last_name)) {
                         $this->email_address_array[$hotel_name][$x]['lastName'] = Crypt::decryptString($emails->last_name);
                     }
-                    $x++;
                 } else {
-                    $this->email_address_array[] = Crypt::decryptString($emails->email);
+                    $this->email_address_array[$x]['email'] = Crypt::decryptString($emails->email);
+                    if (!empty($emails->name)) {
+                        $this->email_address_array[$x]['name'] = Crypt::decryptString($emails->name);
+                    }
+                    if (!empty($emails->last_name)) {
+                        $this->email_address_array[$x]['lastName'] = Crypt::decryptString($emails->last_name);
+                    }
                 }
-
+                $x++;
             }
             $this->file_name = time();
             Storage::disk('local')->put('email-list/' . $this->file_name . '.json',

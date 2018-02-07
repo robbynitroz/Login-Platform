@@ -278,4 +278,7 @@
         }
     }
 
+    .logo-image{
+        margin-bottom: 3%;
+    }
 </style>

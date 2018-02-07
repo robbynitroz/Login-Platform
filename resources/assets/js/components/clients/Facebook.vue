@@ -469,5 +469,8 @@
     .little-down{
         margin-top: 3rem;
     }
+    .logo-image{
+        margin-bottom: 3%;
+    }
 
 </style>

@@ -304,4 +304,7 @@
         margin-bottom: 5%;
     }
 
+    .logo-image{
+        margin-bottom: 3%;
+    }
 </style>

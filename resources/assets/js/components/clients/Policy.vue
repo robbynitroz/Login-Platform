@@ -130,5 +130,8 @@
             border-radius: 5px;
         }
     }
+    .logo-image{
+        margin-bottom: 3%;
+    }
 
 </style>

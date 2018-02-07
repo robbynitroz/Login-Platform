@@ -5,6 +5,7 @@
  */
 
 require('./bootstrap');
+require('es6-promise').polyfill();
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';

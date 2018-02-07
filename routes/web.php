@@ -119,7 +119,7 @@ Route::post('/template/preview',
 Route::post('/template/activate',
     ['uses' => 'TemplateController@activate', 'middleware' => ['web', 'auth']])->name('activate_template');
 
-Route::get('/preview/{id}', ['uses' => 'TemplateController@preview', 'middleware' => ['web', 'auth']])->name('preview');
+Route::get('/preview/{id}', ['uses' => 'TemplateController@preview', 'middleware' => ['web']])->name('preview');
 
 
 //Routers

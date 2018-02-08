@@ -38,17 +38,6 @@ class TemplateController extends Controller
     }
 
     /**
-     * Get template by ID
-     *
-     * @param Request $request
-     * @return mixed
-     */
-    public function getTemplateById(Request $request)
-    {
-        return Template::find($request->id);
-    }
-
-    /**
      * Get specific template, usually used for users already authorized to use WiFi and shown after session timeout
      *
      * @param int    $hotel_id
@@ -74,7 +63,7 @@ class TemplateController extends Controller
     public function getLoginMethods(): array
     {
         $hotels = (new HotelController())->getHotels();
-        return ['methods' => ['Login', 'Email', 'Facebook'], 'hotels' => $hotels];
+        return ['methods' => ['Login', 'Email', 'Social'], 'hotels' => $hotels];
     }
 
     /**
@@ -530,6 +519,7 @@ class TemplateController extends Controller
      *
      * @param Request $request
      * @param int     $id
+     *
      * @return void
      */
     public function unsetOldReserved(Request $request, int $id = 0): void
@@ -544,4 +534,66 @@ class TemplateController extends Controller
         Redis::del("templates.reserved." . $hotel_id);
     }
 
+    public function cloneTemplate(Request $request)
+    {
+        $request->validate([
+            'hotel_id' => 'required|integer',
+            'id' => 'required|integer',
+        ]);
+        $template = $this->getTemplateById($request);
+        $clone['hotel_id'] = $request->hotel_id;
+        $clone['data'] = json_decode($template['data']);
+        $clone['type'] = $template['type'];
+        $media = array($clone['data']->media->src, $clone['data']->hotelLogo);
+        $prefixer = $this->cloneStorageFiles($media);
+        $clone['data']->media->src = str_replace('.', $prefixer.'-copy.', $clone['data']->media->src);
+        $clone['data']->hotelLogo = str_replace('.', $prefixer.'-copy.', $clone['data']->hotelLogo);
+        $this->newTemplateFromExistingData($clone);
+    }
+
+    /**
+     * Create new template from existed source
+     *
+     * @param array $clone
+     *
+     * @return void
+     */
+    public function newTemplateFromExistingData(array $clone):void
+    {
+        $model = new Template();
+        $model->hotel = $clone['hotel_id'];
+        $model->type = $clone['type'];
+        $model->data = json_encode($clone['data']);
+        $model->save();
+    }
+
+    /**
+     * Get template by ID
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function getTemplateById(Request $request)
+    {
+        return Template::find($request->id);
+    }
+
+    /**
+     * Copy given files storage files
+     *
+     * @param array $files
+     *
+     * @return int
+     */
+    public function cloneStorageFiles(array $files):int
+    {
+        $unix = time();
+        foreach ($files as $file) {
+            $file = storage_path(str_replace('/storage/', 'app/public/', $file));
+            $destination = str_replace('.', $unix.'-copy.', $file);
+            copy($file, $destination);
+        }
+        return $unix;
+
+    }
 }

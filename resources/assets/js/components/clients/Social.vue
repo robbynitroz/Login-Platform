@@ -1,45 +1,40 @@
 <template>
-
     <div class="vertical-center" :style="background(false)">
         <div id="fb-root"></div>
         <div class="container justify-content-center  row">
-
             <div :style="background(true)" class="login col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
-
                 <a :style="{ float:'right', fontSize:policy.size, margin:'3% 0 0 0', color:policy.color }" href="#"
                    @click="changeToPolicy"
                 >
                     {{ texts[defaultLanguage].policyLinkText | capitalize }} </a>
-
                 <div class="clearfix"></div>
-
                 <h1 v-if="greetingsTime.on" :style="{ color:greetingsTime.color, fontSize:greetingsTime.size}"
                     class="text-center greetings"> {{ sayTime }}</h1>
                 <div v-else class="clearfix greetings"></div>
-
                 <h2 class="text-center message"
                     :style="{ color:greeting.color, fontSize:greeting.size, wordWrap:'break-word'}">
                     {{ texts[defaultLanguage].greetingText }} </h2>
-
-
                 <!--Here-->
                 <div v-if="loadingBar" class="loader"></div>
                 <div class="col-xs-12 text-center button align-items-center justify-content-center">
-
-
                     <div v-if="showLikeButton"  class="col-12 little-down"></div>
                     <div v-show="showLikeButton" class="fb-like" :data-href="facebookURL" data-layout="button" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>
-
                     <div v-show="showLikeButton"  class="clearfix"></div>
-
                     <form v-if="showEmailMethod" @submit.prevent="sendToServer('email')" action="#" method="post">
                         <div class="form-group middle dimensions">
+                            <div v-if="requireName" class="form-row full-name">
+                                <div class="col">
+                                    <input v-model="userName" type="text" class="form-control" placeholder="First name">
+                                </div>
+                                <div class="col">
+                                    <input v-model="userLastName" type="text" class="form-control"
+                                           placeholder="Last name">
+                                </div>
+                            </div>
                             <input v-model="userEmail" type="email" class="form-control form-control-lg"
                                    id="formGroupExampleInput"
                                    :placeholder="texts[defaultLanguage].emailText">
                         </div>
-
-
                         <button v-show="!loadingBar"
                                 type="submit"
                                 :style="buttonStyleObject"
@@ -49,18 +44,12 @@
                             {{ texts[defaultLanguage].buttonText
                             }}
                         </button>
-
-
                     </form>
-
-
                     <button v-if="!showLikeButton"
                             @click="FBlogin"
                             class="loginBtn loginBtn--facebook text-center">
                         {{ showFBButtonText }}
                     </button>
-
-
                     <template v-if="requireEmail">
                     <button v-if="!showEmailMethod"
                             v-show="!showLikeButton"
@@ -69,35 +58,24 @@
                         {{ showEmailButtonText }}
                     </button>
                     </template>
-
-
                 </div>
                 <!--Here-->
-
-
                 <div class="col-xs-12 text-center">
                     <img class="img-fluid logo-image" :src="hotelLogo"/>
                 </div>
-
             </div>
         </div>
-
     </div>
-
-
 </template>
-
 <script>
     import {mapGetters} from 'vuex';
     import {mapActions} from 'vuex';
     import {languageDetection} from '../../mixins/languageDetection';
     import {windowSize} from '../../mixins/windowSize';
     import {fb} from '../../mixins/fb';
-
-
     export default {
 
-        name: 'appFacebook',
+        name: 'Social',
         data() {
             return {
                 userEmail: '',
@@ -106,7 +84,9 @@
                 showEmailMethod: false,
                 showEmailButtonText: 'Connect using email',
                 showFBButtonText: 'Connect using Facebook',
-                facebookURL:document.head.querySelector('meta[name="fb-url"]').content
+                facebookURL:document.head.querySelector('meta[name="fb-url"]').content,
+                userName:'',
+                userLastName:'',
             }
         },
 
@@ -117,7 +97,6 @@
                 return value.toUpperCase();
             }
         },
-
 
         computed: {
             sayTime() {
@@ -144,13 +123,11 @@
                 'greetingsTime',
                 'greeting',
                 'button',
-                'requireEmail'
+                'requireEmail',
+                'requireName',
 
 
             ]),
-
-
-
 
             buttonStyleObject() {
                 var modifier = '';
@@ -164,16 +141,12 @@
                 };
             },
 
-
             showLikeButton(){
                 return this.showLike;
             }
         },
 
-
-
         methods: {
-
             ...mapActions([
                 'updateActiveComponent'
 
@@ -229,6 +202,8 @@
                 axios.post('/auth/'+method,
                     {
                         email: this.userEmail,
+                        name: this.userName,
+                        surname: this.userLastName,
                         hotel_url: hotelURL.content,
                         hotel_id: hotelID.content,
                         mac_address: clientMac.content,
@@ -247,12 +222,10 @@
                     })
             },
 
-
             showEmail() {
 
                 this.showEmailMethod = true;
             },
-
 
             FBlogin() {
                 this.showEmailMethod=false;
@@ -287,24 +260,19 @@
 
 <style scoped>
 
-
     .middle {
         margin-top: 15%;
     }
 
     .greetings {
-        margin-top: 20%;
+        margin-top: 16%;
         margin-bottom: 25px;
 
     }
 
     .large-button {
-
         width: 70%;
         height: 50px;
-        margin-bottom: 10%;
-        margin-top: 5%;
-
     }
 
     .dimensions {
@@ -353,7 +321,7 @@
         }
 
         .greetings {
-            margin-top: 20%;
+            margin-top: 13%;
         }
 
         .logo-image {
@@ -471,6 +439,10 @@
     }
     .logo-image{
         margin-bottom: 3%;
+        margin-top: 3%;
     }
-
+    .full-name {
+        margin-top: -10%;
+        margin-bottom: 5%;
+    }
 </style>

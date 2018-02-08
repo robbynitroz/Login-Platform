@@ -39,7 +39,7 @@
 
     export default {
 
-        name: 'appPolicy',
+        name: 'Policy',
         data() {
             return {}
         },

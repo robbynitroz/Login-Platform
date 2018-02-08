@@ -59,7 +59,7 @@
 
     export default {
 
-        name: 'appLogin',
+        name: 'Login',
         data() {
             return {
                 loader: false

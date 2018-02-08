@@ -57,6 +57,9 @@
                                         <b-button @click="previewTemplate(template.id)" variant="secondary"><i
                                                 class="fa fa-play-circle"></i> Preview
                                         </b-button>
+                                        <b-button @click="cloneTemplate(template.id)" variant="secondary" size="sm"><i
+                                                class="fa fa-copy"></i> Clone
+                                        </b-button>
                                         <template v-if="template.scheduled !== 'yes'">
                                             <b-col v-if="template.activated =='yes'" class="hotel-logo" cols="3">
                                                 <b-badge pill variant="success">Activated</b-badge>
@@ -101,6 +104,27 @@
                 <b-modal centered title="Critical error" class="modal-danger" v-model="critError" hide-footer>
                     Please contact your webmaster or support
                 </b-modal>
+                <b-modal centered title="Select hotel and confirm" class="modal-primary" @ok="confirmClone()" v-model="cloneModal"
+                         >
+                    <!--hotel-->
+                    <model-select :options="hotels"
+                                  v-model="cloneHotelID"
+                                  placeholder="select Hotel">
+                    </model-select>
+                </b-modal>
+                <b-modal centered title="You didn't select the hotel! Tty again" class="modal-warning" @ok="confirmClone()" v-model="seriouslyMan"
+                >
+                    <!--hotel-->
+                    <model-select :options="hotels"
+                                  v-model="cloneHotelID"
+                                  placeholder="select Hotel">
+                    </model-select>
+                </b-modal>
+                <b-modal size="sm" centered title="Success" class="modal-success" v-model="cloned" hide-footer>
+                    <div class="d-block text-center">
+                        <h3>Cloned</h3>
+                    </div>
+                </b-modal>
             </div><!--/.row-->
         </div>
     </div>
@@ -131,6 +155,11 @@
                 critError: false,
                 reservedModal: false,
                 newReserved: '',
+                cloneModal:false,
+                cloneHotelID:'',
+                cloneTemplateID:'',
+                seriouslyMan:false,
+                cloned:false,
             }
         },
 
@@ -163,6 +192,39 @@
                 } else {
                     return true
                 }
+            },
+
+            cloneTemplate(id){
+                this.cloneModal = true;
+                this.cloneTemplateID = id;
+            },
+
+            confirmClone(){
+                this.seriouslyMan = false;
+                setTimeout(()=>{
+                    if(typeof this.cloneHotelID==='string'){
+                        this.seriouslyMan = true;
+                        return;
+                    }
+                }, 100);
+
+                if(this.seriouslyMan===false){
+                    this.clone();
+                }
+
+            },
+
+            clone(){
+                axios.post('/template/clone', {
+                    hotel_id:this.cloneHotelID,
+                    id:this.cloneTemplateID
+                }).then(response => {
+                    this.cloned = true;
+                    this.downloadTemplates(this.hotelID);
+                    })
+                    .catch(e => {
+                        this.critError = true;
+                    });
             },
 
             dateTransform(date, showTime = false) {

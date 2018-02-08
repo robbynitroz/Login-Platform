@@ -1,15 +1,13 @@
 <template>
     <div class="container-fluid">
-            <video class="background"  v-if="backgroundShowOrHideVideo" autoplay loop muted >
-                <source :src="media.src">
-            </video>
-            <img class="background" v-if="backgroundShowOrHidePicture" alt="image" :src="media.src"/>
+        <video class="background" v-if="backgroundShowOrHideVideo" autoplay loop muted>
+            <source :src="media.src">
+        </video>
+        <img class="background" v-if="backgroundShowOrHidePicture" alt="image" :src="media.src"/>
         <transition name="entry" appear mode="out-in">
             <component :is="activeComponent"></component>
         </transition>
-
     </div>
-
 </template>
 <style lang="scss">
     @import '~bootstrap/scss/bootstrap';
@@ -36,9 +34,9 @@
         });
     };
 
-    const Facebook = resolve => {
-        require.ensure(['./Facebook.vue'], () => {
-            resolve(require('./Facebook.vue'));
+    const Social = resolve => {
+        require.ensure(['./Social.vue'], () => {
+            resolve(require('./Social.vue'));
         });
     };
 
@@ -46,16 +44,14 @@
     export default {
         name: 'home',
         data() {
-            return {
-
-            }
+            return {}
         },
 
         components: {
             Login,
             Policy,
             Email,
-            Facebook
+            Social
         },
 
         mixins: [windowSize],
@@ -65,35 +61,24 @@
             // whenever the document is resized, re-set the 'fullHeight' variable
 
             backgroundShowOrHideVideo() {
-
-
                 if (this.windowWidth > 576 && this.media.type == 'mp4' || this.windowWidth > 576 && this.media.type == 'mpeg4') {
                     return true
                 } else {
                     return false
                 }
-
-
             },
 
             backgroundShowOrHidePicture() {
-
-
                 if (this.windowWidth > 576 && this.media.type == 'jpg' || this.windowWidth > 576 && this.media.type == 'jpeg') {
                     return true
                 } else {
                     return false
                 }
-
-
             },
             ...mapGetters([
                 'activeComponent',
                 'media',
             ]),
-
-
-
         },
 
     }
@@ -114,9 +99,6 @@
         transform: translateX(-50%) translateY(-50%);
         background-size: contain;
     }
-
-
-
 
     .vertical-center {
         min-height: 100%; /* Fallback for vh unit */

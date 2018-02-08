@@ -104,6 +104,9 @@ Route::get('/template/{id}',
 Route::post('/template/media/{id}',
     ['uses' => 'TemplateController@mediaFiles', 'middleware' => ['web', 'auth']])->name('template_media');
 
+Route::post('/template/clone',
+    ['uses' => 'TemplateController@cloneTemplate', 'middleware' => ['web', 'auth']])->name('clone_template');
+
 //Reserved templates
 Route::post('/template/set-reserved',
     ['uses' => 'TemplateController@setReserved', 'middleware' => ['web', 'auth']])->name('set_reserved_template');

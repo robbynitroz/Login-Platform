@@ -54,7 +54,7 @@
     import {windowSize} from '../../mixins/windowSize';
 
     export default {
-        name: 'appEmail',
+        name: 'Email',
         data() {
             return {
                 userEmail: '',

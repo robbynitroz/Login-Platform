@@ -614,7 +614,7 @@
             },
 
             showSomeField() {
-                if (this.defaultComponent == 'Facebook' || this.defaultComponent == 'Email') {
+                if (this.defaultComponent == 'Social' || this.defaultComponent == 'Email') {
                     return true
                 }
                 return false;
@@ -696,9 +696,9 @@
                     return false;
                 } else if (this.activeComponent == 'Email' && component == 'fullName') {
                     return true;
-                } else if (this.activeComponent == 'Facebook' && component == 'emailOnly') {
+                } else if (this.activeComponent == 'Social' && component == 'emailOnly') {
                     return true;
-                } else if (this.activeComponent == 'Facebook' && component == 'fullName' && this.requireEmail == true) {
+                } else if (this.activeComponent == 'Social' && component == 'fullName' && this.requireEmail == true) {
                     return true;
                 }
             },

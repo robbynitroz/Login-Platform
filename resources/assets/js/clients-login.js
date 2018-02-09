@@ -10,10 +10,10 @@ require('es6-promise').polyfill();
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { routes } from './routes/client-routes'
+import GoogleAuth from 'vue-google-oauth';
 import store from './store/store-clients-login';
 
 Vue.use(VueRouter);
-
 
 const router = new VueRouter({
     mode: 'history',

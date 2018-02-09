@@ -73,8 +73,8 @@
     import {languageDetection} from '../../mixins/languageDetection';
     import {windowSize} from '../../mixins/windowSize';
     import {fb} from '../../mixins/fb';
-    export default {
 
+    export default {
         name: 'Social',
         data() {
             return {

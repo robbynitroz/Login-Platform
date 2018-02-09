@@ -57,7 +57,7 @@
                                         <b-button @click="previewTemplate(template.id)" variant="secondary"><i
                                                 class="fa fa-play-circle"></i> Preview
                                         </b-button>
-                                        <b-button @click="cloneTemplate(template.id)" variant="secondary" size="sm"><i
+                                        <b-button v-if="template.type !== 'reserved'" @click="cloneTemplate(template.id)" variant="secondary" size="sm"><i
                                                 class="fa fa-copy"></i> Clone
                                         </b-button>
                                         <template v-if="template.scheduled !== 'yes'">

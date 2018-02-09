@@ -231,13 +231,14 @@
                 this.showEmailMethod=false;
                 window.FB.login((response)=> {
                         if (response.authResponse) {
-                            FB.api('/me', {fields: 'email'}, (response) =>{
+                            window.FB.api('/me', {fields: ['email', 'name']}, (response) =>{
                                 console.log(response);
                                 if (typeof response.email!=='undefined'){
                                     this.showLike= true;
                                     this.userEmail = response.email;
-                                    FB.Event.subscribe('edge.create', (response) => {
-                                        this.sendToServer('facebook');
+                                    window.FB.Event.subscribe('edge.create', (response) => {
+                                        console.log(response);
+                                        //this.sendToServer('facebook');
                                     })
                                 }
                             });

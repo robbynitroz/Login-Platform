@@ -149,9 +149,6 @@ class HotelController extends Controller
      */
     public function newHotel(Request $request): int
     {
-        $request->validate([
-            'hotel.name' => 'required|unique:hotels,name',
-        ]);
         $newHotel = new Hotel();
         $newHotel->name = $request->hotel['name'];
         $newHotel->main_url = $request->hotel['main_url'];

@@ -232,6 +232,7 @@
                 window.FB.login((response)=> {
                         if (response.authResponse) {
                             FB.api('/me', {fields: 'email'}, (response) =>{
+                                console.log(response);
                                 if (typeof response.email!=='undefined'){
                                     this.showLike= true;
                                     this.userEmail = response.email;

@@ -6,10 +6,10 @@ export const fb = {
     created() {
         window.fbAsyncInit = function () {
             FB.init({
-                appId: '138238136817710',
+                appId: '1519471891398547',
                 autoLogAppEvents: true,
                 xfbml: true,
-                version: 'v2.10'
+                version: 'v2.12'
             });
             FB.AppEvents.logPageView();
         };

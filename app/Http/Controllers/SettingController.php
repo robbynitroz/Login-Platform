@@ -191,6 +191,7 @@ class SettingController extends Controller
      * Get the percentage of rows to be deleted from tables
      *
      * @param int $number
+     *
      * @return int
      */
     private function getLimit(int $number): int
@@ -226,6 +227,26 @@ class SettingController extends Controller
             'setting->on' => $request->on,
             'setting->utilize' => (int)$request->percent
         ]);
+    }
+
+    /**
+     * Reboot server or Freeradius server
+     *
+     * @param Request $request
+     *
+     * @return void
+     */
+    public function serverManagement(Request $request):void
+    {
+        $request->validate([
+            'action' => 'required|string',
+        ]);
+        if($request->action === 'reboot' ){
+            exec('sudo /sbin/reboot');
+        }
+        if($request->action === 'freeradius' ){
+            exec('sudo /etc/init.d/freeradius restart');
+        }
     }
 
 }

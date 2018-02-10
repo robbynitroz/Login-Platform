@@ -133,6 +133,12 @@ const Utilities = resolve => {
     });
 };
 
+const SystemSettings = resolve => {
+    require.ensure(['../components/dashboard/SystemSettings.vue'], () => {
+        resolve(require('../components/dashboard/SystemSettings.vue'));
+    });
+};
+
 
 export const routes = [
     {
@@ -264,7 +270,6 @@ export const routes = [
             {
                 path: '/dashboard/settings/users',
                 name: 'Users account',
-
             },
 
             {
@@ -274,12 +279,10 @@ export const routes = [
             },
 
             {
-                path: '/dashboard/settings/config',
-                name: 'System configurations',
-
+                path: '/dashboard/settings/system',
+                name: 'System settings',
+                component:SystemSettings
             },
-
-
 
         ]
 

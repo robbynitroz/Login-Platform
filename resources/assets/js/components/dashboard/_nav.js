@@ -168,8 +168,8 @@ export default {
                     icon: 'fa fa-wrench'
                 },
                 {
-                    name: 'System configurations',
-                    url: '/dashboard/settings/config',
+                    name: 'System',
+                    url: '/dashboard/settings/system',
                     icon: 'fa fa-cogs'
                 },
 

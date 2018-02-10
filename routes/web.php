@@ -255,3 +255,8 @@ Route::post('/settings/utilisation/set', [
     'middleware' => ['web', 'auth']
 ])->name('store_utilisation_settings');
 
+Route::post('/settings/management', [
+    'uses' => 'SettingController@serverManagement',
+    'middleware' => ['web', 'auth']
+])->name('server_management');
+

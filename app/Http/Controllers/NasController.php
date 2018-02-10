@@ -62,6 +62,7 @@ class NasController extends Controller
         }
 
         (new Nas())->where('hotel_id', $id)->forceDelete();
+        exec('sudo /etc/init.d/freeradius restart');
         return 'Success';
     }
 
@@ -108,6 +109,7 @@ class NasController extends Controller
      * Check router IP
      *
      * @param Request $request
+     *
      * @return string
      */
     public function addRouter(Request $request)
@@ -136,6 +138,7 @@ class NasController extends Controller
      *
      * @param Request $request
      * @param         $ip
+     *
      * @return void
      */
     public function newRouter(Request $request, $ip): void
@@ -155,6 +158,7 @@ class NasController extends Controller
         $new_router->mikrotik_password = Crypt::encryptString($data['mikrotik_password']);
         $new_router->wifi = true;
         $new_router->save();
+        exec('sudo /etc/init.d/freeradius restart');
     }
 
     /**

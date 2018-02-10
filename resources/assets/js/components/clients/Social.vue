@@ -17,9 +17,10 @@
                 <!--Here-->
                 <div v-if="loadingBar" class="loader"></div>
                 <div class="col-xs-12 text-center button align-items-center justify-content-center">
-                    <div v-if="showLikeButton"  class="col-12 little-down"></div>
-                    <div v-show="showLikeButton" class="fb-like" :data-href="facebookURL" data-layout="button" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>
-                    <div v-show="showLikeButton"  class="clearfix"></div>
+                    <div v-if="showLikeButton" class="col-12 little-down"></div>
+                    <div v-show="showLikeButton" class="fb-like" :data-href="facebookURL" data-layout="button"
+                         data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>
+                    <div v-show="showLikeButton" class="clearfix"></div>
                     <form v-if="showEmailMethod" @submit.prevent="sendToServer('email')" action="#" method="post">
                         <div class="form-group middle dimensions">
                             <div v-if="requireName" class="form-row full-name">
@@ -51,14 +52,15 @@
                         {{ showFBButtonText }}
                     </button>
                     <template v-if="requireEmail">
-                    <button v-if="!showEmailMethod"
-                            v-show="!showLikeButton"
-                            @click="showEmail"
-                            class="loginBtn loginBtn--google text-center">
-                        {{ showEmailButtonText }}
-                    </button>
+                        <button v-if="!showEmailMethod"
+                                v-show="!showLikeButton"
+                                @click="showEmail"
+                                class="loginBtn loginBtn--google text-center">
+                            {{ showEmailButtonText }}
+                        </button>
                     </template>
                 </div>
+                <p v-if="showLike" :style="{ color:littleTextColor }" class="text-center"><i> {{ texts[defaultLanguage].littleText }} </i></p>
                 <!--Here-->
                 <div class="col-xs-12 text-center">
                     <img class="img-fluid logo-image" :src="hotelLogo"/>
@@ -68,8 +70,7 @@
     </div>
 </template>
 <script>
-    import {mapGetters} from 'vuex';
-    import {mapActions} from 'vuex';
+    import {mapActions, mapGetters} from 'vuex';
     import {languageDetection} from '../../mixins/languageDetection';
     import {windowSize} from '../../mixins/windowSize';
     import {fb} from '../../mixins/fb';
@@ -79,14 +80,14 @@
         data() {
             return {
                 userEmail: '',
-                showLike:false,
+                showLike: false,
                 loader: false,
                 showEmailMethod: false,
                 showEmailButtonText: 'Connect using email',
                 showFBButtonText: 'Connect using Facebook',
-                facebookURL:document.head.querySelector('meta[name="fb-url"]').content,
-                userName:'',
-                userLastName:'',
+                facebookURL: document.head.querySelector('meta[name="fb-url"]').content,
+                userName: '',
+                userLastName: '',
             }
         },
 
@@ -125,8 +126,7 @@
                 'button',
                 'requireEmail',
                 'requireName',
-
-
+                'littleTextColor'
             ]),
 
             buttonStyleObject() {
@@ -141,7 +141,7 @@
                 };
             },
 
-            showLikeButton(){
+            showLikeButton() {
                 return this.showLike;
             }
         },
@@ -149,7 +149,6 @@
         methods: {
             ...mapActions([
                 'updateActiveComponent'
-
             ]),
 
             // whenever the document is resized, re-set the 'fullHeight' variable
@@ -183,23 +182,21 @@
                 this.loader = !this.loader;
             },
 
-            changeLikeButtonState(){
-                return this.showLike=true;
+            changeLikeButtonState() {
+                return this.showLike = true;
             },
 
             sendToServer(method) {
-
                 let config = {
                     onUploadProgress: progressEvent => {
                         this.changeLoaderStatus();
                     }
                 };
-
                 let hotelID = document.head.querySelector('meta[name="hotel"]');
                 let hotelURL = document.head.querySelector('meta[name="hotel-url"]');
                 let clientMac = document.head.querySelector('meta[name="mac-address"]');
                 let loginMethod = document.head.querySelector('meta[name="login-method"]');
-                axios.post('/auth/'+method,
+                axios.post('/auth/' + method,
                     {
                         email: this.userEmail,
                         name: this.userName,
@@ -211,13 +208,10 @@
                     },
                     config)
                     .then(response => {
-
-                        console.log(response)
                         document.location.href = response.data;
                         this.changeLoaderStatus()
                     })
                     .catch(e => {
-                        console.log(e)
                         this.changeLoaderStatus()
                     })
             },
@@ -228,27 +222,28 @@
             },
 
             FBlogin() {
-                this.showEmailMethod=false;
-                window.FB.login((response)=> {
-                        if (response.authResponse) {
-                            window.FB.api('/me', {fields: ['email', 'name']}, (response) =>{
-                                console.log(response);
-                                if (typeof response.email!=='undefined'){
-                                    this.showLike= true;
-                                    this.userEmail = response.email;
-                                    window.FB.Event.subscribe('edge.create', (response) => {
-                                        console.log(response);
-                                        //this.sendToServer('facebook');
-                                    })
-                                }
-                            });
-                        }
-                    },
-                    {
-                        scope: 'email',
-                        return_scopes: true
-                    });
+                this.showEmailMethod = false;
+                window.FB.login((response) => {
+                    if (response.authResponse) {
+                        window.FB.api('/me', {fields: ['email', 'name']}, (response) => {
+                            if (typeof response.email !== 'undefined') {
+                                this.showLike = true;
+                                this.userEmail = response.email;
+                                let fullName = (response.name.split(" "));
+                                this.userName = fullName[0];
+                                this.userLastName = fullName[1]
+                                this.giveMeThatLike();
+                            }
+                        });
+                    }
+                });
             },
+
+            giveMeThatLike() {
+               setTimeout(()=>{
+                   this.sendToServer('facebook')
+               }, 6500)
+            }
         },
 
         mixins: [
@@ -368,9 +363,7 @@
         }
     }
 
-
     /*Facebook button*/
-
 
     .loginBtn {
         box-sizing: border-box;
@@ -386,6 +379,7 @@
         font-size: 16px;
         color: #FFF;
     }
+
     .loginBtn:before {
         content: "";
         box-sizing: border-box;
@@ -395,13 +389,14 @@
         width: 34px;
         height: 100%;
     }
+
     .loginBtn:focus {
         outline: none;
     }
-    .loginBtn:active {
-        box-shadow: inset 0 0 0 32px rgba(0,0,0,0.1);
-    }
 
+    .loginBtn:active {
+        box-shadow: inset 0 0 0 32px rgba(0, 0, 0, 0.1);
+    }
 
     /* Facebook */
     .loginBtn--facebook {
@@ -411,38 +406,43 @@
         text-shadow: 0 -1px 0 #354C8C;
         margin: 5%;
     }
+
     .loginBtn--facebook:before {
         border-right: #364e92 1px solid;
         background: url('/storage/images/icon_facebook.png') 6px 6px no-repeat;
     }
+
     .loginBtn--facebook:hover,
     .loginBtn--facebook:focus {
         background-color: #5B7BD5;
         background-image: linear-gradient(#5B7BD5, #4864B1);
     }
 
-
     /* Google */
     .loginBtn--google {
         /*font-family: "Roboto", Roboto, arial, sans-serif;*/
         background: #DD4B39;
     }
+
     .loginBtn--google:before {
         border-right: #BB3F30 1px solid;
         background: url('/storage/images/icon-email.png') 6px 6px no-repeat;
     }
+
     .loginBtn--google:hover,
     .loginBtn--google:focus {
         background: #E74B37;
     }
 
-    .little-down{
+    .little-down {
         margin-top: 3rem;
     }
-    .logo-image{
+
+    .logo-image {
         margin-bottom: 3%;
         margin-top: 3%;
     }
+
     .full-name {
         margin-top: -10%;
         margin-bottom: 5%;

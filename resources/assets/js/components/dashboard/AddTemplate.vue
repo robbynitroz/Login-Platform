@@ -106,12 +106,12 @@
                                                         </b-input-group>
                                                     </b-form-fieldset>
                                                     <!--Little text text-->
-                                                    <b-form-fieldset v-if="defaultComponent =='Login'">
+                                                    <b-form-fieldset v-if="defaultComponent !=='Email'">
                                                         <b-input-group left="<i class='fa fa-podcast'></i>">
                                                             <b-form-input type="text"
                                                                           required
                                                                           v-model="texts[lang].littleText"
-                                                                          placeholder="Little text under button"></b-form-input>
+                                                                          placeholder="Little text under login/like button"></b-form-input>
                                                         </b-input-group>
                                                     </b-form-fieldset>
                                                     <!--First name text-->
@@ -243,9 +243,9 @@
                                         Terms aka Policy link and text color || </a>
                                     <a href=""
                                        @click.prevent="storeColor('greeting')"> Greeting or text on the top || </a>
-                                    <a v-if="defaultComponent =='Login'" href=""
+                                    <a v-if="defaultComponent !=='Email'" href=""
                                        @click.prevent="storeColor('littleTextColor')">
-                                        Little text under login button </a>
+                                        Little text under login/like button </a>
 
                                 </div>
                                 <br>

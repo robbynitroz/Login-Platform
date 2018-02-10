@@ -2,7 +2,7 @@ export const fb = {
     created() {
         window.fbAsyncInit = () => {
             window.FB.init({
-                appId            : '2224509234442475',
+                appId            : '1519471891398547',
                 autoLogAppEvents : true,
                 xfbml            : true,
                 version          : 'v2.10'

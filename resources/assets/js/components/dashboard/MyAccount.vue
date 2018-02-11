@@ -154,13 +154,14 @@
                         if (response.data === 'Wrong file format!') {
                             this.failImage = true;
                             this.loading = false;
+                            this.imageUploaded = false;
                             return;
-                        } else {
+                        }
                             this.loading = false;
                             this.picture = response.data;
                             this.imageUploaded = false;
                             this.successImage = true;
-                        }
+
                     })
                     .catch(e => {
                         this.loading = false;

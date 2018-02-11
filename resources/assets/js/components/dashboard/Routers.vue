@@ -17,7 +17,7 @@
                             <b-col lg="6">
                                 <h5>Refresh user list</h5>
                                 <b-button @click="refreshUsers()" type="edit" variant="primary">
-                                    <span v-if="spinner" class="spinner-refresh"><clip-loader :loading="loading"
+                                    <span v-if="spinner" class="spinner-refresh"><clip-loader class="loader-spinner"
                                                                                               size="16px"
                                                                                               color="#fff"></clip-loader></span>
                                     <i v-else class="fa fa-repeat"></i> Refresh
@@ -123,7 +123,14 @@
                 .then(response => {
                     this.routers = response.data
                     this.fetchComplete = true
-                })
+                }).then(()=>{
+                if(this.$route.query.checkStatus){
+                    setTimeout(()=>{
+                        this.refreshUsers()
+                    }, 300)
+
+                }
+            })
                 .catch(e => {
                     this.critError = true;
                 });
@@ -187,7 +194,6 @@
             },
 
             refreshUsers() {
-
                 this.spinner = true;
                 axios.get('/mikrotik/status/' + this.filter)
                     .then(response => {
@@ -223,6 +229,9 @@
     .spinner-refresh {
         float: left;
         margin-top: 2px;
+    }
+    .loader-spinner{
+        margin-right: 3px;
     }
 
 </style>

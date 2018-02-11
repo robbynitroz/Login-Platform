@@ -177,16 +177,11 @@ export default {
         },
         {
             name: 'Mikrotik status',
-            url: '',
+            url: '/dashboard/home?checkStatus=true',
             icon: 'icon-compass',
             class: 'mt-auto',
             variant: 'success'
         },
-        {
-            name: 'Server status',
-            url: '',
-            icon: 'icon-cloud-download',
-            variant: 'danger'
-        }
+
     ]
 }

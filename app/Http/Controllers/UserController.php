@@ -25,7 +25,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
-    public function getCurrentUser()
+    public function getCurrentUser():object
     {
         return Auth::user();
     }

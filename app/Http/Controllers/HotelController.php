@@ -40,6 +40,7 @@ class HotelController extends Controller
      * Get single hotel by id for administrator
      *
      * @param int $id
+     *
      * @return mixed
      */
     public function getHotelAdmin(int $id)
@@ -61,6 +62,7 @@ class HotelController extends Controller
      * All releted templates
      *
      * @param Request $request
+     *
      * @return mixed
      */
     public function getHotelTemplates(Request $request, $id = false)
@@ -75,6 +77,7 @@ class HotelController extends Controller
      * All releted routers
      *
      * @param Request $request
+     *
      * @return mixed
      */
     public function getHotelRouters(Request $request)
@@ -86,6 +89,7 @@ class HotelController extends Controller
      * Delete hotels and related templates
      *
      * @param $id
+     *
      * @return string
      */
     public function deleteHotel($id): string
@@ -101,10 +105,14 @@ class HotelController extends Controller
      * Edit/update hotel information
      *
      * @param Request $request
+     *
      * @return void
      */
     public function editHotel(Request $request): void
     {
+        $request->validate([
+            'hotel.name' => 'required|max:255|string|unique:hotels,name,'.$request->id,
+        ]);
         $updateHotel = (Hotel::find($request->id));
         $updateHotel->name = $request->hotel['name'];
         $updateHotel->main_url = $request->hotel['main_url'];
@@ -121,6 +129,7 @@ class HotelController extends Controller
      * Update/edit hotel logo
      *
      * @param Request $request
+     *
      * @return string
      */
     public function editHotelFiles(Request $request): string
@@ -142,6 +151,7 @@ class HotelController extends Controller
      * Create new hotel
      *
      * @param Request $request
+     *
      * @return int
      */
     public function newHotel(Request $request): int

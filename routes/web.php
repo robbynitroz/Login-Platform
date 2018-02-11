@@ -260,3 +260,18 @@ Route::post('/settings/management', [
     'middleware' => ['web', 'auth']
 ])->name('server_management');
 
+Route::get('user', [
+    'uses' => 'UserController@getCurrentUser',
+    'middleware' => ['web', 'auth']
+])->name('current_user');
+
+Route::post('/user/avatar/', [
+    'uses' => 'UserController@setCurrentUserAvatar',
+    'middleware' => ['web', 'auth']
+])->name('set_current_user_avatar');
+
+Route::post('/user/change-data/', [
+    'uses' => 'UserController@setCurrentUserData',
+    'middleware' => ['web', 'auth']
+])->name('set_current_user_data');
+

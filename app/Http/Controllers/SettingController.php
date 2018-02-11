@@ -7,6 +7,7 @@ use DB;
 use Illuminate\Http\Request;
 
 
+
 /**
  * Class SettingController
  * @package App\Http\Controllers

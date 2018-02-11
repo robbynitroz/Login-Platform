@@ -32,7 +32,7 @@
                         FreeRaduis server will be restarted! Press OK if you are sure!
                     </b-modal>
                     <b-modal centered title="Error" class="modal-danger" v-model="errors" hide-footer>
-                        Oops~ something went terribly wrong!
+                        SERVER REBOOTED !!! WAIT 3-5 MINUTES AND THEN REFRESH PAGE !!!
                     </b-modal>
                     <b-modal size="sm" centered title="Success" class="modal-success" v-model="success" hide-footer>
                         <div class="d-block text-center">

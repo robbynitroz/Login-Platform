@@ -4,12 +4,6 @@ const Dashboard = resolve => {
     });
 };
 
-/*const Home = resolve => {
-    require.ensure(['../components/dashboard/Home.vue'], () => {
-        resolve(require('../components/dashboard/Home.vue'));
-    });
-};*/
-
 
 const Hotels = resolve => {
     require.ensure(['../components/dashboard/Hotels.vue'], () => {
@@ -139,6 +133,13 @@ const SystemSettings = resolve => {
     });
 };
 
+const MyAccount = resolve => {
+    require.ensure(['../components/dashboard/MyAccount.vue'], () => {
+        resolve(require('../components/dashboard/MyAccount.vue'));
+    });
+};
+
+
 
 export const routes = [
     {
@@ -246,7 +247,8 @@ export const routes = [
 
             {
                 path: '/dashboard/settings/account',
-                name: 'User account',
+                name: 'My account',
+                component:MyAccount
             },
 
             {
@@ -269,7 +271,7 @@ export const routes = [
 
             {
                 path: '/dashboard/settings/users',
-                name: 'Users account',
+                name: 'Users accounts',
             },
 
             {

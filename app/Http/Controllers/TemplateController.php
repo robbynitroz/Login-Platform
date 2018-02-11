@@ -281,8 +281,6 @@ class TemplateController extends Controller
         $path = storage_path();
         $path .= '/' . $image;
         $img = Image::make($path);
-        // resize the image to a width of 600 and constrain aspect ratio (auto height)
-
         if ($img->width() > 390) {
             $img->resize(390, null, function ($constraint) {
                 $constraint->aspectRatio();
@@ -546,25 +544,9 @@ class TemplateController extends Controller
         $clone['type'] = $template['type'];
         $media = array($clone['data']->media->src, $clone['data']->hotelLogo);
         $prefixer = $this->cloneStorageFiles($media);
-        $clone['data']->media->src = str_replace('.', $prefixer.'-copy.', $clone['data']->media->src);
-        $clone['data']->hotelLogo = str_replace('.', $prefixer.'-copy.', $clone['data']->hotelLogo);
+        $clone['data']->media->src = str_replace('.', $prefixer . '-copy.', $clone['data']->media->src);
+        $clone['data']->hotelLogo = str_replace('.', $prefixer . '-copy.', $clone['data']->hotelLogo);
         $this->newTemplateFromExistingData($clone);
-    }
-
-    /**
-     * Create new template from existed source
-     *
-     * @param array $clone
-     *
-     * @return void
-     */
-    public function newTemplateFromExistingData(array $clone):void
-    {
-        $model = new Template();
-        $model->hotel = $clone['hotel_id'];
-        $model->type = $clone['type'];
-        $model->data = json_encode($clone['data']);
-        $model->save();
     }
 
     /**
@@ -585,15 +567,31 @@ class TemplateController extends Controller
      *
      * @return int
      */
-    public function cloneStorageFiles(array $files):int
+    public function cloneStorageFiles(array $files): int
     {
         $unix = time();
         foreach ($files as $file) {
             $file = storage_path(str_replace('/storage/', 'app/public/', $file));
-            $destination = str_replace('.', $unix.'-copy.', $file);
+            $destination = str_replace('.', $unix . '-copy.', $file);
             copy($file, $destination);
         }
         return $unix;
 
+    }
+
+    /**
+     * Create new template from existed source
+     *
+     * @param array $clone
+     *
+     * @return void
+     */
+    public function newTemplateFromExistingData(array $clone): void
+    {
+        $model = new Template();
+        $model->hotel = $clone['hotel_id'];
+        $model->type = $clone['type'];
+        $model->data = json_encode($clone['data']);
+        $model->save();
     }
 }

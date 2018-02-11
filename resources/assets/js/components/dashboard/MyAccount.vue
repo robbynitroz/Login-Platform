@@ -32,7 +32,7 @@
                                 <b-alert v-model="successImage" dismissible show variant="success">
                                     Avatar successfully changed !
                                 </b-alert>
-                                <b-alert v-model="successImage" dismissible show variant="warning">
+                                <b-alert v-model="failImage" dismissible show variant="warning">
                                     Wrong file format!
                                 </b-alert>
                             </b-form-fieldset>
@@ -58,7 +58,6 @@
                                                       placeholder="Your name"></b-form-input>
                                     </b-input-group>
                                 </b-form-fieldset>
-
                                 <b-button
                                         type="submit"
                                         variant="success"><i
@@ -108,13 +107,13 @@
                 success: false,
                 successImage: false,
                 imageUploaded: false,
-                failImage:false,
-                loading:false,
-                completed:0,
+                failImage: false,
+                loading: false,
+                completed: 0,
             }
         },
         computed: {
-            imageLoadStatus(){
+            imageLoadStatus() {
                 return this.imageUploaded;
             }
         },
@@ -140,9 +139,7 @@
                 )
             },
 
-
             uploadImage(id, save = false) {
-
                 this.loading = true;
                 let config = {
                     onUploadProgress: progressEvent => {
@@ -154,15 +151,15 @@
                 axios.post('/user/avatar/', data, config
                 )
                     .then(response => {
-                        if(response.data === 'Wrong file format!'){
+                        if (response.data === 'Wrong file format!') {
                             this.failImage = true;
                             this.loading = false;
                             return;
-                        } else{
+                        } else {
                             this.loading = false;
                             this.picture = response.data;
                             this.imageUploaded = false;
-                            this.successImage= true;
+                            this.successImage = true;
                         }
                     })
                     .catch(e => {
@@ -173,8 +170,8 @@
 
             save() {
                 axios.post('/user/change-data/', {
-                    name:this.name,
-                    email:this.email
+                    name: this.name,
+                    email: this.email
                 }).then(response => {
                     this.success = true;
                 })

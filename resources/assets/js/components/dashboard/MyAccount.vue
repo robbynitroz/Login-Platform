@@ -154,14 +154,16 @@
                 axios.post('/user/avatar/', data, config
                 )
                     .then(response => {
-                        if(response.data == 'Wrong file format!'){
+                        if(response.data === 'Wrong file format!'){
                             this.failImage = true;
+                            this.loading = false;
                             return;
+                        } else{
+                            this.loading = false;
+                            this.picture = response.data;
+                            this.imageUploaded = false;
+                            this.successImage= true;
                         }
-                        this.loading = false;
-                        this.picture = response.data;
-                        this.imageUploaded = false;
-                        this.successImage= true;
                     })
                     .catch(e => {
                         this.loading = false;

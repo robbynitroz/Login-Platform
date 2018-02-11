@@ -77,7 +77,6 @@ class EmailController extends Controller
      * Store email in DB if not exist
      *
      * @param Request $request
-     *
      * @return void
      */
     public function storeEmail(Request $request): void
@@ -129,7 +128,6 @@ class EmailController extends Controller
      * Set data
      *
      * @param string $token
-     *
      * @return void
      */
     public function setData(string $token): void

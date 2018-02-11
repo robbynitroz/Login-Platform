@@ -2,7 +2,7 @@
     <b-nav-item-dropdown right no-caret>
         <template slot="button-content">
           <b>  {{ welcome }} {{ name }} ! </b>
-            <img :src="image" class="img-avatar" alt="admin@bootstrapmaster.com">
+            <img :src="image" class="img-avatar" alt="user-avatar">
         </template>
         <b-dropdown-header tag="div" class="text-center"><strong>Settings</strong></b-dropdown-header>
         <b-dropdown-item :to="{name:'My account'}"><i class="fa fa-user"></i> Profile</b-dropdown-item>

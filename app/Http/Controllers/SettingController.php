@@ -192,7 +192,6 @@ class SettingController extends Controller
      * Get the percentage of rows to be deleted from tables
      *
      * @param int $number
-     *
      * @return int
      */
     private function getLimit(int $number): int
@@ -215,7 +214,6 @@ class SettingController extends Controller
      * Store utilisation settings in db
      *
      * @param Request $request
-     *
      * @return void
      */
     public function storeUtilisationSettings(Request $request): void
@@ -234,7 +232,6 @@ class SettingController extends Controller
      * Reboot server or Freeradius server
      *
      * @param Request $request
-     *
      * @return void
      */
     public function serverManagement(Request $request):void

@@ -109,7 +109,6 @@ class NasController extends Controller
      * Check router IP
      *
      * @param Request $request
-     *
      * @return string
      */
     public function addRouter(Request $request)
@@ -138,7 +137,6 @@ class NasController extends Controller
      *
      * @param Request $request
      * @param         $ip
-     *
      * @return void
      */
     public function newRouter(Request $request, $ip): void

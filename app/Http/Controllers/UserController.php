@@ -34,7 +34,6 @@ class UserController extends Controller
      * Change user avatar
      *
      * @param Request $request
-     *
      * @return string
      */
     public function setCurrentUserAvatar(Request $request)
@@ -66,7 +65,6 @@ class UserController extends Controller
      * Delete given file
      *
      * @param string $old_file_path
-     *
      * @return void
      */
     private function deleteOldAvatar(string $old_file_path):void
@@ -80,7 +78,6 @@ class UserController extends Controller
      * Optimize image size
      *
      * @param string $file
-     *
      * @return void
      */
     private function optimizeAvatar(string $file):void
@@ -88,8 +85,8 @@ class UserController extends Controller
         $path = storage_path();
         $path .= '/' . $file;
         $img = Image::make($path);
-        if ($img->width() > 250) {
-            $img->resize(250, null, function ($constraint) {
+        if ($img->width() > 255) {
+            $img->resize(255, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
             $img->save($path);
@@ -102,7 +99,6 @@ class UserController extends Controller
      * Changed logged in user data
      *
      * @param Request $request
-     *
      * @return void
      */
     public function setCurrentUserData(Request $request):void

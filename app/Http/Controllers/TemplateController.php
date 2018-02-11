@@ -424,7 +424,6 @@ class TemplateController extends Controller
      * Preview page
      *
      * @param Request $request
-     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
      */
     public function preview(Request $request)
@@ -564,7 +563,6 @@ class TemplateController extends Controller
      * Copy given files storage files
      *
      * @param array $files
-     *
      * @return int
      */
     public function cloneStorageFiles(array $files): int
@@ -583,7 +581,6 @@ class TemplateController extends Controller
      * Create new template from existed source
      *
      * @param array $clone
-     *
      * @return void
      */
     public function newTemplateFromExistingData(array $clone): void

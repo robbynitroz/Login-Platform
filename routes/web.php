@@ -275,3 +275,5 @@ Route::post('/user/change-data/', [
     'middleware' => ['web', 'auth']
 ])->name('set_current_user_data');
 
+
+

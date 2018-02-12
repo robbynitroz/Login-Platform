@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use App\User;
 
 class UserController extends Controller
 {
@@ -113,4 +114,5 @@ class UserController extends Controller
         $user->email =  request()->input('email');
         $user->save();
     }
+
 }

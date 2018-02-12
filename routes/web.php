@@ -24,9 +24,6 @@ $newsfeed = function () {
 
 };
 
-
-Route::group(['domain' => 'cmsfront.loc'], $newsfeed);
-
 Route::group(['domain' => 'cmsfrontdev.guestcompass.nl'], $newsfeed);
 
 Route::group(['domain' => 'cmsfront.guestcompass.nl'], $newsfeed);

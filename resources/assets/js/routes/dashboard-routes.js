@@ -269,10 +269,10 @@ export const routes = [
                 component:EditEmailSettings
             },
 
-            {
+            /*{
                 path: '/dashboard/settings/users',
                 name: 'Users accounts',
-            },
+            },*/
 
             {
                 path: '/dashboard/settings/utilities',

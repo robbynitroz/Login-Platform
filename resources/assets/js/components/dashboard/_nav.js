@@ -156,11 +156,11 @@ export default {
                     icon: 'icon-envelope-letter'
                 },
 
-                {
+               /* {
                     name: 'Users accounts',
                     url: '/dashboard/settings/users',
                     icon: 'fa fa-users'
-                },
+                },*/
 
                 {
                     name: 'System utilities',

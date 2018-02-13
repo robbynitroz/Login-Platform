@@ -16,8 +16,8 @@
                             <b-button @click="confirmServer = ! confirmServer" class="restart-server" size="lg"
                                       variant="danger">
                                 <b>
-                                    BIG RED <br>
-                                    BUTTON</b>
+                                    REBOOT <br>
+                                    SERVER !</b>
                             </b-button>
                             <div class="clearfix"></div>
                             <br/>

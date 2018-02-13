@@ -1,5 +1,5 @@
 export const fb = {
-    created() {
+    mounted() {
         window.fbAsyncInit = () => {
             window.FB.init({
                 appId            : '1519471891398547',

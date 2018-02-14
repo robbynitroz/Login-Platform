@@ -268,14 +268,14 @@ class EmailController extends Controller
         ]);
         $this->setData($request->token, true);
         if (empty($this->data)) {
-            return response('Unauthorized action.', 401);
+            return response('Unauthorized action.', 403);
         }
         $this->checkData($request, true);
 
         $name = $request->name ?? '';
         $rezult = $this->sortEmailData($request->email, $request->hotel_name, $name);
         if (!empty($rezult)) {
-            $this->saveApiEmail($rezult);
+            $this->saveEmail($rezult);
         }
         return response('Success', 200);
     }
@@ -324,7 +324,7 @@ class EmailController extends Controller
      * @param array $data
      * @return void
      */
-    private function saveApiEmail(array $data): void
+    private function saveEmail(array $data): void
     {
         if (strlen($data['email']) > 47) {
             return;

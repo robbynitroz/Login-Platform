@@ -128,20 +128,22 @@ class EmailController extends Controller
      * Set data
      *
      * @param string $token
+     * @param bool   $api
      * @return void
      */
-    public function setData(string $token): void
+    public function setData(string $token, bool $api = false): void
     {
-        $this->data = ((new SettingController())->getDataWithToken($token));
+        $this->data = ((new SettingController())->getDataWithToken($token, $api));
     }
 
     /**
      * Check if data empty, means, token was fake
      *
      * @param Request $request
+     * @param bool    $api
      * @return void
      */
-    private function checkData(Request $request): void
+    private function checkData(Request $request, bool $api = false): void
     {
         if ($this->data !== null) {
             $this->hotels_list = json_decode((json_decode(json_decode($this->data)->setting))->hotels);
@@ -151,9 +153,13 @@ class EmailController extends Controller
                     $this->hotels[$hotel['id']] = $hotel['name'];
                 }
             }
-            $this->prepareEmailList();
+            if ($api !== true) {
+                $this->prepareEmailList();
+            }
         } else {
-            $this->blockUser($request->ip());
+            if ($api !== true) {
+                $this->blockUser($request->ip());
+            }
         }
     }
 
@@ -240,6 +246,100 @@ class EmailController extends Controller
     {
         $path = (storage_path('app/email-list/') . $this->file_name . '.json');
         return response()->download($path, 'emails.json')->deleteFileAfterSend(true);;
+    }
+
+    /**
+     * Store email address with additional data if received
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function apiStoreEmail(Request $request)
+    {
+        //Can be changed
+        if ($request->ip() !== '188.95.138.130') {
+            return response('Unauthorized action.', 401);
+        }
+        $request->validate([
+            'email' => 'required|email',
+            'token' => 'required|string',
+            'hotel_name' => 'required|string',
+            'name' => 'sometimes|string',
+        ]);
+        $this->setData($request->token, true);
+        if (empty($this->data)) {
+            return response('Unauthorized action.', 401);
+        }
+        $this->checkData($request, true);
+
+        $name = $request->name ?? '';
+        $rezult = $this->sortEmailData($request->email, $request->hotel_name, $name);
+        if (!empty($rezult)) {
+            $this->saveApiEmail($rezult);
+        }
+        return response('Success', 200);
+    }
+
+    /**
+     * Sorting received data, preparing data for save in database
+     *
+     * @param string $email
+     * @param string $hotel_name
+     * @param string $name
+     * @return array
+     */
+    private function sortEmailData(string $email, string $hotel_name, string $name = ''): array
+    {
+        $hotel_id = array_search(strtolower($hotel_name), array_map('strtolower', $this->hotels));
+        if ($hotel_id === false) {
+            return [];
+        }
+        $data = [
+            'hotel_id' => $hotel_id,
+            'type'=>'api',
+            'email' => $email,
+        ];
+        if ($name !== '') {
+            $with_surname = strrpos($name, " ");
+            if (is_int($with_surname)) {
+                $user_data = explode(" ", $name);
+                if (strlen($user_data[0]) < 45) {
+                    $data['name'] = $user_data[0];
+                }
+                if (strlen($user_data[1]) < 45) {
+                    $data['last_name'] = $user_data[1];
+                }
+            } else {
+                if (strlen($name) < 45) {
+                    $data['name'] = $name;
+                }
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * Save given data in database
+     *
+     * @param array $data
+     * @return void
+     */
+    private function saveApiEmail(array $data): void
+    {
+        if (strlen($data['email']) > 47) {
+            return;
+        }
+        $model = new Email();
+        $model->hotel_id = $data['hotel_id'];
+        $model->type = $data['type'];
+        $model->email = Crypt::encryptString($data['email']);
+        if (array_key_exists("name", $data)) {
+            $model->name = Crypt::encryptString($data['email']);
+        }
+        if (array_key_exists("last_name", $data)) {
+            $model->last_name = Crypt::encryptString($data['last_name']);
+        }
+        $model->save();
     }
 
 }

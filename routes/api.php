@@ -13,13 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
-/*Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
-
-
-
-
-
+//Store new email in email list
+Route::post('/email',
+    ['uses' => 'EmailController@apiStoreEmail'])->name('store_email_list');
 
 

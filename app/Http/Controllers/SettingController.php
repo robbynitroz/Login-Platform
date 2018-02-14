@@ -7,7 +7,6 @@ use DB;
 use Illuminate\Http\Request;
 
 
-
 /**
  * Class SettingController
  * @package App\Http\Controllers
@@ -33,11 +32,16 @@ class SettingController extends Controller
      * Get data by token
      *
      * @param string $token
+     * @param bool   $api
      * @return mixed
      */
-    public function getDataWithToken(string $token)
+    public function getDataWithToken(string $token, bool $api = false)
     {
-        return ((new Setting())->where('setting->token', $token)->first());
+        if ($api === false) {
+            return ((new Setting())->where('type', 'email')->where('setting->token', $token)->first());
+        }
+        return ((new Setting())->where('type', 'email')->where('setting->apiToken', $token)->first());
+
     }
 
     /**
@@ -234,15 +238,15 @@ class SettingController extends Controller
      * @param Request $request
      * @return void
      */
-    public function serverManagement(Request $request):void
+    public function serverManagement(Request $request): void
     {
         $request->validate([
             'action' => 'required|string',
         ]);
-        if($request->action === 'reboot' ){
+        if ($request->action === 'reboot') {
             exec('sudo /sbin/reboot');
         }
-        if($request->action === 'freeradius' ){
+        if ($request->action === 'freeradius') {
             exec('sudo /etc/init.d/freeradius restart');
         }
     }

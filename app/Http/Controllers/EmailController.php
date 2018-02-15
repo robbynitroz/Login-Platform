@@ -261,7 +261,6 @@ class EmailController extends Controller
             'email' => 'required|email',
             'token' => 'required|string',
             'hotel_name' => 'required|string',
-            'name' => 'string',
         ]);
         $this->setData($request->token, true);
         if (empty($this->data)) {

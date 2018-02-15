@@ -9,18 +9,22 @@ class SendEmailToGuestCompass
      * API URL
      */
     const URL = "https://wifi.guestcompass.nl/api/email";
+
     /**
      * @var string $hotel_name
      */
     private $hotel_name;
+
     /**
      * @var string $token
      */
     private $token;
+
     /**
      * @var string $email_address
      */
     private $email_address;
+
     /**
      * @var string $guest_name
      */

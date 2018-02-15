@@ -254,8 +254,7 @@ class EmailController extends Controller
      */
     public function apiStoreEmail(Request $request)
     {
-        //Can be changed
-        if ($request->ip() !== '188.95.138.130') {
+        if ($request->ip() !== env('API_WHITELISTED_IP')) {
             return response('Unauthorized action.', 401);
         }
         $request->validate([

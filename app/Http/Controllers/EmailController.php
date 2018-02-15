@@ -147,11 +147,9 @@ class EmailController extends Controller
     {
         if ($this->data !== null) {
             $this->hotels_list = json_decode((json_decode(json_decode($this->data)->setting))->hotels);
-            if (count($this->hotels_list) > 1) {
-                $model = ((new Hotel())->find($this->hotels_list));
-                foreach ($model as $hotel) {
-                    $this->hotels[$hotel['id']] = $hotel['name'];
-                }
+            $model = ((new Hotel())->find($this->hotels_list));
+            foreach ($model as $hotel) {
+                $this->hotels[$hotel['id']] = $hotel['name'];
             }
             if ($api !== true) {
                 $this->prepareEmailList();
@@ -257,7 +255,7 @@ class EmailController extends Controller
     public function apiStoreEmail(Request $request)
     {
         //Can be changed
-        if ($request->ip() !== '37.186.103.198') {
+        if ($request->ip() !== '188.95.138.130') {
             return response('Unauthorized action.', 401);
         }
         $request->validate([
@@ -268,14 +266,14 @@ class EmailController extends Controller
         ]);
         $this->setData($request->token, true);
         if (empty($this->data)) {
-            return response('Unauthorized action.', 403);
+            return response('Unauthorized action.', 401);
         }
         $this->checkData($request, true);
 
         $name = $request->name ?? '';
         $rezult = $this->sortEmailData($request->email, $request->hotel_name, $name);
+
         if (!empty($rezult)) {
-            var_dump($rezult);
             $this->saveEmail($rezult);
         }
         return response('Success', 200);
@@ -297,7 +295,7 @@ class EmailController extends Controller
         }
         $data = [
             'hotel_id' => $hotel_id,
-            'type'=>'api',
+            'type' => 'api',
             'email' => $email,
         ];
         if ($name !== '') {
@@ -335,7 +333,7 @@ class EmailController extends Controller
         $model->type = $data['type'];
         $model->email = Crypt::encryptString($data['email']);
         if (array_key_exists("name", $data)) {
-            $model->name = Crypt::encryptString($data['email']);
+            $model->name = Crypt::encryptString($data['name']);
         }
         if (array_key_exists("last_name", $data)) {
             $model->last_name = Crypt::encryptString($data['last_name']);

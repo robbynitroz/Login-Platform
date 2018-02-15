@@ -222,7 +222,6 @@
                     mikrotik_password: this.mikrotik_password
                 })
                     .then(response => {
-                        //  console.log(response);
                         this.success = true;
                         setTimeout(() => {
                             return this.$router.push({name: 'Routers'})

@@ -604,7 +604,6 @@
                         this.hotel.timezone = response.data.timezone;
                         this.hotel.session_timeout = response.data.session_timeout
                     } else {
-                        console.log("sellers is not empty !");
                     }
                     this.fetchComplite = true;
                 })

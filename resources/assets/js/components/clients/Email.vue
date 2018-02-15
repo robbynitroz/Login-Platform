@@ -175,7 +175,6 @@
                         this.changeLoaderStatus()
                     })
                     .catch(e => {
-                        console.log(e)
                         this.changeLoaderStatus()
                     })
             }

@@ -224,9 +224,6 @@
         },
 
         methods: {
-            back() {
-                console.log('Back')
-            },
             imageChange() {
                 this.imageUploaded = true
             },

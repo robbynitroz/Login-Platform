@@ -120,7 +120,6 @@
             getSecondary() {
                 axios.get('/settings/email/' + this.$route.params.id).then(response => {
                         let dataReceived = JSON.parse(response.data[0].setting);
-                        console.log(dataReceived);
                         this.name = dataReceived.name;
                         this.token = dataReceived.token;
                         this.apiOn = dataReceived.apiOn;

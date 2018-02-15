@@ -834,7 +834,6 @@
                 setTimeout(() => {
                     this.colorPicker = true;
                     this.forSection = id;
-                    console.log(this.colors)
                 }, 150);
 
 

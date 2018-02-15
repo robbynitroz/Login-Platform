@@ -8,7 +8,7 @@ class SendEmailToGuestCompass
     /**
      * API URL
      */
-    const URL = "http://login.loc/api/email";
+    const URL = "https://wifi.guestcompass.nl/api/email";
     /**
      * @var string $hotel_name
      */

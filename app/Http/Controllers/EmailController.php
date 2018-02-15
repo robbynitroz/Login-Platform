@@ -264,7 +264,7 @@ class EmailController extends Controller
             'email' => 'required|email',
             'token' => 'required|string',
             'hotel_name' => 'required|string',
-            'name' => 'sometimes|string',
+            'name' => 'string',
         ]);
         $this->setData($request->token, true);
         if (empty($this->data)) {
@@ -275,6 +275,7 @@ class EmailController extends Controller
         $name = $request->name ?? '';
         $rezult = $this->sortEmailData($request->email, $request->hotel_name, $name);
         if (!empty($rezult)) {
+            var_dump($rezult);
             $this->saveEmail($rezult);
         }
         return response('Success', 200);

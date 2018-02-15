@@ -40,8 +40,7 @@ class SettingController extends Controller
         if ($api === false) {
             return ((new Setting())->where('type', 'email')->where('setting->token', $token)->first());
         }
-        return ((new Setting())->where('type', 'email')->where('setting->apiToken', $token)->first());
-
+        return ((new Setting())->where('type', 'email')->where('setting->apiOn', true)->where('setting->apiToken', $token)->first());
     }
 
     /**
@@ -87,12 +86,16 @@ class SettingController extends Controller
             'name' => 'required',
             'hotels' => 'required',
             'token' => 'required',
+            'apiOn'=>'required',
+            'apiToken'=>'sometimes|string'
         ]);
         $setting = new Setting();
         $setting->type = 'email';
         $setting->setting = json_encode([
             'name' => $request->name,
             'token' => $request->token,
+            'apiOn'=>$request->apiOn,
+            'apiToken'=>$request->apiToken,
             'hotels' => json_encode($request->hotels)
         ]);
         $setting->save();
@@ -111,11 +114,15 @@ class SettingController extends Controller
             'name' => 'required',
             'hotels' => 'required',
             'token' => 'required',
+            'apiOn'=>'required',
+            'apiToken'=>'sometimes|string'
         ]);
         Setting::where('id',
             $request->id)->update([
             'setting->name' => $request->name,
             'setting->token' => $request->token,
+            'setting->apiOn'=>$request->apiOn,
+            'setting->apiToken'=>$request->apiToken,
             'setting->hotels' => json_encode($request->hotels)
         ]);
     }

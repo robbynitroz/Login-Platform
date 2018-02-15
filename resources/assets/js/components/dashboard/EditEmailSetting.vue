@@ -35,6 +35,30 @@
                             <br/>
                         </b-row>
                     </b-card>
+                    <b-card no-body>
+                        <div class="card-header">
+                            <div> API&nbsp;&nbsp;
+                                <c-switch type="text" variant="success" on="On" off="Off"
+                                          @change="swither()" :checked="apiOn"/>
+                            </div>
+                        </div>
+                        <template v-if="apiOn">
+                            <br>
+                            <div class="col-md-6">
+                            <b-form-group id="group-name"
+                                          label-for="Push the button to generate new token">
+                                <b-form-input type="text"
+                                              v-model="apiToken"
+                                              required
+                                              readonly
+                                              placeholder="TOKEN">
+                                </b-form-input>
+                                <br>
+                                <b-button @click="tokenGen(true)" type="button" variant="primary"> Generate API token</b-button>
+                            </b-form-group>
+                            </div>
+                        </template>
+                    </b-card>
                     <b-button v-if="lastID === null" type="submit" size="lg" variant="success"> Save</b-button>
                     <template v-else>
                         <b-button type="submit" size="lg" variant="primary"> Edit</b-button>
@@ -63,9 +87,11 @@
 </template>
 <script>
     import vSelect from 'vue-select';
+    import cSwitch from './additional-components/Switch.vue'
+    import {email} from '../../mixins/email';
 
     export default {
-        name: "AddNewsFeed",
+        name: "EditEmailSetting",
         data() {
             return {
                 name: '',
@@ -77,52 +103,28 @@
                 success: false,
                 lastID: null,
                 confirmDeleteAction: false,
+                apiOn: false,
+                apiToken: '',
             }
         },
-
         components: {
-            vSelect
+            vSelect,
+            cSwitch
         },
-
         computed: {},
 
         mounted() {
             this.getData();
         },
-
         methods: {
-
-            tokenGen() {
-
-                var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                var text = '';
-                for (var i = 0; i < 32; i++) {
-                    text += possible.charAt(Math.floor(Math.random() * possible.length));
-                }
-                this.token = text
-            },
-
-            getData() {
-                axios.get('/hotels').then(response => {
-                        this.preHotels = response.data;
-                        this.preHotels.forEach(el => {
-                            this.options.push({
-                                id: el.id,
-                                label: el.name
-                            })
-                        })
-                        this.getSecondary()
-                    }
-                ).catch(e => {
-                    this.errors = true
-                })
-            },
-
             getSecondary() {
                 axios.get('/settings/email/' + this.$route.params.id).then(response => {
                         let dataReceived = JSON.parse(response.data[0].setting);
+                        console.log(dataReceived);
                         this.name = dataReceived.name;
                         this.token = dataReceived.token;
+                        this.apiOn = dataReceived.apiOn;
+                        this.apiToken = dataReceived.apiToken;
                         let hotels = JSON.parse(dataReceived.hotels)
                         hotels.forEach(parentEl => {
                             this.options.forEach(el => {
@@ -141,7 +143,9 @@
                 let data = {
                     name: this.name,
                     hotels: this.transformHotelIDs(),
-                    token: this.token
+                    token: this.token,
+                    apiOn: this.apiOn,
+                    apiToken: this.apiToken,
                 }
                 axios.post('/settings/emails/edit/' + this.$route.params.id, data)
                     .then(response => {
@@ -177,7 +181,10 @@
             back() {
                 this.$router.push({name: 'Email list settings'})
             }
-        }
+        },
+        mixins: [
+            email
+        ],
     }
 </script>
 <style>

@@ -114,7 +114,6 @@ class SettingController extends Controller
             'hotels' => 'required',
             'token' => 'required',
             'apiOn'=>'required',
-            'apiToken'=>'sometimes|string'
         ]);
         Setting::where('id',
             $request->id)->update([

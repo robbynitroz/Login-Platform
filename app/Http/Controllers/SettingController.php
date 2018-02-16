@@ -87,7 +87,6 @@ class SettingController extends Controller
             'hotels' => 'required',
             'token' => 'required',
             'apiOn'=>'required',
-            'apiToken'=>'sometimes|string'
         ]);
         $setting = new Setting();
         $setting->type = 'email';

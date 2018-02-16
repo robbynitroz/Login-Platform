@@ -36,11 +36,8 @@ class ClientAuthController extends Controller
         if ($request->ajax()) {
             $this->addNewClient((int)$request->hotel_id, $request->mac_address, $request->login_type);
             return "http://" . $request->ip() . ":64873/login?username=" . $request->mac_address . "&password=" . $request->mac_address . "&dst=" . $request->hotel_url;
-
-
         } else {
             return json_encode(['error' => 'Something went wrong']);
-
         }
     }
 

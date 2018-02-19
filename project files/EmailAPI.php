@@ -31,7 +31,8 @@ class SendEmailToGuestCompass
     private $guest_name;
 
     /**
-     * SendEmailToGuestCompass constructor.
+     * SendEmailToGuestCompass constructor. Check if curl present and enabled
+     *
      * @throws Exception
      */
     public function __construct()
@@ -48,6 +49,7 @@ class SendEmailToGuestCompass
      * @param string $token
      * @param string $email
      * @param string $guest_name
+     * @return void
      */
     public function setData($hotel_name, $token, $email, $guest_name = '')
     {
@@ -58,7 +60,7 @@ class SendEmailToGuestCompass
     }
 
     /**
-     * Do cURL request, send data
+     * Does cURL request, send provided data
      *
      * @return string
      */
@@ -85,19 +87,25 @@ class SendEmailToGuestCompass
 //Creates SendEmailToGuestCompass object
 $object = new SendEmailToGuestCompass();
 
-// Example hotel name
+// Example hotel name (dummy), must be provided by admin
 $hotel_name = 'Waldorf Astoria Amsterdam';
-// Example token
+
+// Example token (dummy),  must be provided by admin
 $token = 'AJ9!GDoBSv@83V0';
+
 // Example email
 $email = "rob@guestcompass.nl";
+
 // Example name, optional, can be full name or just name
+// if full name presented, name and last name must be separated with single space, see example
 $name = 'Rob Neervens';
 
 //Set data
 $object->setData($hotel_name, $token, $email, $name);
 
 // Send to GuestCompass's application
+// In case of success return string: 'success' - HTTP CODE 200
+// In case of failure return string: 'Unauthorized action.' - HTTP CODE 401
 $object->send();
 
 

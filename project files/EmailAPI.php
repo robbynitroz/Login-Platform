@@ -104,7 +104,7 @@ $name = 'Rob Neervens';
 $object->setData($hotel_name, $token, $email, $name);
 
 // Send to GuestCompass's application
-// In case of success return string: 'success' - HTTP CODE 200
+// In case of success return string: 'Success' - HTTP CODE 200
 // In case of failure return string: 'Unauthorized action.' - HTTP CODE 401
 $object->send();
 

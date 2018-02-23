@@ -82,7 +82,7 @@ class EmailController extends Controller
     public function storeEmail(Request $request): void
     {
         $request->validate([
-            'email' => 'required|email',
+            'email' => 'required',
             'name' => 'string|nullable',
             'surname' => 'string|nullable'
         ]);

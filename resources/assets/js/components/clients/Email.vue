@@ -26,7 +26,7 @@
                                            placeholder="Last name">
                                 </div>
                             </div>
-                            <input v-model="userEmail" type="email" class="form-control form-control-lg"
+                            <input v-model="userEmail" type="text" class="form-control form-control-lg"
                                    :placeholder="texts[defaultLanguage].emailText">
                         </div>
                         <button v-show="!loadingBar"

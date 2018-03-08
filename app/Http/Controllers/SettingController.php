@@ -28,6 +28,14 @@ class SettingController extends Controller
      */
     private $utilisation_setting = array();
 
+
+    /**
+     * Emails settings
+     *
+     * @var object $emails_settings
+     */
+    private $emails_settings;
+
     /**
      * Get data by token
      *
@@ -40,7 +48,28 @@ class SettingController extends Controller
         if ($api === false) {
             return ((new Setting())->where('type', 'email')->where('setting->token', $token)->first());
         }
-        return ((new Setting())->where('type', 'email')->where('setting->apiOn', true)->where('setting->apiToken', $token)->first());
+        return ((new Setting())->where('type', 'email')->where('setting->apiOn', true)->where('setting->apiToken',
+            $token)->first());
+    }
+
+    /**
+     * Count email for emails settings groups
+     *
+     * @return array
+     */
+    public function numOfEmailsInDB(): array
+    {
+        $this->getEmailsSettings();
+        $settings_array = [];
+        foreach ($this->emails_settings as $settings) {
+            $settings_array[json_decode($settings->setting)->name] = json_decode($settings->setting)->hotels;
+        }
+        $result = array();
+        foreach ($settings_array as $key => $value) {
+            $value = json_decode($value);
+            $result[$key] = EmailController::countEmailsByMultipleHotelID($value);
+        }
+        return $result;
     }
 
     /**
@@ -50,7 +79,8 @@ class SettingController extends Controller
      */
     public function getEmailsSettings(): object
     {
-        return Setting::where('type', 'email')->get();
+        $this->emails_settings = (Setting::where('type', 'email')->get());
+        return $this->emails_settings;
     }
 
     /**
@@ -86,15 +116,15 @@ class SettingController extends Controller
             'name' => 'required',
             'hotels' => 'required',
             'token' => 'required',
-            'apiOn'=>'required',
+            'apiOn' => 'required',
         ]);
         $setting = new Setting();
         $setting->type = 'email';
         $setting->setting = json_encode([
             'name' => $request->name,
             'token' => $request->token,
-            'apiOn'=>$request->apiOn,
-            'apiToken'=>$request->apiToken,
+            'apiOn' => $request->apiOn,
+            'apiToken' => $request->apiToken,
             'hotels' => json_encode($request->hotels)
         ]);
         $setting->save();
@@ -113,14 +143,14 @@ class SettingController extends Controller
             'name' => 'required',
             'hotels' => 'required',
             'token' => 'required',
-            'apiOn'=>'required',
+            'apiOn' => 'required',
         ]);
         Setting::where('id',
             $request->id)->update([
             'setting->name' => $request->name,
             'setting->token' => $request->token,
-            'setting->apiOn'=>$request->apiOn,
-            'setting->apiToken'=>$request->apiToken,
+            'setting->apiOn' => $request->apiOn,
+            'setting->apiToken' => $request->apiToken,
             'setting->hotels' => json_encode($request->hotels)
         ]);
     }

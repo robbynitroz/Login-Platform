@@ -72,6 +72,16 @@ class EmailController extends Controller
      */
     private $hotels = [];
 
+    /**
+     * Count rows with given array of IDs
+     *
+     * @param array $ids_array
+     * @return mixed
+     */
+    public static function countEmailsByMultipleHotelID(array $ids_array)
+    {
+        return Email::whereIn('hotel_id', $ids_array)->count();
+    }
 
     /**
      * Store email in DB if not exist

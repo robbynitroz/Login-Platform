@@ -1,6 +1,7 @@
 import {routes} from "./routes/dashboard-routes";
 
 require('./bootstrap');
+require('es6-promise').polyfill();
 
 import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';

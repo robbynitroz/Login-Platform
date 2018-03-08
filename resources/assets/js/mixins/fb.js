@@ -5,7 +5,7 @@ export const fb = {
                 appId            : '1519471891398547',
                 autoLogAppEvents : true,
                 xfbml            : true,
-                version          : 'v2.10'
+                version          : 'v2.12'
             });
             window.FB.Event.subscribe('edge.create',  (response)=> {
                 this.sendToServer('facebook');

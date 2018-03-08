@@ -208,7 +208,7 @@
                     },
                     config)
                     .then(response => {
-                        document.location.href = response.data;
+                        window.document.location.href = response.data;
                         this.changeLoaderStatus()
                     })
                     .catch(e => {

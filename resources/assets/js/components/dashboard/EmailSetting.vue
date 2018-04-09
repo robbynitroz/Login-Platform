@@ -29,12 +29,17 @@
                                        v-for="setting in filteredList"
                                        :key="setting.id"
                                 >
-                                    <!--Hotel blocks-->
                                     <b-card class="groups" bg-variant="dark" text-variant="white"
                                             :title="setting.name">
                                         <p class="card-text">
                                             <span>Included: {{ countHotels(setting.hotels) }}  hotels</span>
                                         </p>
+                                        <b-col class="hotel-logo" cols="3">
+                                            <b-badge pill variant="success">
+                                                    <span><i class='fa fa-envelope'></i> {{ numEmails[setting.name] }}</span>
+                                            </b-badge>
+                                        </b-col>
+                                        <p><span>{{ numEmails[setting.name] }}</span></p>
                                         <b-button @click="editEmailSetting(setting.id)" type="edit" variant="primary"><i
                                                 class="fa fa-pencil-square-o"></i> Edit
                                         </b-button>
@@ -87,6 +92,7 @@
                     name: null,
                 },
                 errors: false,
+                numEmails:{},
             }
         },
 
@@ -124,7 +130,8 @@
                                     }
                                 )
                             })
-                            this.fetchComplete = true
+                            this.fetchComplete = true;
+                            this.getNumOfEmail();
                         } else {
                             return;
                         }
@@ -132,6 +139,16 @@
                     .catch(e => {
                         this.errors = true
                     });
+            },
+
+            getNumOfEmail(){
+                axios.get('/settings/emails/count').then(
+                    response=>{
+                        this.numEmails = response.data;
+                    }
+                ).catch(e=>{
+
+                })
             },
 
             editEmailSetting(id) {

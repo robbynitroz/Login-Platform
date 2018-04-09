@@ -54,7 +54,6 @@ class MikrotikLogin extends Controller
             return $this->processData($hotel_id, $request);
         } else {
             return redirect('http://192.168.88.1/login');
-
         }
     }
 

@@ -39,7 +39,6 @@
                                                     <span><i class='fa fa-envelope'></i> {{ numEmails[setting.name] }}</span>
                                             </b-badge>
                                         </b-col>
-                                        <p><span>{{ numEmails[setting.name] }}</span></p>
                                         <b-button @click="editEmailSetting(setting.id)" type="edit" variant="primary"><i
                                                 class="fa fa-pencil-square-o"></i> Edit
                                         </b-button>

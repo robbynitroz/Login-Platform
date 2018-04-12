@@ -61,10 +61,27 @@ class NewsfeedController extends Controller
     public function newCard(Request $request): int
     {
         $model = new NewsFeed();
-
         $model->card_name = $request->card_name;
         $model->published = $request->published;
         $model->groups = json_encode($request->belongs_to);
+        $model->belongs_to = $this->determineBelong($request);
+        $model->feed = json_encode([
+            'title' => $request->description,
+            'text' => $request->feed_content,
+            'img' => '',
+            'buttonLink' => $request->buttonLink,
+            'buttonText' => $request->buttonText
+        ]);
+        $model->save();
+        return $model->id;
+    }
+
+    /**
+     * @param Request $request
+     * @return string
+     */
+    private function determineBelong(Request $request): string
+    {
         $belong = '';
         foreach ($request->belongs_to as $belongs) {
             if (count($belongs['value']) > 1 and count($belongs['value']) > 0) {
@@ -76,16 +93,7 @@ class NewsfeedController extends Controller
                 }
             }
         }
-        $model->belongs_to = $belong;
-        $model->feed = json_encode([
-            'title' => $request->description,
-            'text' => $request->feed_content,
-            'img' => '',
-            'buttonLink' => $request->buttonLink,
-            'buttonText' => $request->buttonText
-        ]);
-        $model->save();
-        return $model->id;
+        return $belong;
     }
 
     /**
@@ -187,17 +195,7 @@ class NewsfeedController extends Controller
     public function editCard(Request $request)
     {
         $id = $request->id;
-        $belong = '';
-        foreach ($request->belongs_to as $belongs) {
-            if (count($belongs['value']) > 1 and count($belongs['value']) > 0) {
-                $belong .= implode(" , ", $belongs['value']);
-            } else {
-                if (isset($belongs['value'][0])) {
-                    $belong .= '  ' . $belongs['value'][0] . ',  ';
-                }
-
-            }
-        }
+        $belong = $this->determineBelong($request);
         NewsFeed::where('id', $id)
             ->update([
                 'card_name' => $request->card_name,

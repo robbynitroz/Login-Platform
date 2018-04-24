@@ -1,6 +1,6 @@
 <template>
     <div v-if="notEmpty">
-        <b-card-group columns>
+        <b-card-group deck>
             <template v-for="feed in feeds">
                 <feed :button="feed.buttonText" :link="feed.buttonLink" :text="feed.text" :image ="feed.img" :title="feed.title"></feed>
             </template>

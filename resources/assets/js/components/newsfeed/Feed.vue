@@ -85,6 +85,10 @@
         margin: 10px;
     }
 
+    figure{
+        margin-top: 15px;
+    }
+
     .card-flip {
 
         background: none;

@@ -1,8 +1,9 @@
 <template>
     <div v-if="notEmpty">
-        <b-card-group deck>
+        <b-card-group column class="mb-3">
             <template v-for="feed in feeds">
-                <feed :button="feed.buttonText" :link="feed.buttonLink" :text="feed.text" :image ="feed.img" :title="feed.title"></feed>
+                <feed :button="feed.buttonText" :link="feed.buttonLink" :text="feed.text" :image="feed.img"
+                      :title="feed.title"></feed>
             </template>
         </b-card-group>
     </div>
@@ -32,173 +33,213 @@
                 });
         },
 
-        computed:{
-            notEmpty(){
+        computed: {
+            notEmpty() {
 
-                if(this.feeds.length >= 1 && (typeof this.feeds) === 'object'){
+                if (this.feeds.length >= 1 && (typeof this.feeds) === 'object') {
                     return true
                 }
                 return false
             },
         },
 
-        methods:{
+        methods: {},
 
-        },
-
-        components:{
+        components: {
             Feed,
         }
 
     }
 </script>
 
-<style >
+<style>
 
-    .ql-align-center{
+    .ql-align-center {
         align-content: center;
         text-align: center !important;
     }
 
     .ql-viewer {
-        padding: 12px 15px;border: 1px solid #c1c1c1;
+        padding: 12px 15px;
+        border: 1px solid #c1c1c1;
     }
+
     .ql-viewer .ql-font-serif {
         font-family: Georgia, Times New Roman, serif;
     }
+
     .ql-viewer .ql-font-monospace {
         font-family: Monaco, Courier New, monospace;
     }
+
     .ql-viewer .ql-size-small {
         font-size: 0.75em;
     }
+
     .ql-viewer .ql-size-large {
         font-size: 1.5em;
     }
+
     .ql-viewer .ql-size-huge {
         font-size: 2.5em;
     }
+
     .ql-viewer .ql-direction-rtl {
         direction: rtl;
         text-align: inherit;
     }
+
     .ql-viewer .ql-align-center {
         text-align: center;
     }
+
     .ql-viewer .ql-align-justify {
         text-align: justify;
     }
+
     .ql-viewer .ql-align-right {
         text-align: right;
     }
+
     .ql-viewer blockquote {
         border-left: 4px solid #ccc;
         padding-left: 16px;
     }
+
     .ql-viewer code,
     .ql-viewer pre {
         background-color: #f0f0f0;
         border-radius: 3px;
         padding: 6px 10px;
     }
+
     .ql-viewer ol > li,
     .ql-viewer ul > li {
-        list-style-type: none ;
+        list-style-type: none;
     }
+
     .ql-viewer ol li {
         counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
         counter-increment: list-num;
     }
+
     .ql-viewer ol li:before {
         content: counter(list-num, decimal) '. ';
     }
+
     /* indent 1 */
     .ql-viewer ol ol li {
         counter-increment: list-1;
     }
+
     .ql-viewer ol ol li:before {
         content: counter(list-1, lower-alpha) '. ' !important;
     }
+
     .ql-viewer ol ol li {
         counter-reset: list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
     }
+
     /* indent 2 */
     .ql-viewer ol ol ol li {
         counter-increment: list-2;
     }
+
     .ql-viewer ol ol ol li:before {
         content: counter(list-2, lower-roman) '. ' !important;
     }
+
     .ql-viewer ol ol ol li {
         counter-reset: list-3 list-4 list-5 list-6 list-7 list-8 list-9;
     }
+
     /* indent 3 */
     .ql-viewer ol ol ol ol li {
         counter-increment: list-3;
     }
+
     .ql-viewer ol ol ol ol li:before {
         content: counter(list-3, decimal) '. ' !important;
     }
+
     .ql-viewer ol ol ol ol li {
         counter-reset: list-4 list-5 list-6 list-7 list-8 list-9;
     }
+
     /* indent 4 */
     .ql-viewer ol ol ol ol ol li {
         counter-increment: list-4;
     }
+
     .ql-viewer ol ol ol ol ol li:before {
         content: counter(list-4, lower-alpha) '. ' !important;
     }
+
     .ql-viewer ol ol ol ol ol li {
         counter-reset: list-5 list-6 list-7 list-8 list-9;
     }
+
     /* indent 5 */
     .ql-viewer ol ol ol ol ol ol li {
         counter-increment: list-5;
     }
+
     .ql-viewer ol ol ol ol ol ol li:before {
         content: counter(list-5, lower-roman) '. ' !important;
     }
+
     .ql-viewer ol ol ol ol ol ol li {
-        counter-reset:  list-6 list-7 list-8 list-9;
+        counter-reset: list-6 list-7 list-8 list-9;
     }
+
     /* indent 6 */
     .ql-viewer ol ol ol ol ol ol ol li {
         counter-increment: list-6;
     }
+
     .ql-viewer ol ol ol ol ol ol ol li:before {
         content: counter(list-6, decimal) '. ' !important;
     }
+
     .ql-viewer ol ol ol ol ol ol ol li {
-        counter-reset:  list-7 list-8 list-9;
+        counter-reset: list-7 list-8 list-9;
     }
+
     /* indent 7 */
     .ql-viewer ol ol ol ol ol ol ol ol li {
         counter-increment: list-7;
     }
+
     .ql-viewer ol ol ol ol ol ol ol ol li:before {
         content: counter(list-7, lower-alpha) '. ' !important;
     }
+
     .ql-viewer ol ol ol ol ol ol ol ol li {
-        counter-reset:  list-8 list-9;
+        counter-reset: list-8 list-9;
     }
+
     /* indent 8 */
     .ql-viewer ol ol ol ol ol ol ol ol ol li {
         counter-increment: list-8;
     }
+
     .ql-viewer ol ol ol ol ol ol ol ol ol li:before {
         content: counter(list-8, lower-roman) '. ' !important;
     }
+
     .ql-viewer ol ol ol ol ol ol ol ol ol li {
-        counter-reset:  list-9;
+        counter-reset: list-9;
     }
+
     /* indent 9 */
     .ql-viewer ol ol ol ol ol ol ol ol ol ol li {
         counter-increment: list-9;
     }
+
     .ql-viewer ol ol ol ol ol ol ol ol ol ol li:before {
         content: counter(list-9, decimal) '. ' !important;
     }
+
     /* ql indent */
     .ql-viewer .ql-indent-1:not(.ql-direction-rtl) {
         padding-left: 3em;
@@ -271,14 +312,17 @@
     .ql-viewer .ql-indent-9.ql-direction-rtl.ql-align-right {
         padding-right: 27em;
     }
+
     /* video */
     .ql-viewer .ql-video {
         display: block;
         max-width: 100%;
     }
+
     .ql-viewer .ql-video.ql-align-center {
         margin: 0 auto;
     }
+
     .ql-viewer .ql-video.ql-align-right {
         margin: 0 0 0 auto;
     }

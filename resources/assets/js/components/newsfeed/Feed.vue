@@ -1,5 +1,5 @@
 <template>
-    <div id="container">
+    <div id="container" class="col-md-4">
 
         <figure class="card card-flip">
             <div class="card">

@@ -28,8 +28,20 @@
                             </div>
                             <input v-model="userEmail" type="text" class="form-control form-control-lg"
                                    :placeholder="texts[defaultLanguage].emailText">
+                            <label class="custom-control custom-checkbox gdrp-eddition">
+                                <input v-model="userAgree" type="checkbox" class="custom-control-input">
+                                <span class="custom-control-indicator"></span>
+                                <span :style="{ color:greeting.color }" class="custom-control-description"> I want to use Free WiFi. I read and agree to the
+                                    <span style="text-decoration: underline">
+                                     <a :style="{ color:policy.color }" href="#"
+                                        @click="changeToPolicy"
+                                     >{{ texts[defaultLanguage].policyLinkText  }} </a>
+                                </span>
+                            </span>
+                            </label>
                         </div>
-                        <button v-show="!loadingBar"
+                        <button :disabled="!userAgree"
+                                v-show="!loadingBar"
                                 type="submit"
                                 :style="buttonStyleObject"
                                 @mouseenter='updateHoverState(true)'
@@ -60,7 +72,8 @@
                 userEmail: '',
                 userName: '',
                 userLastName: '',
-                loader: false
+                loader: false,
+                userAgree:false
             }
         },
 
@@ -191,6 +204,9 @@
 </script>
 
 <style scoped>
+    .gdrp-eddition{
+        margin:15px 10px -8px 10px;
+    }
     .middle {
         margin-top: 15%;
     }

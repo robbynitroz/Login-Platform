@@ -2,10 +2,10 @@
     <div class="vertical-center" :style="background(false)">
         <div class="container justify-content-center  row">
             <div :style="background(true)" class="login col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
-                <a :style="{ float:'right', fontSize:policy.size, margin:'3% 0 0 0', color:policy.color }" href="#"
+                <!--<a :style="{ float:'right', fontSize:policy.size, margin:'3% 0 0 0', color:policy.color }" href="#"
                    @click="changeToPolicy"
                 >
-                    {{ texts[defaultLanguage].policyLinkText | capitalize }} </a>
+                    {{ texts[defaultLanguage].policyLinkText | capitalize }} </a>-->
                 <div class="clearfix"></div>
                 <h1 v-if="greetingsTime.on" :style="{ color:greetingsTime.color, fontSize:greetingsTime.size}"
                     class="text-center greetings"> {{ sayTime }}</h1>

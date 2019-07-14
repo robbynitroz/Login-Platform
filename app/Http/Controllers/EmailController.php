@@ -196,17 +196,12 @@ class EmailController extends Controller
             $hotel_name = '';
             foreach ($this->emails_address as $emails) {
                 if (count($this->hotels) > 1) {
-                    if ($hotel_name !== $this->hotels[$emails->hotel_id]) {
-                        $hotel_name = $this->hotels[$emails->hotel_id];
-                        $x = 0;
-                    }
-                    $this->email_address_array[$hotel_name][$x]['email'] = Crypt::decryptString($emails->email);
-                    if (!empty($emails->name)) {
-                        $this->email_address_array[$hotel_name][$x]['name'] = Crypt::decryptString($emails->name);
-                    }
-                    if (!empty($emails->last_name)) {
-                        $this->email_address_array[$hotel_name][$x]['lastName'] = Crypt::decryptString($emails->last_name);
-                    }
+                    $hotel_name = $this->hotels[$emails->hotel_id];
+                    $this->email_address_array[$hotel_name][] = [
+                        'email' => Crypt::decryptString($emails->email),
+                        'name' => !empty($emails->name) ? Crypt::decryptString($emails->name) : '',
+                        'lastName' => !empty($emails->last_name) ? Crypt::decryptString($emails->last_name) : '',
+                    ];
                 } else {
                     $this->email_address_array[$x]['email'] = Crypt::decryptString($emails->email);
                     if (!empty($emails->name)) {
@@ -224,6 +219,7 @@ class EmailController extends Controller
         } else {
             $this->empty = true;
         };
+
     }
 
     /**
